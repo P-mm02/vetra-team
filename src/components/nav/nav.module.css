@@ -1,0 +1,301 @@
+.navWrap {
+  position: sticky;
+  top: 0;
+  z-index: 60;
+}
+
+.navFx {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  height: 86px;
+  background:
+    radial-gradient(700px 120px at 15% 10%, rgba(125, 231, 255, 0.12), rgba(125, 231, 255, 0)),
+    radial-gradient(700px 120px at 85% 30%, rgba(190, 140, 255, 0.12), rgba(190, 140, 255, 0));
+  filter: blur(10px);
+  opacity: 0.9;
+}
+
+.nav {
+  position: relative;
+  border-bottom: 1px solid var(--border-soft);
+  background: linear-gradient(180deg, rgba(11, 10, 34, 0.78), rgba(7, 7, 20, 0.45));
+  backdrop-filter: blur(14px);
+}
+
+.inner {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0.85rem var(--pad-x);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+/* Brand */
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  color: var(--text);
+  transition: transform var(--t-fast), opacity var(--t-fast);
+}
+.brand:hover {
+  opacity: 0.95;
+  transform: translateY(-1px);
+}
+.brand:focus-visible {
+  outline: none;
+  box-shadow: var(--focus);
+  border-radius: 14px;
+}
+
+.brandMark {
+  width: 38px;
+  height: 38px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+
+  background:
+    radial-gradient(10px 10px at 30% 30%, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0)),
+    linear-gradient(135deg, rgba(125, 231, 255, 0.16), rgba(190, 140, 255, 0.14));
+  border: 1px solid var(--border);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.35);
+  font-family: var(--font-display);
+  font-weight: 900;
+  letter-spacing: 0.06em;
+}
+
+.brandText {
+  font-family: var(--font-display);
+  font-weight: 900;
+  letter-spacing: 0.02em;
+}
+.brandDim {
+  opacity: 0.55;
+  padding: 0 0.35rem;
+}
+
+/* Desktop links */
+.desktop {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.2rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.55rem 0.8rem;
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1;
+  transition: background var(--t-fast), color var(--t-fast), transform var(--t-fast);
+}
+
+.link:hover {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.04);
+  transform: translateY(-1px);
+}
+
+.link:focus-visible {
+  outline: none;
+  box-shadow: var(--focus);
+}
+
+.active {
+  color: var(--text);
+  background: rgba(125, 231, 255, 0.06);
+  border: 1px solid rgba(125, 231, 255, 0.18);
+}
+
+.active::after {
+  content: "";
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 6px;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, rgba(125, 231, 255, 0.9), rgba(190, 140, 255, 0.9));
+  opacity: 0.85;
+}
+
+/* Mobile toggle */
+.toggle {
+  display: none;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-soft);
+  border-radius: 16px;
+  padding: 0.55rem 0.65rem;
+  cursor: pointer;
+  transition: background var(--t-fast), transform var(--t-fast);
+}
+.toggle:hover {
+  background: rgba(255, 255, 255, 0.05);
+  transform: translateY(-1px);
+}
+.toggle:focus-visible {
+  outline: none;
+  box-shadow: var(--focus);
+}
+
+.bars {
+  display: grid;
+  gap: 5px;
+}
+.bar {
+  width: 22px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.78);
+  border-radius: 2px;
+}
+
+/* Mobile drawer */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--t-med);
+}
+.backdropOpen {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  width: min(420px, 88vw);
+  transform: translateX(110%);
+  transition: transform var(--t-med);
+  border-left: 1px solid var(--border-soft);
+
+  background:
+    radial-gradient(900px 600px at 20% 10%, rgba(125, 231, 255, 0.08), rgba(125, 231, 255, 0)),
+    radial-gradient(900px 600px at 90% 30%, rgba(190, 140, 255, 0.09), rgba(190, 140, 255, 0)),
+    rgba(7, 7, 20, 0.92);
+
+  backdrop-filter: blur(18px);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+}
+
+.drawerOpen {
+  transform: translateX(0);
+}
+
+.drawerTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1rem 0.75rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.drawerTitle {
+  font-family: var(--font-display);
+  font-weight: 900;
+  letter-spacing: 0.02em;
+}
+
+.close {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  color: var(--text);
+  font-size: 1.4rem;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+  transition: transform var(--t-fast), background var(--t-fast);
+}
+.close:hover {
+  background: rgba(255, 255, 255, 0.06);
+  transform: translateY(-1px);
+}
+.close:focus-visible {
+  outline: none;
+  box-shadow: var(--focus);
+}
+
+.mobileLinks {
+  padding: 0.75rem 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.mobileLink {
+  width: 100%;
+  justify-content: flex-start;
+  padding: 0.85rem 0.9rem;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.02);
+}
+.mobileLink:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.drawerFoot {
+  margin-top: auto;
+  padding: 0.9rem 1rem 1.1rem 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.hint {
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 0.92rem;
+}
+
+/* Body scroll lock (added/removed by JS) */
+.lockScroll {
+  overflow: hidden;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .desktop {
+    display: none;
+  }
+  .toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .link,
+  .toggle,
+  .drawer,
+  .backdrop,
+  .brand {
+    transition: none !important;
+  }
+  .link:hover,
+  .toggle:hover,
+  .brand:hover,
+  .close:hover {
+    transform: none !important;
+  }
+}

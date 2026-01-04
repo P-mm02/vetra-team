@@ -1,0 +1,170 @@
+.page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 2.2rem 0 3.2rem;
+}
+
+.card {
+  width: min(920px, calc(100% - 2.5rem));
+  border-radius: var(--r-lg);
+  border: 1px solid var(--border-soft);
+  background: linear-gradient(180deg, rgba(14, 12, 30, 0.62), rgba(14, 12, 30, 0.34));
+  box-shadow: var(--shadow-lg);
+  padding: 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.fx {
+  pointer-events: none;
+  position: absolute;
+  inset: -80px -80px auto -80px;
+  height: 260px;
+  background:
+    radial-gradient(900px 260px at 18% 10%, rgba(125, 231, 255, 0.14), rgba(125, 231, 255, 0)),
+    radial-gradient(900px 260px at 82% 35%, rgba(190, 140, 255, 0.14), rgba(190, 140, 255, 0));
+  filter: blur(18px);
+  opacity: 0.95;
+}
+
+.kicker {
+  position: relative;
+  display: inline-flex;
+  padding: 0.45rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.03);
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.92rem;
+}
+
+.h1 {
+  position: relative;
+  margin-top: 0.9rem;
+  font-family: var(--font-display);
+  font-weight: 900;
+  letter-spacing: 0.01em;
+  font-size: clamp(1.8rem, 3.8vw, 2.8rem);
+  line-height: 1.08;
+}
+
+.h1Accent {
+  background: linear-gradient(90deg, var(--accent), var(--accent-strong));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.subhead {
+  position: relative;
+  margin-top: 0.75rem;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 1.05rem;
+  line-height: 1.62;
+  max-width: 80ch;
+}
+
+.actions {
+  position: relative;
+  margin-top: 1.1rem;
+  display: flex;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+}
+
+/* Buttons */
+.btnPrimary,
+.btnGhost,
+.btnSoft {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  border-radius: 999px;
+  padding: 0.85rem 1.05rem;
+  line-height: 1;
+  cursor: pointer;
+  user-select: none;
+  transition: transform var(--t-fast), background var(--t-fast), border-color var(--t-fast);
+}
+
+.btnPrimary {
+  background: linear-gradient(90deg, rgba(125, 231, 255, 0.18), rgba(190, 140, 255, 0.18));
+  border: 1px solid rgba(190, 140, 255, 0.22);
+  color: var(--text);
+}
+.btnPrimary:hover {
+  transform: translateY(-1px);
+  background: linear-gradient(90deg, rgba(125, 231, 255, 0.22), rgba(190, 140, 255, 0.22));
+}
+
+.btnGhost {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  color: rgba(255, 255, 255, 0.86);
+}
+.btnGhost:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+.btnSoft {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  color: rgba(255, 255, 255, 0.82);
+}
+.btnSoft:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.btnPrimary:focus-visible,
+.btnGhost:focus-visible,
+.btnSoft:focus-visible,
+.quickLink:focus-visible {
+  outline: none;
+  box-shadow: var(--focus);
+}
+
+/* Quick links box */
+.quick {
+  position: relative;
+  margin-top: 1.05rem;
+  border-radius: var(--r-md);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.02);
+  padding: 0.9rem 0.95rem;
+}
+
+.quickTitle {
+  font-weight: 900;
+  margin-bottom: 0.4rem;
+}
+
+.quickLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+}
+
+.quickLink {
+  color: rgba(125, 231, 255, 0.95);
+}
+.quickLink:hover {
+  text-decoration: underline;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btnPrimary,
+  .btnGhost,
+  .btnSoft {
+    transition: none !important;
+  }
+  .btnPrimary:hover,
+  .btnGhost:hover,
+  .btnSoft:hover {
+    transform: none !important;
+  }
+}
