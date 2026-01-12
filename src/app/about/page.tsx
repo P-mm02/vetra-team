@@ -2,8 +2,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import styles from './page.module.css'
-
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+import AboutHero from './AboutHero/AboutHero'
 
 export const metadata: Metadata = {
   title: 'About',
@@ -51,62 +50,9 @@ const principles = [
 export default function AboutPage() {
   return (
     <main id="main" className={styles.page}>
-      <header className={styles.hero}>
-        <div className={styles.heroFx} aria-hidden="true" />
+      <AboutHero />
 
-        <div className={styles.container}>
-          <div className={styles.heroCard}>
-            <div className={styles.kicker}>About</div>
-
-            <h1 className={styles.h1}>
-              สวัสดีครับ ผมชื่อ <span className={styles.h1Accent}>Wee</span>
-            </h1>
-
-            <p className={styles.subhead}>
-              ฟรีแลนซ์รับทำเว็บไซต์และเว็บแอปด้วย Next.js —
-              โทนดาร์ก-ฟิวเจอร์ริสติกแบบพรีเมียม เน้น SEO + ความเร็ว
-              และทำให้โค้ด “ดูแลง่าย” เพื่อรองรับการเติบโตของโปรเจกต์
-            </p>
-
-            <div className={styles.heroGrid}>
-              <div className={styles.heroBox}>
-                <div className={styles.heroK}>โฟกัส</div>
-                <div className={styles.heroV}>
-                  เว็บไซต์ธุรกิจ, Landing สำหรับแคมเปญ/QR, และ Web App/Dashboard
-                </div>
-              </div>
-
-              <div className={styles.heroBox}>
-                <div className={styles.heroK}>สไตล์งาน</div>
-                <div className={styles.heroV}>
-                  Dark Futuristic • Minimal Premium • อ่านง่าย • ลื่นไหล
-                </div>
-              </div>
-
-              <div className={styles.heroBox}>
-                <div className={styles.heroK}>วิธีทำงาน</div>
-                <div className={styles.heroV}>
-                  วางโครงสร้างก่อน • ทำ Design system • build แบบ clean •
-                  optimize ก่อน launch
-                </div>
-              </div>
-            </div>
-
-            <div className={styles.actions}>
-              <Link className={styles.btnPrimary} href="/contact">
-                ติดต่อเพื่อเริ่มโปรเจกต์
-              </Link>
-              <Link className={styles.btnGhost} href="/pricing">
-                ดูราคา (Pricing)
-              </Link>
-              <a className={styles.btnSoft} href={`${SITE_URL}/contact`}>
-                ลิงก์สำหรับ QR
-              </a>
-            </div>
-          </div>
-        </div>
-      </header>
-
+      {/* ...everything else stays the same... */}
       <section className={styles.section}>
         <div className={styles.container}>
           <div className={styles.grid}>
@@ -159,6 +105,7 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* (rest unchanged) */}
       <section className={styles.section}>
         <div className={styles.container}>
           <div className={styles.principles}>

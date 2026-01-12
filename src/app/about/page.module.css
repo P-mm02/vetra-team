@@ -8,32 +8,6 @@
   padding: 0 var(--pad-x);
 }
 
-/* Hero */
-.hero {
-  position: relative;
-}
-
-.heroFx {
-  pointer-events: none;
-  position: absolute;
-  inset: -40px 0 auto 0;
-  height: 280px;
-  background:
-    radial-gradient(900px 260px at 12% 12%, rgba(125, 231, 255, 0.16), rgba(125, 231, 255, 0)),
-    radial-gradient(900px 260px at 88% 35%, rgba(190, 140, 255, 0.16), rgba(190, 140, 255, 0));
-  filter: blur(16px);
-  opacity: 0.9;
-}
-
-.heroCard {
-  border-radius: var(--r-lg);
-  border: 1px solid var(--border-soft);
-  background: linear-gradient(180deg, rgba(14, 12, 30, 0.62), rgba(14, 12, 30, 0.34));
-  box-shadow: var(--shadow-lg);
-  overflow: hidden;
-  padding: 1.5rem 1.5rem 1.2rem;
-}
-
 .kicker {
   display: inline-flex;
   padding: 0.45rem 0.7rem;
@@ -66,31 +40,6 @@
   font-size: 1.05rem;
   line-height: 1.62;
   max-width: 78ch;
-}
-
-.heroGrid {
-  margin-top: 1.1rem;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.7rem;
-}
-
-.heroBox {
-  border-radius: var(--r-md);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(255, 255, 255, 0.02);
-  padding: 0.8rem 0.85rem;
-}
-
-.heroK {
-  color: rgba(255, 255, 255, 0.66);
-  font-size: 0.92rem;
-  margin-bottom: 0.35rem;
-}
-
-.heroV {
-  color: rgba(255, 255, 255, 0.92);
-  line-height: 1.5;
 }
 
 .actions {
@@ -360,9 +309,6 @@
 
 /* Responsive */
 @media (max-width: 1024px) {
-  .heroGrid {
-    grid-template-columns: 1fr;
-  }
   .grid {
     grid-template-columns: 1fr;
   }

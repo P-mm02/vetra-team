@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation'
 import { useEffect, useMemo, useState } from 'react'
 import styles from './nav.module.css'
 import SmoothScrollLink from '@/components/ui/SmoothScrollLink/SmoothScrollLink'
+import Image from 'next/image'
 
 type NavItem = {
   label: string
@@ -14,11 +15,11 @@ type NavItem = {
 
 const NAV_ITEMS: NavItem[] = [
   { label: 'Home', href: '/', kind: 'page' },
+  { label: 'About', href: '/about', kind: 'page' },
   { label: 'Services', href: '/services', kind: 'page' },
   { label: 'Work', href: '/work', kind: 'page' },
   { label: 'Process', href: '/process', kind: 'page' },
   { label: 'Pricing', href: '/pricing', kind: 'page' },
-  { label: 'About', href: '/about', kind: 'page' },
   { label: 'Contact', href: '/contact', kind: 'page' },
 ]
 
@@ -111,12 +112,26 @@ export default function Nav() {
 
       <nav className={styles.nav} aria-label="Primary">
         <div className={styles.inner}>
-          <Link className={styles.brand} href="/" aria-label="Go to homepage">
-            <span className={styles.brandMark} aria-hidden="true">
-              V
+          <Link
+            className={styles.brand}
+            href="/"
+            aria-label="VETRA — Go to homepage"
+          >
+            <span className={styles.brandMark}>
+              <Image
+                src="/logo/Vetra-logo.svg"
+                alt=""
+                width={64}
+                height={64}
+                priority
+              />
             </span>
-            <span className={styles.brandText}>
-              VETRA
+
+            <span className={styles.brandMeta}>
+              <span className={styles.brandText}>VETRA &nbsp; TEAM</span>
+              <span className={styles.brandDim}>
+                WEBSITE DESIGN & DEVELOPMENT
+              </span>
             </span>
           </Link>
 

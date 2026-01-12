@@ -24,9 +24,8 @@
 }
 
 .inner {
-  max-width: var(--container);
   margin: 0 auto;
-  padding: 0.85rem var(--pad-x);
+  padding: 0.4rem 1rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -52,30 +51,35 @@
 }
 
 .brandMark {
-  width: 38px;
-  height: 38px;
-  border-radius: 14px;
+  width: 4rem;
+  height: auto;
   display: grid;
   place-items: center;
-
-  background:
-    radial-gradient(10px 10px at 30% 30%, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0)),
-    linear-gradient(135deg, rgba(125, 231, 255, 0.16), rgba(190, 140, 255, 0.14));
-  border: 1px solid var(--border);
-  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.35);
-  font-family: var(--font-display);
-  font-weight: 900;
-  letter-spacing: 0.06em;
 }
+
+.brandMark img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+
+.brandMeta {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.5;
+}
+
 
 .brandText {
   font-family: var(--font-display);
   font-weight: 900;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.1rem;
 }
+
 .brandDim {
   opacity: 0.55;
-  padding: 0 0.35rem;
+  font-size: 0.5rem;
 }
 
 /* Desktop links */

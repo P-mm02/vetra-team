@@ -50,61 +50,6 @@
   outline-offset: 3px;
 }
 
-/* =========================
-   Hero
-   ========================= */
-.hero {
-  position: relative;
-  padding: 5.25rem var(--pad-x) 2.5rem;
-}
-
-.heroFx {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  /* extra depth for the hero area */
-}
-
-.heroCard {
-  position: relative;
-  padding: 2.4rem 1.45rem;
-  border-radius: var(--r-lg);
-  background: var(--glass);
-  border: 1px solid var(--border);
-  backdrop-filter: blur(12px);
-  box-shadow: var(--shadow-lg);
-  overflow: hidden;
-}
-
-/* neon edge + subtle vignette */
-.heroCard::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  border-radius: inherit;
-  background:
-    radial-gradient(600px 200px at 22% 15%, rgba(125, 231, 255, 0.20), rgba(125, 231, 255, 0)),
-    radial-gradient(600px 220px at 80% 22%, rgba(190, 140, 255, 0.18), rgba(190, 140, 255, 0)),
-    radial-gradient(900px 600px at 50% 110%, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0));
-  opacity: 0.9;
-}
-
-/* subtle scan lines */
-.heroCard::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.06;
-  background-image: repeating-linear-gradient(
-    to bottom,
-    rgba(255, 255, 255, 0.16) 0px,
-    rgba(255, 255, 255, 0.16) 1px,
-    rgba(255, 255, 255, 0) 1px,
-    rgba(255, 255, 255, 0) 7px
-  );
-}
 
 .kicker {
   position: relative;
@@ -538,9 +483,6 @@
 }
 
 @media (max-width: 768px) {
-  .hero {
-    padding: 4.6rem var(--pad-x) 2.2rem;
-  }
   .h1 {
     font-size: 2.4rem;
   }
@@ -553,9 +495,6 @@
 }
 
 @media (max-width: 480px) {
-  .heroCard {
-    padding: 1.55rem 1.05rem;
-  }
   .h1 {
     font-size: 2.08rem;
   }

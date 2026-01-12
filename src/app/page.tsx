@@ -3,6 +3,8 @@ import Link from 'next/link'
 import styles from './page.module.css'
 import SmoothScrollLink from '@/components/ui/SmoothScrollLink/SmoothScrollLink'
 import CopyButton from '@/components/ui/CopyButton/CopyButton'
+import AboutHero from '@/app/about/AboutHero/AboutHero'
+import HomeHero from '@/app/HomeHero/HomeHero'
 
 const services = [
   {
@@ -39,49 +41,9 @@ export default function Page() {
         ข้ามไปยังเนื้อหา
       </a>
 
-      <header className={styles.hero}>
-        <div className={styles.heroFx} aria-hidden="true" />
+      <HomeHero />
 
-        <div className={styles.container}>
-          <div className={styles.heroCard}>
-            <p className={styles.kicker}>Vetra Team</p>
-
-            <h1 className={styles.h1}>
-              เว็บไซต์ ระดับพรีเมียม
-              <span className={styles.h1Accent}> สร้างด้วย Next.js</span>
-            </h1>
-
-            <p className={styles.subhead}>
-              งานดีไซน์สวยงาม พร้อมใช้กับธุรกิจจริง เน้น SEO และความเร็ว
-              ลูกค้าค้นหาเจอง่ายขึ้น เพิ่มโอกาส {' '}
-              <span className={styles.h1Accent}>AI</span>{' '}
-              ช่วยแนะนำเว็บไซต์ให้ลูกค้า — เขียนโค้ดสะอาด ดูแลง่าย
-              ต่อยอดได้เมื่อโปรเจกต์เติบโต
-            </p>
-
-            <div className={styles.actions}>
-              {/* client island */}
-              <SmoothScrollLink className={styles.btnPrimary} href="#contact">
-                เริ่มต้นโปรเจกต์
-              </SmoothScrollLink>
-
-              {/* plain server link */}
-              <Link className={styles.btnGhost} href="#services">
-                ดูบริการทั้งหมด
-              </Link>
-            </div>
-
-            <div className={styles.highlights} aria-label="จุดเด่น">
-              {highlights.map((x) => (
-                <div className={styles.highlightCard} key={x.k}>
-                  <div className={styles.highlightKey}>{x.k}</div>
-                  <div className={styles.highlightVal}>{x.v}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </header>
+      <AboutHero />
 
       <main id="main" className={styles.main}>
         <section id="services" className={styles.section}>

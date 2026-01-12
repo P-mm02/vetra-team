@@ -6,8 +6,8 @@
 :root {
   color-scheme: dark;
   
-  --container: 1100px;
-  --pad-x: 1.25rem;
+  --container: 100%;
+  --pad-x: 2rem;
 
   --font-display: "Playfair Display", "Prompt", "Noto Sans Thai", sans-serif;
   --font-body: "Prompt", "Noto Sans Thai", sans-serif;
@@ -47,29 +47,37 @@
 }
 
 /* 📐 Root font-size for rem scaling */
-@media (min-width: 1600px) {
-  html { font-size: 18px !important; }
+html { font-size: 24px !important; }
+@media (max-width: 2559px) {
+  html { font-size: 20px !important; }
 }
 @media (max-width: 1440px) {
-  html { font-size: 16px !important; }
+  html { font-size: 19px !important; }
   .DW1440-display-none { display: none !important; }
 }
 @media (max-width: 1280px) {
+  html { font-size: 18px !important; }
   .DW1280-display-none { display: none !important; }
   .display-grid-column { grid-template-columns: repeat(3, 1fr) !important; }
 }
 @media (max-width: 1024px) {
-  html { font-size: 14px !important; }
+  html { font-size: 17px !important; }
   .DW1024-display-none { display: none !important; }
   .display-grid-column { grid-template-columns: repeat(2, 1fr) !important; }
 }
-@media (max-width: 768px) {
-  html { font-size: 13px !important; }
+@media (max-width: 769px) {
+  html { font-size: 16px !important; }
   .DW768-display-none { display: none !important; }
   .display-grid-column { grid-template-columns: 1fr !important; }
+  :root { 
+    --pad-x: 1rem;
+  }
 }
-@media (max-width: 480px) {
-  html { font-size: 12px !important; }
+@media (max-width: 426px) {
+  html { font-size: 15px !important; }
+}
+@media (max-width: 376px) {
+  html { font-size: 14px !important; }
 }
 
 /* =========================
