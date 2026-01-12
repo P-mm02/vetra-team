@@ -119,7 +119,7 @@ export default function Nav() {
           >
             <span className={styles.brandMark}>
               <Image
-                src="/logo/Vetra-logo.svg"
+                src="/logo/vetra-logo-nobg"
                 alt=""
                 width={64}
                 height={64}
