@@ -6,7 +6,11 @@ import '@/styles/globals.css'
 import Nav from '@/components/nav/nav'
 import Footer from '@/components/footer/footer'
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+const SITE_URL = (
+  process.env.NEXT_PUBLIC_SITE_URL || 'https://vetra-eta.vercel.app'
+).replace(/\/+$/, '')
+
+const OG_IMAGE = '/images/preview/vetra-preview.jpg' // ✅ public/images/preview/vetra-preview.jpg
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -39,6 +43,7 @@ export const metadata: Metadata = {
   alternates: {
     canonical: '/',
   },
+
   openGraph: {
     type: 'website',
     url: '/',
@@ -47,12 +52,29 @@ export const metadata: Metadata = {
     description:
       'รับทำเว็บไซต์/เว็บแอปด้วย Next.js. โทนดาร์ก-ฟิวเจอร์ริสติก เน้น SEO + Performance พร้อมใช้งานจริง.',
     locale: 'th_TH',
+    images: [
+      {
+        url: OG_IMAGE,
+        width: 1200,
+        height: 630,
+        alt: 'Wee | Freelance',
+      },
+    ],
   },
+
   twitter: {
     card: 'summary_large_image',
     title: 'Wee | Freelance',
     description:
       'รับทำเว็บไซต์/เว็บแอปด้วย Next.js. โทนดาร์ก-ฟิวเจอร์ริสติก เน้น SEO + Performance.',
+    images: [OG_IMAGE],
+  },
+
+  // (optional but nice) keep icons inside metadata too
+  icons: {
+    icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
+    apple: '/apple-touch-icon.png',
   },
 }
 
@@ -70,7 +92,7 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
 
-        {/* Basic icon (add files later if you want) */}
+        {/* Basic icon */}
         <link rel="icon" href="/favicon.ico" />
       </head>
 
