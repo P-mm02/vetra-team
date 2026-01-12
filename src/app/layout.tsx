@@ -23,12 +23,12 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'Wee | Freelance',
-    template: '%s | Wee | Freelance',
+    default: 'VETRA',
+    template: '%s VETRA',
   },
   description:
-    'รับทำเว็บไซต์และเว็บแอปด้วย Next.js (Thai/EN). ดีไซน์ดาร์ก-ฟิวเจอร์ริสติก โหลดเร็ว SEO ดี โค้ดสะอาด ดูแลง่าย และพร้อมขยายระบบ.',
-  applicationName: 'Wee | Freelance',
+    'สร้างเว็บไซต์ ทันสมัย ระดับพรีเมี่ยม ด้วย Next.js เว็บไซต์เพื่อธุรกิจ ดีไซน์สวยงาม ทำ SEO เต็มระบบ AI และ Google ค้นหาเจอง่าย เพิ่มยอดขายได้มาก',
+  applicationName: 'VETRA',
   robots: {
     index: true,
     follow: true,
@@ -47,10 +47,10 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     url: '/',
-    siteName: 'Wee | Freelance',
-    title: 'Wee | Freelance',
+    siteName: 'VETRA',
+    title: 'VETRA',
     description:
-      'รับทำเว็บไซต์/เว็บแอปด้วย Next.js. โทนดาร์ก-ฟิวเจอร์ริสติก เน้น SEO + Performance พร้อมใช้งานจริง.',
+      'สร้างเว็บไซต์ ทันสมัย ระดับพรีเมี่ยม ด้วย Next.js เว็บไซต์เพื่อธุรกิจ ดีไซน์สวยงาม ทำ SEO เต็มระบบ AI และ Google ค้นหาเจอง่าย เพิ่มยอดขายได้มาก',
     locale: 'th_TH',
     images: [
       {
@@ -64,9 +64,9 @@ export const metadata: Metadata = {
 
   twitter: {
     card: 'summary_large_image',
-    title: 'Wee | Freelance',
+    title: 'VETRA',
     description:
-      'รับทำเว็บไซต์/เว็บแอปด้วย Next.js. โทนดาร์ก-ฟิวเจอร์ริสติก เน้น SEO + Performance.',
+      'สร้างเว็บไซต์ ทันสมัย ระดับพรีเมี่ยม ด้วย Next.js เว็บไซต์เพื่อธุรกิจ ดีไซน์สวยงาม ทำ SEO เต็มระบบ AI และ Google ค้นหาเจอง่าย เพิ่มยอดขายได้มาก',
     images: [OG_IMAGE],
   },
 
