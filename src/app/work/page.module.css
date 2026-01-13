@@ -16,7 +16,7 @@
 .heroCard {
   border-radius: var(--r-lg);
   border: 1px solid var(--border-soft);
-  background: linear-gradient(180deg, rgba(14, 12, 30, 0.62), rgba(14, 12, 30, 0.34));
+  background: var(--con-bg);
   box-shadow: var(--shadow-lg);
   overflow: hidden;
   padding: 1.5rem 1.5rem 1.2rem;
@@ -278,7 +278,7 @@
   margin-top: 1rem;
   border-radius: var(--r-lg);
   border: 1px solid var(--border-soft);
-  background: linear-gradient(180deg, rgba(14, 12, 30, 0.55), rgba(14, 12, 30, 0.30));
+  background: var(--con-bg);
   box-shadow: var(--shadow-lg);
   padding: 1.2rem 1.2rem;
   display: flex;

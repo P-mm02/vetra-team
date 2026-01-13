@@ -13,11 +13,7 @@
 .heroCard {
   border-radius: var(--r-lg);
   border: 1px solid var(--border-soft);
-  background: linear-gradient(
-    180deg,
-    rgba(14, 12, 30, 0.62),
-    rgba(14, 12, 30, 0.34)
-  );
+  background: var(--con-bg);
   box-shadow: var(--shadow-lg);
   overflow: hidden;
   padding: 1.5rem 1.5rem 1.2rem;
@@ -103,76 +99,6 @@
   place-items: center;
 
   animation: profileFloat 4.2s ease-in-out infinite;
-}
-
-.profileRing {
-  position: absolute;
-  inset: -2px;
-  border-radius: 999px;
-  padding: 2px;
-  opacity: 0.9;
-  pointer-events: none;
-
-  background: conic-gradient(
-    from 220deg,
-    rgba(125, 231, 255, 0.0),
-    rgba(125, 231, 255, 0.85),
-    rgba(190, 140, 255, 0.85),
-    rgba(255, 255, 255, 0.15),
-    rgba(190, 140, 255, 0.85),
-    rgba(125, 231, 255, 0.85),
-    rgba(125, 231, 255, 0.0)
-  );
-
-  /* ring cutout */
-  -webkit-mask: linear-gradient(#000, #000) content-box, linear-gradient(#000, #000);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-}
-
-.profileGlow {
-  position: absolute;
-  inset: -26px;
-  border-radius: 999px;
-  pointer-events: none;
-  opacity: 0.75;
-
-  background:
-    radial-gradient(
-      circle at 35% 30%,
-      rgba(125, 231, 255, 0.30),
-      rgba(125, 231, 255, 0) 55%
-    ),
-    radial-gradient(
-      circle at 70% 75%,
-      rgba(190, 140, 255, 0.26),
-      rgba(190, 140, 255, 0) 58%
-    );
-}
-
-.profileScan {
-  position: absolute;
-  inset: 0;
-  border-radius: 999px;
-  pointer-events: none;
-  opacity: 0.35;
-  mix-blend-mode: screen;
-
-  background:
-    repeating-linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.06) 0px,
-      rgba(255, 255, 255, 0.06) 1px,
-      rgba(255, 255, 255, 0.0) 3px,
-      rgba(255, 255, 255, 0.0) 7px
-    ),
-    radial-gradient(
-      circle at 50% 20%,
-      rgba(255, 255, 255, 0.12),
-      rgba(255, 255, 255, 0) 55%
-    );
-
-  animation: scanDrift 3.2s linear infinite;
 }
 
 .profileImg {
@@ -323,18 +249,9 @@
 @keyframes profileFloat {
   0%,
   100% {
-    transform: translateY(0px);
+    transform: translateY(0px) scale(1);
   }
   50% {
-    transform: translateY(-4px);
-  }
-}
-
-@keyframes scanDrift {
-  0% {
-    transform: translateY(0px);
-  }
-  100% {
-    transform: translateY(10px);
+    transform: translateY(-8px) scale(1.05);
   }
 }

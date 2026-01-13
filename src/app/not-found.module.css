@@ -9,7 +9,7 @@
   width: min(920px, calc(100% - 2.5rem));
   border-radius: var(--r-lg);
   border: 1px solid var(--border-soft);
-  background: linear-gradient(180deg, rgba(14, 12, 30, 0.62), rgba(14, 12, 30, 0.34));
+  background: var(--con-bg);
   box-shadow: var(--shadow-lg);
   padding: 1.5rem;
   position: relative;

@@ -16,7 +16,7 @@
   position: relative;
   border-radius: var(--r-lg);
   border: 1px solid var(--border-soft);
-  background: linear-gradient(180deg, rgba(14, 12, 30, 0.62), rgba(14, 12, 30, 0.36));
+  background: var(--con-bg);
   box-shadow: var(--shadow-lg);
   overflow: hidden;
 }
@@ -248,16 +248,6 @@
   line-height: 1.55;
 }
 
-.checkList li::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0.72em;
-  width: 6px;
-  height: 6px;
-  border-radius: 999px;
-  background: linear-gradient(90deg, var(--accent), var(--accent-strong));
-}
 
 .miniCard {
   margin-top: 1rem;

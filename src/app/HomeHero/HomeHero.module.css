@@ -180,22 +180,6 @@
   overflow: hidden;
 }
 
-/* subtle shine */
-.highlightCard::before {
-  content: "";
-  position: absolute;
-  inset: -40% -40% auto -40%;
-  height: 120%;
-  pointer-events: none;
-  background: linear-gradient(
-    120deg,
-    rgba(125, 231, 255, 0.00),
-    rgba(125, 231, 255, 0.08),
-    rgba(190, 140, 255, 0.06),
-    rgba(190, 140, 255, 0.00)
-  );
-  opacity: 0.7;
-}
 
 .highlightKey {
   position: relative;

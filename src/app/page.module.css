@@ -177,23 +177,6 @@
   overflow: hidden;
 }
 
-/* subtle animated-feel shine (no animation) */
-.highlightCard::before {
-  content: "";
-  position: absolute;
-  inset: -40% -40% auto -40%;
-  height: 120%;
-  pointer-events: none;
-  background: linear-gradient(
-    120deg,
-    rgba(125, 231, 255, 0.00),
-    rgba(125, 231, 255, 0.08),
-    rgba(190, 140, 255, 0.06),
-    rgba(190, 140, 255, 0.00)
-  );
-  opacity: 0.7;
-}
-
 .highlightKey {
   position: relative;
   font-size: 0.8rem;
@@ -338,17 +321,6 @@
   background: var(--soft);
   border: 1px solid var(--border-soft);
   overflow: hidden;
-}
-
-.step::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background:
-    linear-gradient(90deg, rgba(125, 231, 255, 0.08), rgba(125, 231, 255, 0)),
-    linear-gradient(270deg, rgba(190, 140, 255, 0.06), rgba(190, 140, 255, 0));
-  opacity: 0.85;
 }
 
 .stepNum {

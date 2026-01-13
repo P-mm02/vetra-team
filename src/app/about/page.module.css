@@ -278,7 +278,7 @@
 .footerCard {
   border-radius: var(--r-lg);
   border: 1px solid var(--border-soft);
-  background: linear-gradient(180deg, rgba(14, 12, 30, 0.55), rgba(14, 12, 30, 0.30));
+  background: var(--con-bg);
   box-shadow: var(--shadow-lg);
   padding: 1.2rem 1.2rem;
   display: flex;

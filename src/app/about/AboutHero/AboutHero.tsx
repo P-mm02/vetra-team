@@ -20,10 +20,6 @@ export default function AboutHero() {
 
           {/* Profile image */}
           <div className={styles.profileWrap} aria-label="Wee profile photo">
-            <div className={styles.profileRing} aria-hidden="true" />
-            <div className={styles.profileGlow} aria-hidden="true" />
-            <div className={styles.profileScan} aria-hidden="true" />
-
             <Image
               src="/about/Wee-Profile-2025.jpg"
               alt="Wee (Poomtawee Rompho) profile photo"
