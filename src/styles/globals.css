@@ -102,34 +102,22 @@ body {
     url(/images/bg/vetra-hero.svg),
     url(/images/bg/vetra-circuit.svg),
     url(/images/bg/vetra-micro.svg),
-    radial-gradient(900px 700px at 18% 22%, rgba(125, 231, 255, 0.14), rgba(125, 231, 255, 0)),
-    radial-gradient(900px 700px at 82% 28%, rgba(190, 140, 255, 0.15), rgba(190, 140, 255, 0)),
-    radial-gradient(700px 500px at 50% 85%, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0)),
     linear-gradient(180deg, var(--bg-2) 0%, var(--bg) 70%);
 
   background-repeat:
     no-repeat,
     repeat,
     repeat,
-    no-repeat,
-    no-repeat,
-    no-repeat,
     no-repeat;
 
   background-size:
     2000px auto,
     900px auto,
     260px auto,
-    auto,
-    auto,
-    auto,
     auto;
 
   background-position:
     center top,
-    center,
-    center,
-    center,
     center,
     center,
     center;
@@ -139,9 +127,6 @@ body {
     scroll,
     fixed,
     fixed,
-    scroll,
-    scroll,
-    scroll,
     scroll;
 
 }
