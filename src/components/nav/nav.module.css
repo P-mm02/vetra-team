@@ -22,7 +22,7 @@
   position: relative;
   border-bottom: 1px solid var(--border-soft);
   background: linear-gradient(180deg, rgba(11, 10, 34, 0.78), rgba(7, 7, 20, 0.45));
-  backdrop-filter: blur(14px);
+  backdrop-filter: blur(4px);
 }
 
 .inner {
@@ -195,7 +195,6 @@
     radial-gradient(900px 600px at 90% 30%, rgba(190, 140, 255, 0.09), rgba(190, 140, 255, 0)),
     rgba(7, 7, 20, 0.92);
 
-  backdrop-filter: blur(4px);
   box-shadow: var(--shadow-lg);
   display: flex;
   flex-direction: column;

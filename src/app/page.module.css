@@ -134,7 +134,6 @@
   box-shadow:
     0 18px 54px rgba(0, 0, 0, 0.55),
     0 0 30px rgba(125, 231, 255, 0.14);
-  filter: saturate(1.05);
 }
 
 .btnPrimary:active {
@@ -273,7 +272,6 @@
   padding: 1.15rem 1.15rem 1.25rem;
   background: var(--card);
   border: 1px solid var(--border);
-  backdrop-filter: blur(12px);
   box-shadow: var(--shadow-md);
   overflow: hidden;
 
@@ -374,7 +372,6 @@
   border-radius: var(--r-lg);
   background: var(--glass);
   border: 1px solid var(--border);
-  backdrop-filter: blur(12px);
   box-shadow: var(--shadow-lg);
 }
 
