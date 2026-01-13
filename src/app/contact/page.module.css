@@ -20,7 +20,7 @@
   background:
     radial-gradient(900px 260px at 14% 10%, rgba(125, 231, 255, 0.18), rgba(125, 231, 255, 0)),
     radial-gradient(900px 260px at 86% 35%, rgba(190, 140, 255, 0.18), rgba(190, 140, 255, 0));
-  filter: blur(16px);
+  filter: blur(4px);
   opacity: 0.9;
 }
 

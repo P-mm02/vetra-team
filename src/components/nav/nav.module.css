@@ -2,6 +2,8 @@
   position: sticky;
   top: 0;
   z-index: 60;
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 .navFx {
@@ -193,7 +195,7 @@
     radial-gradient(900px 600px at 90% 30%, rgba(190, 140, 255, 0.09), rgba(190, 140, 255, 0)),
     rgba(7, 7, 20, 0.92);
 
-  backdrop-filter: blur(18px);
+  backdrop-filter: blur(4px);
   box-shadow: var(--shadow-lg);
   display: flex;
   flex-direction: column;
@@ -303,3 +305,27 @@
     transform: none !important;
   }
 }
+
+/* Mobile performance: disable expensive blur effects */
+@media (hover: none) and (pointer: coarse) {
+  .nav {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    /* compensate: slightly more opaque so it still looks premium */
+    background: rgba(7, 7, 20, 0.8) !important;
+  }
+
+  .navFx {
+    filter: none !important;
+    background:
+      radial-gradient(500px 90px at 15% 10%, rgba(125, 231, 255, 0.10), transparent 60%),
+      radial-gradient(500px 90px at 85% 30%, rgba(190, 140, 255, 0.10), transparent 60%);
+  }
+
+  /* Optional: reduce shadow load on mobile */
+  .drawer {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+}
+

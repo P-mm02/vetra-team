@@ -24,7 +24,7 @@
   background:
     radial-gradient(900px 260px at 18% 10%, rgba(125, 231, 255, 0.14), rgba(125, 231, 255, 0)),
     radial-gradient(900px 260px at 82% 35%, rgba(190, 140, 255, 0.14), rgba(190, 140, 255, 0));
-  filter: blur(18px);
+  filter: blur(4px);
   opacity: 0.95;
 }
 

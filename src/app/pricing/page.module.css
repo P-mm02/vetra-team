@@ -21,7 +21,7 @@
   background:
     radial-gradient(900px 260px at 12% 12%, rgba(125, 231, 255, 0.16), rgba(125, 231, 255, 0)),
     radial-gradient(900px 260px at 88% 35%, rgba(190, 140, 255, 0.16), rgba(190, 140, 255, 0));
-  filter: blur(16px);
+  filter: blur(4px);
   opacity: 0.9;
 }
 
@@ -220,7 +220,7 @@
   position: absolute;
   inset: -40px -40px auto -40px;
   height: 190px;
-  filter: blur(18px);
+  filter: blur(4px);
   opacity: 0.9;
   pointer-events: none;
 }

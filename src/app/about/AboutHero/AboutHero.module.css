@@ -26,7 +26,7 @@
       rgba(190, 140, 255, 0.16),
       rgba(190, 140, 255, 0)
     );
-  filter: blur(16px);
+  filter: blur(4px);
   opacity: 0.9;
 }
 

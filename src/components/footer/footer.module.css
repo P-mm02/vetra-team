@@ -11,10 +11,7 @@
   position: absolute;
   inset: -60px 0 auto 0;
   height: 260px;
-  background:
-    radial-gradient(900px 260px at 14% 10%, rgba(125, 231, 255, 0.12), rgba(125, 231, 255, 0)),
-    radial-gradient(900px 260px at 86% 35%, rgba(190, 140, 255, 0.12), rgba(190, 140, 255, 0));
-  filter: blur(18px);
+  filter: blur(4px);
   opacity: 0.95;
 }
 
