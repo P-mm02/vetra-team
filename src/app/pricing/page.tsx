@@ -106,8 +106,6 @@ export default function PricingPage() {
   return (
     <main id="main" className={styles.page}>
       <header className={styles.hero}>
-        <div className={styles.heroFx} aria-hidden="true" />
-
         <div className={styles.container}>
           <div className={styles.heroCard}>
             <div className={styles.kicker}>Pricing</div>

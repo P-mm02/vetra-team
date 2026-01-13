@@ -15,13 +15,6 @@
   padding: 2rem 0;
 }
 
-.heroFx {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  /* extra depth for the hero area (kept as-is) */
-}
-
 .heroCard {
   position: relative;
   padding: 2rem 1rem;

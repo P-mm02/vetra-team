@@ -14,8 +14,6 @@ const highlights = [
 export default function HomeHero() {
   return (
     <header className={styles.hero}>
-      <div className={styles.heroFx} aria-hidden="true" />
-
       <div className={styles.container}>
         <div className={styles.heroCard}>
           <h1 className={styles.h1}>

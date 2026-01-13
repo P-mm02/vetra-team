@@ -8,8 +8,6 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
 export default function AboutHero() {
   return (
     <header className={styles.hero}>
-      <div className={styles.heroFx} aria-hidden="true" />
-
       <div className={styles.container}>
         <div className={styles.heroCard}>
           <Link

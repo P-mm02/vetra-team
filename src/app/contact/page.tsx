@@ -70,8 +70,6 @@ export default function ContactPage() {
     <main id="main" className={styles.page}>
       {/* Hero */}
       <section className={styles.hero}>
-        <div className={styles.heroFx} aria-hidden="true" />
-
         <div className={styles.container}>
           <div className={styles.card}>
             <div className={styles.top}>
