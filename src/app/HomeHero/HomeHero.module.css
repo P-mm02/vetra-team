@@ -21,7 +21,6 @@
   border-radius: var(--r-lg);
   background: var(--glass);
   border: 1px solid var(--border);
-  backdrop-filter: blur(1px);
   box-shadow: var(--shadow-lg);
   overflow: hidden;
   display: flex;

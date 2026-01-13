@@ -108,8 +108,6 @@ export default function Nav() {
 
   return (
     <header className={styles.navWrap}>
-      <div className={styles.navFx} aria-hidden="true" />
-
       <nav className={styles.nav} aria-label="Primary">
         <div className={styles.inner}>
           <Link

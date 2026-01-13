@@ -6,15 +6,6 @@
   overflow: hidden;
 }
 
-.fx {
-  pointer-events: none;
-  position: absolute;
-  inset: -60px 0 auto 0;
-  height: 260px;
-  filter: blur(4px);
-  opacity: 0.95;
-}
-
 .container {
   max-width: var(--container);
   margin: 0 auto;

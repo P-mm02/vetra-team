@@ -6,8 +6,6 @@ export default function NotFound() {
   return (
     <main className={styles.page} aria-label="Not Found Page">
       <section className={styles.card} aria-label="404 Not Found">
-        <div className={styles.fx} aria-hidden="true" />
-
         <div className={styles.kicker}>404 • Not Found</div>
 
         <h1 className={styles.h1}>

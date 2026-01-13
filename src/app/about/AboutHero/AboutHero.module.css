@@ -124,8 +124,6 @@
     rgba(125, 231, 255, 0.0)
   );
 
-  filter: blur(0.1px);
-
   /* ring cutout */
   -webkit-mask: linear-gradient(#000, #000) content-box, linear-gradient(#000, #000);
   -webkit-mask-composite: xor;
@@ -138,7 +136,6 @@
   border-radius: 999px;
   pointer-events: none;
   opacity: 0.75;
-  filter: blur(14px);
 
   background:
     radial-gradient(

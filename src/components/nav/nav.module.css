@@ -6,18 +6,6 @@
   transform: translateZ(0);
 }
 
-.navFx {
-  pointer-events: none;
-  position: absolute;
-  inset: 0;
-  height: 86px;
-  background:
-    radial-gradient(700px 120px at 15% 10%, rgba(125, 231, 255, 0.12), rgba(125, 231, 255, 0)),
-    radial-gradient(700px 120px at 85% 30%, rgba(190, 140, 255, 0.12), rgba(190, 140, 255, 0));
-  filter: blur(10px);
-  opacity: 0.9;
-}
-
 .nav {
   position: relative;
   border-bottom: 1px solid var(--border-soft);
@@ -312,13 +300,6 @@
     -webkit-backdrop-filter: none !important;
     /* compensate: slightly more opaque so it still looks premium */
     background: rgba(7, 7, 20, 0.8) !important;
-  }
-
-  .navFx {
-    filter: none !important;
-    background:
-      radial-gradient(500px 90px at 15% 10%, rgba(125, 231, 255, 0.10), transparent 60%),
-      radial-gradient(500px 90px at 85% 30%, rgba(190, 140, 255, 0.10), transparent 60%);
   }
 
   /* Optional: reduce shadow load on mobile */
