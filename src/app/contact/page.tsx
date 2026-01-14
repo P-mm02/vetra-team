@@ -2,22 +2,22 @@
 import type { Metadata } from 'next'
 import styles from './page.module.css'
 import CopyButton from '@/components/ui/CopyButton/CopyButton'
+import Link from 'next/link'
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://vetra.asia/'
 
 // ✅ Change these to your real info (or move to env if you want)
 const CONTACT = {
-  brand: 'Wee | Freelance',
-  name: 'Wee',
+  brand: 'VETRA Team leader',
+  name: 'ภูมิทวี ร่มโพธิ์',
   roleTh: 'ฟรีแลนซ์รับทำเว็บไซต์ / เว็บแอป',
   roleEn: 'Next.js Web Developer',
 
   // Put real values here
-  phone: '+66XXXXXXXXX',
-  email: 'hello@example.com',
-  lineId: 'yourlineid',
-  locationTh: 'Bangkok, Thailand',
-  mapUrl: 'https://maps.google.com/',
+  phone: '0936661370',
+  email: 'poomtawee@outlook.com',
+  lineLink: 'https://lin.ee/hgKZAHm',
+  lineId: '@078wpjlo',
 
   // optional
   websiteUrl: SITE_URL,
@@ -25,14 +25,14 @@ const CONTACT = {
 }
 
 export const metadata: Metadata = {
-  title: 'Contact',
+  title: 'Contact |',
   description:
-    'ติดต่อ Wee | Freelance — รับทำเว็บไซต์และเว็บแอปด้วย Next.js. สแกน QR แล้วติดต่อได้ทันที (LINE / โทร / อีเมล).',
+    'ติดต่อ Wee | VETRA — รับทำเว็บไซต์และเว็บแอปด้วย Next.js. ติดต่อได้ทันที (LINE / โทร / อีเมล).',
   alternates: { canonical: '/contact' },
   openGraph: {
-    title: 'Contact | Wee | Freelance',
+    title: 'VETRA | Contact',
     description:
-      'ติดต่อเพื่อเริ่มโปรเจกต์เว็บไซต์/เว็บแอป (Next.js) — LINE / โทร / อีเมล',
+      'ติดต่อ เริ่มโปรเจกต์เว็บไซต์ เว็บแอป (Next.js) — LINE / โทร / อีเมล',
     url: '/contact',
     type: 'website',
     locale: 'th_TH',
@@ -58,7 +58,7 @@ function toVCardDataUrl() {
 }
 
 export default function ContactPage() {
-  const lineLink = `https://line.me/R/ti/p/~${CONTACT.lineId}`
+  const lineLink = `${CONTACT.lineLink}`
   const telLink = `tel:${CONTACT.phone.replace(/\s+/g, '')}`
   const mailLink = `mailto:${CONTACT.email}?subject=${encodeURIComponent(
     'Project inquiry (Wee | Freelance)'
@@ -73,17 +73,17 @@ export default function ContactPage() {
         <div className={styles.container}>
           <div className={styles.card}>
             <div className={styles.top}>
-              <div className={styles.badge}>QR Landing • Contact</div>
+              <Link href="/contact" className={styles.badge}>
+                Contact
+              </Link>
 
               <h1 className={styles.h1}>
-                ติดต่อเพื่อเริ่มโปรเจกต์
-                <span className={styles.h1Accent}> เว็บไซต์ / เว็บแอป</span>
+                ติดต่อ เรื่อง
+                <span className={styles.h1Accent}> เว็บไซต์</span>
               </h1>
 
               <p className={styles.subhead}>
-                หน้านี้ทำไว้สำหรับแปะบน QR Code ตอนทำการตลาดแบบออฟไลน์ —
-                สแกนแล้วกดติดต่อได้ทันที (LINE / โทร / อีเมล)
-                แบบไม่ต้องหาอะไรเพิ่ม
+                | ยินดีให้คำปรึกษา ไม่คิดค่าใช้จ่าย |
               </p>
             </div>
 
@@ -105,15 +105,6 @@ export default function ContactPage() {
               <a className={styles.btnGhost} href={mailLink}>
                 อีเมล
               </a>
-
-              <a
-                className={styles.btnGhost}
-                href={CONTACT.mapUrl}
-                target="_blank"
-                rel="noreferrer"
-              >
-                เปิดแผนที่
-              </a>
             </div>
 
             {/* Contact Grid */}
@@ -127,14 +118,6 @@ export default function ContactPage() {
                     <div className={styles.v}>
                       {CONTACT.name}{' '}
                       <span className={styles.dim}>({CONTACT.brand})</span>
-                    </div>
-                  </div>
-
-                  <div className={styles.row}>
-                    <div className={styles.k}>สายงาน</div>
-                    <div className={styles.v}>
-                      {CONTACT.roleTh}{' '}
-                      <span className={styles.dim}>• {CONTACT.roleEn}</span>
                     </div>
                   </div>
 
@@ -176,61 +159,36 @@ export default function ContactPage() {
                       />
                     </div>
                   </div>
-
-                  <div className={styles.row}>
-                    <div className={styles.k}>ที่ตั้ง</div>
-                    <div className={styles.v}>
-                      {CONTACT.locationTh}{' '}
-                      <a
-                        className={styles.inlineLink}
-                        href={CONTACT.mapUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        (ดูแผนที่)
-                      </a>
-                    </div>
-                  </div>
                 </div>
 
                 <div className={styles.metaActions}>
-                  <a
-                    className={styles.btnSoft}
-                    href={vcardUrl}
-                    download="wee-contact.vcf"
-                  >
-                    ดาวน์โหลดนามบัตร (vCard)
-                  </a>
-
                   <a className={styles.btnSoft} href={CONTACT.workUrl}>
                     ดูผลงาน (Work)
                   </a>
                 </div>
 
                 <p className={styles.note}>
-                  แนะนำ: ถ้าทักมาทาง LINE ให้ส่ง “เป้าหมาย + งบคร่าว ๆ +
-                  deadline” จะช่วยให้สรุปแผนได้เร็วมาก
+                  แนะนำ: ให้ส่ง “เป้าหมาย งบคร่าวๆ ความเร่งด่วน”
+                  จะช่วยให้สรุปงานได้เร็วมาก
                 </p>
               </section>
 
               {/* What to send (helps real use) */}
               <aside className={styles.checklist} aria-label="What to send">
-                <div className={styles.checkTitle}>
-                  ส่งข้อมูลนี้มา จะเริ่มงานได้เร็ว
-                </div>
+                <div className={styles.checkTitle}>ข้อมูล</div>
                 <ul className={styles.checkList}>
-                  <li>ประเภทงาน: Website / Web App / Dashboard</li>
-                  <li>เป้าหมายหลัก + กลุ่มลูกค้า</li>
-                  <li>จำนวนหน้า/ฟีเจอร์คร่าว ๆ</li>
-                  <li>ตัวอย่างเว็บที่ชอบ (reference)</li>
-                  <li>งบประมาณคร่าว ๆ + deadline</li>
+                  <li>● ประเภทงาน: Website / Web App / Dashboard</li>
+                  <li>● เป้าหมายหลัก + กลุ่มลูกค้า</li>
+                  <li>● จำนวนหน้า/ฟีเจอร์คร่าว ๆ</li>
+                  <li>● ตัวอย่างเว็บที่ชอบ (reference)</li>
+                  <li>● งบประมาณคร่าว ๆ + deadline</li>
                 </ul>
 
                 <div className={styles.miniCard}>
                   <div className={styles.miniTitle}>Response time</div>
                   <div className={styles.miniText}>
-                    โดยทั่วไปตอบกลับภายใน{' '}
-                    <span className={styles.accent}>24 ชม.</span>{' '}
+                    ตอบกลับภายใน{' '}
+                    <span className={styles.accent}>12 ชม.</span>{' '}
                     (ถ้าเร่งด่วนให้โทรได้เลย)
                   </div>
                 </div>
@@ -238,10 +196,6 @@ export default function ContactPage() {
             </div>
           </div>
 
-          <p className={styles.footerNote}>
-            URL สำหรับ QR:{' '}
-            <span className={styles.code}>{SITE_URL}/contact</span>
-          </p>
         </div>
       </section>
 

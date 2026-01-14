@@ -1,197 +1,179 @@
+// src/components/nav/nav.tsx
 'use client'
 
+import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useMemo, useState } from 'react'
 import styles from './nav.module.css'
-import SmoothScrollLink from '@/components/ui/SmoothScrollLink/SmoothScrollLink'
-import Image from 'next/image'
 
-type NavItem = {
-  label: string
-  href: string
-  kind: 'page' | 'section'
-}
+type NavItem = { label: string; href: string }
 
 const NAV_ITEMS: NavItem[] = [
-  { label: 'Home', href: '/', kind: 'page' },
-  { label: 'About', href: '/about', kind: 'page' },
-  { label: 'Services', href: '/services', kind: 'page' },
-  { label: 'Work', href: '/work', kind: 'page' },
-  { label: 'Process', href: '/process', kind: 'page' },
-  { label: 'Pricing', href: '/pricing', kind: 'page' },
-  { label: 'Contact', href: '/contact', kind: 'page' },
+  { label: 'Home', href: '/' },
+  { label: 'About', href: '/about' },
+  { label: 'Services', href: '/maintenance' },
+  { label: 'Work', href: '/maintenance' },
+  { label: 'Process', href: '/maintenance' },
+  { label: 'Pricing', href: '/maintenance' },
+  { label: 'Contact', href: '/contact' },
 ]
 
-function isActivePath(pathname: string, href: string) {
+function isActive(pathname: string, href: string) {
   if (href === '/') return pathname === '/'
-  // highlight nested routes too: /about/team should keep About active
-  return href.startsWith('/')
-    ? pathname === href || pathname.startsWith(`${href}/`)
-    : false
+  return pathname === href || pathname.startsWith(`${href}/`)
 }
 
 export default function Nav() {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
-
   const items = useMemo(() => NAV_ITEMS, [])
 
-  // Close drawer on route change
   useEffect(() => {
     setOpen(false)
   }, [pathname])
 
-  // ESC to close, and lock scroll while open
-  useEffect(() => {
-    function onKeyDown(e: KeyboardEvent) {
-      if (e.key === 'Escape') setOpen(false)
-    }
-
-    document.addEventListener('keydown', onKeyDown)
-    document.body.classList.toggle(styles.lockScroll, open)
-
-    return () => {
-      document.removeEventListener('keydown', onKeyDown)
-      document.body.classList.remove(styles.lockScroll)
-    }
-  }, [open])
-
-  function getResolvedHref(item: NavItem) {
-    if (item.kind === 'section') {
-      // If you're not on home, navigate to home and jump to the section.
-      return pathname === '/' ? item.href : `/${item.href}`
-    }
-    return item.href
-  }
-
-  function renderItem(item: NavItem, variant: 'desktop' | 'mobile') {
-    const resolvedHref = getResolvedHref(item)
-    const isActive =
-      item.kind === 'page'
-        ? isActivePath(pathname, item.href)
-        : pathname === '/'
-
-    const cls = [
-      styles.link,
-      isActive && item.kind === 'page' ? styles.active : '',
-      variant === 'mobile' ? styles.mobileLink : '',
-    ]
-      .filter(Boolean)
-      .join(' ')
-
-    // Smooth scroll only works for same-page hashes (Home).
-    if (item.kind === 'section' && pathname === '/') {
-      return (
-        <SmoothScrollLink
-          key={`${item.label}-${item.href}`}
-          className={cls}
-          href={item.href}
-          onClick={() => setOpen(false)}
-        >
-          {item.label}
-        </SmoothScrollLink>
-      )
-    }
-
-    return (
-      <Link
-        key={`${item.label}-${item.href}`}
-        className={cls}
-        href={resolvedHref}
-        onClick={() => setOpen(false)}
-      >
-        {item.label}
-      </Link>
-    )
-  }
-
   return (
-    <header className={styles.navWrap}>
-      <nav className={styles.nav} aria-label="Primary">
+    <>
+      <header className={styles.wrap}>
         <div className={styles.inner}>
-          <Link
-            className={styles.brand}
-            href="/"
-            aria-label="VETRA — Go to homepage"
-          >
+          <Link className={styles.brand} href="/" aria-label="VETRA — Home">
             <span className={styles.brandMark}>
               <Image
                 src="/logo/vetra-logo-nobg.svg"
                 alt=""
-                width={64}
-                height={64}
+                width={52}
+                height={52}
                 priority
               />
             </span>
 
             <span className={styles.brandMeta}>
-              <span className={styles.brandText}>VETRA &nbsp; TEAM</span>
+              <span className={styles.brandText}>VETRA TEAM</span>
               <span className={styles.brandDim}>
                 WEBSITE DESIGN & DEVELOPMENT
               </span>
             </span>
           </Link>
 
-          <div className={styles.desktop} aria-label="Primary links">
-            {items.map((item) => renderItem(item, 'desktop'))}
-          </div>
+          <nav className={styles.desktop} aria-label="Primary">
+            {items.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`${styles.link} ${
+                  isActive(pathname, item.href) ? styles.active : ''
+                }`}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
 
           <button
             type="button"
-            className={styles.toggle}
+            className={styles.burger}
             aria-label={open ? 'Close menu' : 'Open menu'}
             aria-expanded={open}
-            aria-controls="mobile-nav"
+            aria-controls="mobile-drawer"
             onClick={() => setOpen((v) => !v)}
           >
             <span className={styles.bars} aria-hidden="true">
-              <span className={styles.bar} />
-              <span className={styles.bar} />
-              <span className={styles.bar} />
+              <span />
+              <span />
+              <span />
             </span>
           </button>
         </div>
+      </header>
 
-        {/* Mobile */}
-        <div
-          className={[styles.backdrop, open ? styles.backdropOpen : ''].join(
-            ' '
-          )}
-          aria-hidden="true"
-          onClick={() => setOpen(false)}
-        />
+      {/* Backdrop (click outside to close) */}
+      <button
+        type="button"
+        className={`${styles.backdrop} ${open ? styles.backdropOpen : ''}`}
+        aria-label="Close menu"
+        onClick={() => setOpen(false)}
+      />
 
-        <div
-          id="mobile-nav"
-          className={[styles.drawer, open ? styles.drawerOpen : ''].join(' ')}
-          role="dialog"
-          aria-modal="true"
-          aria-label="Mobile navigation"
-        >
-          <div className={styles.drawerTop}>
-            <div className={styles.drawerTitle}>Menu</div>
-            <button
-              type="button"
-              className={styles.close}
-              aria-label="Close menu"
+      {/* Right drawer */}
+      <aside
+        id="mobile-drawer"
+        className={`${styles.drawer} ${open ? styles.drawerOpen : ''}`}
+        aria-hidden={!open}
+      >
+        <nav className={styles.mobileNav} aria-label="Mobile">
+          {items.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`${styles.mobileLink} ${
+                isActive(pathname, item.href) ? styles.mobileActive : ''
+              }`}
               onClick={() => setOpen(false)}
             >
-              <span aria-hidden="true">×</span>
-            </button>
-          </div>
+              <span className={styles.mobileBullet} aria-hidden="true" />
+              <span className={styles.mobileText}>{item.label}</span>
+            </Link>
+          ))}
+        </nav>
 
-          <div className={styles.mobileLinks}>
-            {items.map((item) => renderItem(item, 'mobile'))}
-          </div>
+        {/* Contact icons grid */}
+        <div className={styles.contactBar} aria-label="Quick contact">
+          <a
+            className={styles.contactIcon}
+            href="https://lin.ee/hgKZAHm"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="LINE"
+          >
+            <Image src="/icons/LINE.png" alt="LINE" width={96} height={96} />
+          </a>
 
-          <div className={styles.drawerFoot}>
-            <div className={styles.hint}>
-              Built with Next.js • Dark UI • SEO-focused
-            </div>
-          </div>
+          <a
+            className={styles.contactIcon}
+            href="https://www.facebook.com/profile.php?id=61580630981781"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Facebook"
+          >
+            <Image
+              src="/icons/Facebook.png"
+              alt="Facebook"
+              width={96}
+              height={96}
+            />
+          </a>
+
+          <a
+            className={styles.contactIcon}
+            href="https://fastwork.co/user/poomtawee"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Fastwork"
+          >
+            <Image
+              src="/icons/Fastwork.svg"
+              alt="Fastwork"
+              width={96}
+              height={96}
+            />
+          </a>
+
+          <a
+            className={styles.contactIcon}
+            href="tel:0936661370"
+            aria-label="Phone"
+          >
+            <Image
+              src="/icons/Phone.png"
+              alt="Phone"
+              width={96}
+              height={96}
+              className={styles.iconPhone}
+            />
+          </a>
         </div>
-      </nav>
-    </header>
+      </aside>
+    </>
   )
 }

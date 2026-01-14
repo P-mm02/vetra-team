@@ -7,7 +7,7 @@ import Nav from '@/components/nav/nav'
 import Footer from '@/components/footer/footer'
 
 const SITE_URL = (
-  process.env.NEXT_PUBLIC_SITE_URL || 'https://vetra-eta.vercel.app'
+  process.env.NEXT_PUBLIC_SITE_URL || 'https://vetra.asia'
 ).replace(/\/+$/, '')
 
 const OG_IMAGE = '/images/preview/vetra-preview.jpg' // ✅ public/images/preview/vetra-preview.jpg

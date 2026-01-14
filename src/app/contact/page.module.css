@@ -24,6 +24,9 @@
 .top {
   padding: 1.6rem 1.6rem 0.9rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .badge {
@@ -36,7 +39,21 @@
   background: rgba(255, 255, 255, 0.03);
   color: rgba(255, 255, 255, 0.78);
   font-size: 0.92rem;
+  
 }
+
+/* add */
+.badge:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.16);
+  transform: translateY(-1px);
+}
+
+.badge:focus-visible {
+  outline: none;
+  box-shadow: var(--focus);
+}
+
 
 .h1 {
   margin-top: 0.9rem;
@@ -66,6 +83,7 @@
   padding: 1.1rem 1.6rem 1.2rem;
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 0.7rem;
 }
 
@@ -126,16 +144,17 @@
   display: grid;
   grid-template-columns: 1.3fr 0.9fr;
   gap: 1rem;
-  padding: 1.2rem;
+  padding: 1rem 0.5rem;
 }
 
 .info,
 .checklist {
   border-radius: var(--r-md);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(255, 255, 255, 0.02);
-  padding: 1.1rem 1.1rem;
+  background: var(--con-bg);
+  padding: 1rem;
 }
+
 
 .h2 {
   font-family: var(--font-display);
@@ -272,28 +291,15 @@
   font-weight: 700;
 }
 
-.footerNote {
-  margin-top: 0.95rem;
-  color: rgba(255, 255, 255, 0.72);
-}
 
 /* Responsive */
 @media (max-width: 1024px) {
   .grid {
     grid-template-columns: 1fr;
   }
-  .top {
-    padding: 1.35rem 1.2rem 0.85rem;
-  }
-  .actions {
-    padding: 1rem 1.2rem 1.1rem;
-  }
-  .grid {
-    padding: 1rem;
-  }
 }
 
-@media (max-width: 560px) {
+@media (max-width: 768px) {
   .row {
     grid-template-columns: 1fr;
   }
