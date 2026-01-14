@@ -12,7 +12,7 @@
 
 .inner {
   margin: 0 auto;
-  padding: 0.55rem 1rem;
+  padding: 0rem 0.8rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -23,36 +23,38 @@
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.6rem;
   color: var(--text);
   text-decoration: none;
 }
 
 .brandMark {
-  width: 2.8rem;
-  height: 2.8rem;
+  width: 4rem;
+  height: 4rem;
   display: grid;
   place-items: center;
-  border-radius: 18px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
 }
+.brandMark img {
+  width: 100%;
+  height: 100%;
+}
+
 
 .brandMeta {
   display: flex;
   flex-direction: column;
-  line-height: 1.15;
 }
 
 .brandText {
   font-family: var(--font-display);
   font-weight: 900;
-  letter-spacing: 0.08rem;
+  letter-spacing: 0.2rem;
+  font-size: 1.2rem;
 }
 
 .brandDim {
   opacity: 0.6;
-  font-size: 0.56rem;
+  font-size: 0.6rem;
   letter-spacing: 0.06rem;
 }
 
@@ -107,7 +109,7 @@
   display: none;
   cursor: pointer;
 
-  border-radius: 16px;
+  border-radius: 0.6rem;
   padding: 0.55rem 0.65rem;
   border: 1px solid rgba(255, 255, 255, 0.10);
   background: rgba(255, 255, 255, 0.03);
@@ -195,7 +197,7 @@
   height: 10px;
   border-radius: 999px;
   flex: 0 0 10px;
-  background: radial-gradient(circle at 30% 30%, rgba(125,231,255,0.7), rgba(190,140,255,0.25));
+  background: radial-gradient(circle at 30% 30%, rgba(125,231,255,0.6), rgba(190,140,255,0.25));
   box-shadow:
     0 0 0 3px rgba(125, 231, 255, 0.10),
     0 0 18px rgba(125, 231, 255, 0.20);
@@ -208,47 +210,14 @@
     0 0 22px rgba(140, 232, 255, 0.28);
 }
 
-/* --- Contact icon bar (4 columns, full width) --- */
-.contactBar {
-  width: 100%;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0.65rem;
-
-  padding: 0.85rem 0.9rem 0.95rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-.contactIcon {
-  width: 100%;
-  aspect-ratio: 1 / 1;
-
-  display: grid;
-  place-items: center;
-
-  border-radius: 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.10);
-  background: rgba(25, 13, 69, 0.6);
-  overflow: hidden;
-
-  transition: transform var(--t-fast), background var(--t-fast), border-color var(--t-fast);
-}
-
-.contactIcon img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  filter: drop-shadow(0 12px 26px rgba(0, 0, 0, 0.35));
-}
-
-.iconPhone {
-  padding: 10%;
-  filter: invert(1) !important;
+/* --- Contact icon bar--- */
+.drawerContact {
+  margin:0 auto;
 }
 
 
 /* Responsive */
-@media (max-width: 768px) {
+@media (max-width: 769px) {
   .desktop {
     display: none;
   }

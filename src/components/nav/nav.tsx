@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useMemo, useState } from 'react'
 import styles from './nav.module.css'
+import ContactsBox from '@/app/contact/ContactsBox/ContactsBox'
 
 type NavItem = { label: string; href: string }
 
@@ -14,8 +15,6 @@ const NAV_ITEMS: NavItem[] = [
   { label: 'About', href: '/about' },
   { label: 'Services', href: '/maintenance' },
   { label: 'Work', href: '/maintenance' },
-  { label: 'Process', href: '/maintenance' },
-  { label: 'Pricing', href: '/maintenance' },
   { label: 'Contact', href: '/contact' },
 ]
 
@@ -31,6 +30,7 @@ export default function Nav() {
 
   useEffect(() => {
     setOpen(false)
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
   }, [pathname])
 
   return (
@@ -42,8 +42,8 @@ export default function Nav() {
               <Image
                 src="/logo/vetra-logo-nobg.svg"
                 alt=""
-                width={52}
-                height={52}
+                width={128}
+                height={128}
                 priority
               />
             </span>
@@ -117,61 +117,9 @@ export default function Nav() {
           ))}
         </nav>
 
-        {/* Contact icons grid */}
-        <div className={styles.contactBar} aria-label="Quick contact">
-          <a
-            className={styles.contactIcon}
-            href="https://lin.ee/hgKZAHm"
-            target="_blank"
-            rel="noreferrer"
-            aria-label="LINE"
-          >
-            <Image src="/icons/LINE.png" alt="LINE" width={96} height={96} />
-          </a>
-
-          <a
-            className={styles.contactIcon}
-            href="https://www.facebook.com/profile.php?id=61580630981781"
-            target="_blank"
-            rel="noreferrer"
-            aria-label="Facebook"
-          >
-            <Image
-              src="/icons/Facebook.png"
-              alt="Facebook"
-              width={96}
-              height={96}
-            />
-          </a>
-
-          <a
-            className={styles.contactIcon}
-            href="https://fastwork.co/user/poomtawee"
-            target="_blank"
-            rel="noreferrer"
-            aria-label="Fastwork"
-          >
-            <Image
-              src="/icons/Fastwork.svg"
-              alt="Fastwork"
-              width={96}
-              height={96}
-            />
-          </a>
-
-          <a
-            className={styles.contactIcon}
-            href="tel:0936661370"
-            aria-label="Phone"
-          >
-            <Image
-              src="/icons/Phone.png"
-              alt="Phone"
-              width={96}
-              height={96}
-              className={styles.iconPhone}
-            />
-          </a>
+        {/* Contact box at bottom of drawer */}
+        <div className={styles.drawerContact}>
+          <ContactsBox title="Contact" />
         </div>
       </aside>
     </>

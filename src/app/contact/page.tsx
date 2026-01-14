@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import styles from './page.module.css'
 import CopyButton from '@/components/ui/CopyButton/CopyButton'
 import Link from 'next/link'
+import ContactsBox from '@/app/contact/ContactsBox/ContactsBox'
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://vetra.asia/'
 
@@ -89,22 +90,7 @@ export default function ContactPage() {
 
             {/* Quick Actions */}
             <div className={styles.actions} aria-label="Quick actions">
-              <a
-                className={styles.btnPrimary}
-                href={lineLink}
-                target="_blank"
-                rel="noreferrer"
-              >
-                ทัก LINE
-              </a>
-
-              <a className={styles.btnGhost} href={telLink}>
-                โทร
-              </a>
-
-              <a className={styles.btnGhost} href={mailLink}>
-                อีเมล
-              </a>
+              <ContactsBox/>
             </div>
 
             {/* Contact Grid */}
@@ -187,15 +173,13 @@ export default function ContactPage() {
                 <div className={styles.miniCard}>
                   <div className={styles.miniTitle}>Response time</div>
                   <div className={styles.miniText}>
-                    ตอบกลับภายใน{' '}
-                    <span className={styles.accent}>12 ชม.</span>{' '}
+                    ตอบกลับภายใน <span className={styles.accent}>12 ชม.</span>{' '}
                     (ถ้าเร่งด่วนให้โทรได้เลย)
                   </div>
                 </div>
               </aside>
             </div>
           </div>
-
         </div>
       </section>
 

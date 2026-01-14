@@ -80,15 +80,10 @@
 }
 
 .actions {
-  padding: 1.1rem 1.6rem 1.2rem;
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
-  gap: 0.7rem;
 }
 
-.btnPrimary,
-.btnGhost,
 .btnSoft {
   display: inline-flex;
   align-items: center;
@@ -102,27 +97,6 @@
   transition: transform var(--t-fast), background var(--t-fast), border-color var(--t-fast);
 }
 
-.btnPrimary {
-  background: linear-gradient(90deg, rgba(125, 231, 255, 0.18), rgba(190, 140, 255, 0.18));
-  border: 1px solid rgba(190, 140, 255, 0.22);
-  color: var(--text);
-}
-.btnPrimary:hover {
-  transform: translateY(-1px);
-  background: linear-gradient(90deg, rgba(125, 231, 255, 0.22), rgba(190, 140, 255, 0.22));
-}
-
-.btnGhost {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.10);
-  color: rgba(255, 255, 255, 0.86);
-}
-.btnGhost:hover {
-  transform: translateY(-1px);
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(255, 255, 255, 0.16);
-}
-
 .btnSoft {
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(255, 255, 255, 0.10);
@@ -133,8 +107,6 @@
   background: rgba(255, 255, 255, 0.04);
 }
 
-.btnPrimary:focus-visible,
-.btnGhost:focus-visible,
 .btnSoft:focus-visible {
   outline: none;
   box-shadow: var(--focus);

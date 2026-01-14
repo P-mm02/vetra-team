@@ -6,10 +6,10 @@ import styles from './page.module.css'
 export const metadata: Metadata = {
   title: 'Terms',
   description:
-    'ข้อกำหนดและเงื่อนไขการให้บริการของ Wee | Freelance — ขอบเขตงาน การชำระเงิน การแก้ไขงาน และการส่งมอบ',
+    'ข้อกำหนดและเงื่อนไขการให้บริการของ VETRA — ขอบเขตงาน การชำระเงิน การแก้ไขงาน และการส่งมอบ',
   alternates: { canonical: '/terms' },
   openGraph: {
-    title: 'Terms | Wee | Freelance',
+    title: 'Terms | VETRA',
     description:
       'ข้อกำหนดและเงื่อนไขการให้บริการ — ขอบเขตงาน การชำระเงิน การแก้ไขงาน และการส่งมอบ',
     url: '/terms',

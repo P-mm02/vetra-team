@@ -3,8 +3,6 @@ import Link from 'next/link'
 import Image from 'next/image'
 import styles from './AboutHero.module.css'
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
-
 export default function AboutHero() {
   return (
     <header className={styles.hero}>
@@ -75,14 +73,10 @@ export default function AboutHero() {
             <Link className={styles.btnPrimary} href="/contact">
               ติดต่อเพื่อเริ่มโปรเจกต์
             </Link>
-            <Link className={styles.btnGhost} href="/pricing">
-              ดูราคา (Pricing)
+            <Link className={styles.btnGhost} href="/maintenance">
+              ดูผลงาน
             </Link>
 
-            {/* If you still want QR link, keep this */}
-            {/* <a className={styles.btnSoft} href={`${SITE_URL}/contact`}>
-              ลิงก์สำหรับ QR
-            </a> */}
           </div>
         </div>
       </div>

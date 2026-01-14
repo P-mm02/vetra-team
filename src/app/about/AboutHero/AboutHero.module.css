@@ -157,8 +157,7 @@
 
 /* Buttons (local to hero) */
 .btnPrimary,
-.btnGhost,
-.btnSoft {
+.btnGhost{
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -201,19 +200,8 @@
   border-color: rgba(255, 255, 255, 0.16);
 }
 
-.btnSoft {
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.10);
-  color: rgba(255, 255, 255, 0.82);
-}
-.btnSoft:hover {
-  transform: translateY(-1px);
-  background: rgba(255, 255, 255, 0.04);
-}
-
 .btnPrimary:focus-visible,
-.btnGhost:focus-visible,
-.btnSoft:focus-visible {
+.btnGhost:focus-visible{
   outline: none;
   box-shadow: var(--focus);
 }
@@ -231,13 +219,11 @@
 /* Motion safety */
 @media (prefers-reduced-motion: reduce) {
   .btnPrimary,
-  .btnGhost,
-  .btnSoft {
+  .btnGhost{
     transition: none !important;
   }
   .btnPrimary:hover,
-  .btnGhost:hover,
-  .btnSoft:hover {
+  .btnGhost:hover{
     transform: none !important;
   }
   .profileWrap,
