@@ -15,8 +15,7 @@
   /* Cyber / neon + sci-fi purple */
   --bg: #070714;
   --bg-2: #0b0a22;
-  --con-bg: rgba(22, 20, 35, 0.1);
-  --con-bg-filter: blur(1px);
+  --con-bg: rgba(22, 20, 35, 0.5);
 
   --text: rgba(255, 255, 255, 0.92);
   --muted: rgba(255, 255, 255, 0.78);

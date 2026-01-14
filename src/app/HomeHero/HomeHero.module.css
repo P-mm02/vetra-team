@@ -20,7 +20,6 @@
   padding: 2rem 1rem;
   border-radius: var(--r-lg);
   background: var(--con-bg);
-  backdrop-filter: var(--con-bg-filter);
   border: 1px solid var(--border);
   box-shadow: var(--shadow-lg);
   overflow: hidden;
@@ -177,7 +176,6 @@
   padding: 0.7rem;
   border-radius: var(--r-sm);
   background: var(--soft);
-  backdrop-filter: var(--con-bg-filter);
   border: 1px solid var(--border-soft);
   overflow: hidden;
 }
