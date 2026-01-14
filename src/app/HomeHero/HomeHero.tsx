@@ -31,7 +31,7 @@ export default function HomeHero() {
           {/* Logo image */}
           <div className={styles.heroImageWrap} aria-hidden="true">
             <Image
-              src="/home/Vetra-logo-caption-3.jpg"
+              src="/home/hero.png"
               alt="Vetra"
               width={1200}
               height={450}

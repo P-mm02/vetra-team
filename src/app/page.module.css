@@ -22,26 +22,6 @@
   padding: 0 var(--pad-x);
 }
 
-/* =========================
-   Accessibility
-   ========================= */
-.skipLink {
-  position: absolute;
-  left: -9999px;
-  top: 10px;
-  z-index: 999;
-  padding: 10px 14px;
-  border-radius: 12px;
-  background: var(--accent);
-  color: rgba(4, 12, 18, 1);
-  font-weight: 900;
-  letter-spacing: 0.02em;
-}
-.skipLink:focus {
-  left: 12px;
-  outline: none;
-}
-
 /* common focus style */
 .btnPrimary:focus-visible,
 .btnGhost:focus-visible,

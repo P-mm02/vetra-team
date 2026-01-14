@@ -37,10 +37,6 @@ const contactEmail = 'hello@example.com' // change later
 export default function Page() {
   return (
     <div className={styles.page}>
-      <a className={styles.skipLink} href="#main">
-        ข้ามไปยังเนื้อหา
-      </a>
-
       <HomeHero />
 
       <AboutHero />
