@@ -2,7 +2,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import styles from './footer.module.css'
-import ContactsBox from '@/app/contact/ContactsBox/ContactsBox'
+import ContactsBox from '@/app/(site)/contact/ContactsBox/ContactsBox'
 
 export default function Footer() {
   return (

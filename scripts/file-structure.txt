@@ -1,38 +1,43 @@
+📄 .env.local
 📄 .gitignore
 📄 next-env.d.ts
 📄 next.config.ts
 📄 package-lock.json
 📄 package.json
 📁 public
-  📁 icons
-    📁 flags
-      📄 en-UK.svg
-      📄 ja-Japan.svg
-      📄 th-Thailand.svg
-      📄 zh-China.svg
-  📁 images
-    📁 BG
-      📄 about-us.jpg
-      📄 under-water-1.png
-      📄 under-water-2.png
-      📄 under-water-3.png
-      📄 under-water-5.png
+  📁 about
+    📄 Wee-Profile-2025.jpg
+  📁 admin
+    📁 bg
+      📄 vetra-circuit.svg
+      📄 vetra-hero.svg
+      📄 vetra-micro.svg
     📁 logo
-      📄 logo_SGW_white.svg
-      📁 services
-    📁 personnel
-      📄 GM.png
-      📄 MD.jpg
-      📄 Nee.png
-      📄 Nooch.png
-      📄 Peak.png
-      📄 Terng.png
-      📄 Top.png
-      📄 user.png
-      📄 Wee.jpg
-  📁 services
-    📄 services-BG-2.png
-    📄 services-BG.png
+      📄 vetra-logo-nobg.svg
+  📄 file.svg
+  📄 globe.svg
+  📁 home
+    📄 hero.png
+  📁 icons
+    📄 Email.png
+    📄 Facebook.png
+    📄 Fastwork.svg
+    📄 LINE.png
+    📄 Phone.png
+    📁 Utils
+      📄 close-x.svg
+  📁 images
+    📁 bg
+      📄 vetra-circuit.svg
+      📄 vetra-hero.svg
+      📄 vetra-micro.svg
+    📁 preview
+      📄 vetra-preview.jpg
+  📁 logo
+    📄 vetra-logo-nobg.svg
+  📄 next.svg
+  📄 vercel.svg
+  📄 window.svg
 📄 README.md
 📁 scripts
   📄 convertProjectsToNewShape.js
@@ -40,22 +45,52 @@
   📄 generate-tree.js
 📁 src
   📁 app
+    📁 (admin)
+      📁 cms
+      📄 layout.tsx
+      📁 login
     📁 (site)
       📁 about
-      📄 favicon.ico
-      📁 home
+      📁 contact
+      📁 HomeHero
       📄 layout.tsx
+      📁 maintenance
+      📄 page.module.css
       📄 page.tsx
-    📁 admin
-      📄 layout.tsx
-      📄 page.tsx
+      📁 privacy
+      📁 projects
+      📁 services
+      📁 terms
+    📁 api
+      📁 auth
+    📄 favicon.ico
+    📄 layout.tsx
+    📄 not-found.module.css
+    📄 not-found.tsx
+    📄 sitemap.ts
   📁 components
-    📁 Footer
-      📄 Footer.css
-      📄 Footer.tsx
-    📁 Navbar
-      📄 Navbar.css
-      📄 Navbar.tsx
+    📁 footer
+      📄 footer.module.css
+      📄 footer.tsx
+    📁 nav
+      📄 nav.module.css
+      📄 nav.tsx
+    📁 Slider
+      📄 Slider.css
+      📄 Slider.tsx
+    📁 ui
+      📁 CopyButton
+      📁 SmoothScrollLink
+  📁 lib
+    📁 auth
+      📄 password.ts
+      📄 session.ts
+    📁 db
+      📄 mongoose.ts
+  📁 models
+    📄 Session.ts
+    📁 User
+    📄 User.ts
   📁 styles
     📄 globals.css
 📄 tsconfig.json

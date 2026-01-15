@@ -1,7 +1,7 @@
 // src/app/page.tsx
 import styles from './page.module.css'
-import AboutHero from '@/app/about/AboutHero/AboutHero'
-import HomeHero from '@/app/HomeHero/HomeHero'
+import AboutHero from '@/app/(site)/about/AboutHero/AboutHero'
+import HomeHero from '@/app/(site)/HomeHero/HomeHero'
 
 const contactEmail = 'hello@example.com' // change later
 

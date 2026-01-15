@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 import styles from './page.module.css'
 import CopyButton from '@/components/ui/CopyButton/CopyButton'
 import Link from 'next/link'
-import ContactsBox from '@/app/contact/ContactsBox/ContactsBox'
+import ContactsBox from '@/app/(site)/contact/ContactsBox/ContactsBox'
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://vetra.asia/'
 

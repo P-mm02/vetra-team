@@ -8,9 +8,12 @@
     "start": "next start"
   },
   "dependencies": {
+    "argon2": "^0.44.0",
+    "mongoose": "^9.1.3",
     "next": "16.1.1",
     "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "react-dom": "19.2.3",
+    "zod": "^4.3.5"
   },
   "devDependencies": {
     "@types/node": "^20",

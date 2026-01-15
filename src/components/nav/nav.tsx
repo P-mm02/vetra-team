@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useMemo, useState } from 'react'
 import styles from './nav.module.css'
-import ContactsBox from '@/app/contact/ContactsBox/ContactsBox'
+import ContactsBox from '@/app/(site)/contact/ContactsBox/ContactsBox'
 
 type NavItem = { label: string; href: string }
 
