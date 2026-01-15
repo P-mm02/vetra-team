@@ -1,0 +1,488 @@
+[
+  {
+    "id": "p-001",
+    "title": "Vetra Portfolio v2",
+    "shortDesc": "Dark-futuristic portfolio with premium UI, smooth sections, and fast SEO-friendly pages.",
+    "year": 2026,
+    "isExample": true,
+    "hasDetail": true,
+    "cover": { "src": "/home/hero.png", "alt": "Vetra Portfolio cover" },
+    "slides": [
+      {
+        "src": "/home/hero.png",
+        "alt": "Vetra Portfolio - Hero",
+        "caption": "Hero / Brand presence",
+        "priority": true
+      },
+      {
+        "src": "/home/hero.png",
+        "alt": "Vetra Portfolio - Work",
+        "caption": "Work grid / card system"
+      },
+      {
+        "src": "/home/hero.png",
+        "alt": "Vetra Portfolio - Contact",
+        "caption": "Contact section / conversion"
+      }
+    ],
+    "stack": ["Next.js", "TypeScript", "CSS Modules", "SEO"],
+    "highlights": [
+      "Polished dark theme tokens",
+      "Fast lighthouse-focused layout",
+      "Reusable hero + sections"
+    ]
+  },
+  {
+    "id": "p-002",
+    "title": "SGW Project Manager",
+    "shortDesc": "Internal project management dashboard for planning work, logs, and project timelines.",
+    "year": 2026,
+    "isExample": true,
+    "hasDetail": true,
+    "cover": { "src": "/home/hero.png", "alt": "SGW Project Manager cover" },
+    "slides": [
+      {
+        "src": "/home/hero.png",
+        "alt": "SGW PM - Dashboard",
+        "caption": "Dashboard overview",
+        "priority": true
+      },
+      {
+        "src": "/home/hero.png",
+        "alt": "SGW PM - Project detail",
+        "caption": "Project detail / timeline view"
+      },
+      {
+        "src": "/home/hero.png",
+        "alt": "SGW PM - Work logs",
+        "caption": "Work logs / reporting workflow"
+      }
+    ],
+    "stack": ["Next.js", "MongoDB", "Mongoose", "API Routes"],
+    "highlights": [
+      "CRUD project data",
+      "Work logs and status tracking",
+      "Dashboard-friendly layout"
+    ]
+  },
+  {
+    "id": "p-003",
+    "title": "Clinic Landing System",
+    "shortDesc": "Clean clinic website structure with service categories and conversion-focused sections.",
+    "year": 2026,
+    "isExample": true,
+    "hasDetail": true,
+    "cover": { "src": "/home/hero.png", "alt": "Clinic Landing cover" },
+    "slides": [
+      {
+        "src": "/home/hero.png",
+        "alt": "Clinic - Hero",
+        "caption": "Hero / trust signals",
+        "priority": true
+      },
+      {
+        "src": "/home/hero.png",
+        "alt": "Clinic - Services",
+        "caption": "Service categories / pricing blocks"
+      },
+      {
+        "src": "/home/hero.png",
+        "alt": "Clinic - Contact",
+        "caption": "Contact / booking CTA"
+      }
+    ],
+    "stack": ["Next.js", "CSS Modules", "Metadata/OG"],
+    "highlights": [
+      "Service category UI",
+      "Mobile-first content flow",
+      "OG preview + share-ready"
+    ]
+  },
+  {
+    "id": "p-004",
+    "title": "Orchard Shop UI",
+    "shortDesc": "Product listing + ordering section with light theme tokens and readable typography.",
+    "year": 2025,
+    "isExample": true,
+    "hasDetail": true,
+    "cover": { "src": "/home/hero.png", "alt": "Orchard Shop cover" },
+    "slides": [
+      {
+        "src": "/home/hero.png",
+        "alt": "Orchard - Products",
+        "caption": "Product list / tabs",
+        "priority": true
+      },
+      {
+        "src": "/home/hero.png",
+        "alt": "Orchard - Slider",
+        "caption": "Slider experience improvements"
+      },
+      {
+        "src": "/home/hero.png",
+        "alt": "Orchard - Order",
+        "caption": "How to order / contact flow"
+      }
+    ],
+    "stack": ["Next.js", "CSS", "Responsive UI"],
+    "highlights": [
+      "Fruit tab UI",
+      "Slider experience improvements",
+      "Better mobile ergonomics"
+    ]
+  },
+  {
+    "id": "p-005",
+    "title": "Vetra Contact Page",
+    "shortDesc": "Contact page with copy buttons and platform links, built for fast client reach.",
+    "year": 2025,
+    "isExample": true,
+    "hasDetail": true,
+    "cover": { "src": "/home/hero.png", "alt": "Contact Page cover" },
+    "slides": [
+      {
+        "src": "/home/hero.png",
+        "alt": "Contact - Layout",
+        "caption": "Layout / hierarchy",
+        "priority": true
+      },
+      {
+        "src": "/home/hero.png",
+        "alt": "Contact - Icons",
+        "caption": "Icon grid / quick actions"
+      },
+      {
+        "src": "/home/hero.png",
+        "alt": "Contact - Copy UX",
+        "caption": "Copy-to-clipboard UX"
+      }
+    ],
+    "stack": ["Next.js", "CSS Modules"],
+    "highlights": [
+      "Fast copy-to-clipboard UX",
+      "Link grid icons on mobile",
+      "Clean content hierarchy"
+    ]
+  },
+  {
+    "id": "p-006",
+    "title": "Neon Navbar Experiment",
+    "shortDesc": "Sticky navbar with glow and blur overlays.",
+    "year": 2025,
+    "isExample": true,
+    "hasDetail": false,
+    "cover": { "src": "/home/hero.png", "alt": "Neon Navbar" }
+  },
+  {
+    "id": "p-007",
+    "title": "Services Grid Layout",
+    "shortDesc": "Services section with strong readability and hover depth.",
+    "year": 2025,
+    "isExample": true,
+    "hasDetail": false,
+    "cover": { "src": "/home/hero.png", "alt": "Services Grid" }
+  },
+  {
+    "id": "p-008",
+    "title": "Hero Background Tuning",
+    "shortDesc": "Layered textures + radial gradients for premium feel.",
+    "year": 2025,
+    "isExample": true,
+    "hasDetail": false,
+    "cover": { "src": "/home/hero.png", "alt": "Hero Background" }
+  },
+  {
+    "id": "p-009",
+    "title": "Copy Button Component",
+    "shortDesc": "Reusable copy-to-clipboard UI component.",
+    "year": 2025,
+    "isExample": true,
+    "hasDetail": false,
+    "cover": { "src": "/home/hero.png", "alt": "Copy Button" }
+  },
+  {
+    "id": "p-010",
+    "title": "Project Card System",
+    "shortDesc": "Card system with chips, badges, and consistent spacing.",
+    "year": 2025,
+    "isExample": true,
+    "hasDetail": false,
+    "cover": { "src": "/home/hero.png", "alt": "Project Cards" }
+  },
+  {
+    "id": "p-011",
+    "title": "Mini Dashboard Layout",
+    "shortDesc": "Dashboard layout with header metrics and responsive grids.",
+    "year": 2024,
+    "isExample": false,
+    "hasDetail": true,
+    "cover": { "src": "/home/hero.png", "alt": "Mini Dashboard cover" },
+    "slides": [
+      {
+        "src": "/home/hero.png",
+        "alt": "Mini Dashboard - Header",
+        "caption": "Header metrics / quick glance",
+        "priority": true
+      },
+      {
+        "src": "/home/hero.png",
+        "alt": "Mini Dashboard - Grid",
+        "caption": "Responsive grid / sections"
+      },
+      {
+        "src": "/home/hero.png",
+        "alt": "Mini Dashboard - Cards",
+        "caption": "Card spacing / hierarchy"
+      }
+    ],
+    "stack": ["Next.js", "TypeScript", "CSS Modules"],
+    "highlights": [
+      "Responsive dashboard grid",
+      "Consistent token-based UI",
+      "Simple metric blocks"
+    ]
+  },
+  {
+    "id": "p-012",
+    "title": "i18n Content Skeleton",
+    "shortDesc": "Bilingual content-ready structure for Thai/English pages.",
+    "year": 2024,
+    "isExample": false,
+    "hasDetail": true,
+    "cover": { "src": "/home/hero.png", "alt": "i18n skeleton cover" },
+    "slides": [
+      {
+        "src": "/home/hero.png",
+        "alt": "i18n - Routes",
+        "caption": "Locale routing / content structure",
+        "priority": true
+      },
+      {
+        "src": "/home/hero.png",
+        "alt": "i18n - SEO",
+        "caption": "SEO metadata planning (TH/EN)"
+      },
+      {
+        "src": "/home/hero.png",
+        "alt": "i18n - UI",
+        "caption": "UI labels / consistency"
+      }
+    ],
+    "stack": ["Next.js", "next-intl", "SEO"],
+    "highlights": [
+      "SEO-friendly bilingual structure",
+      "Consistent headings",
+      "Metadata planning"
+    ]
+  },
+  {
+    "id": "p-013",
+    "title": "Landing Page Template",
+    "shortDesc": "Reusable landing template for client projects.",
+    "year": 2024,
+    "isExample": false,
+    "hasDetail": false,
+    "cover": { "src": "/home/hero.png", "alt": "Landing template" }
+  },
+  {
+    "id": "p-014",
+    "title": "Image Optimization Pass",
+    "shortDesc": "Experimented with Next/Image sizing and priority strategy.",
+    "year": 2024,
+    "isExample": false,
+    "hasDetail": false,
+    "cover": { "src": "/home/hero.png", "alt": "Image optimization" }
+  },
+  {
+    "id": "p-015",
+    "title": "Modal UI Pattern",
+    "shortDesc": "Modal layout with keyboard close and click-outside behavior.",
+    "year": 2024,
+    "isExample": false,
+    "hasDetail": false,
+    "cover": { "src": "/home/hero.png", "alt": "Modal UI" }
+  },
+  {
+    "id": "p-016",
+    "title": "Admin Table Sorting",
+    "shortDesc": "Sortable table pattern for internal admin use.",
+    "year": 2023,
+    "isExample": false,
+    "hasDetail": true,
+    "cover": { "src": "/home/hero.png", "alt": "Admin table cover" },
+    "slides": [
+      {
+        "src": "/home/hero.png",
+        "alt": "Admin table - sorting",
+        "caption": "Sorting / table UX",
+        "priority": true
+      },
+      {
+        "src": "/home/hero.png",
+        "alt": "Admin table - modal",
+        "caption": "Row detail modal concept"
+      },
+      {
+        "src": "/home/hero.png",
+        "alt": "Admin table - layout",
+        "caption": "Readable spacing / density"
+      }
+    ],
+    "stack": ["React", "TypeScript"],
+    "highlights": [
+      "Sort by multiple columns",
+      "Readable row spacing",
+      "Modal detail view idea"
+    ]
+  },
+  {
+    "id": "p-017",
+    "title": "Forms + Multi-select",
+    "shortDesc": "Form UX pattern for multiple select inputs.",
+    "year": 2023,
+    "isExample": false,
+    "hasDetail": false,
+    "cover": { "src": "/home/hero.png", "alt": "Form multi-select" }
+  },
+  {
+    "id": "p-018",
+    "title": "Section Typography Kit",
+    "shortDesc": "Reusable typographic styles for headings and muted paragraphs.",
+    "year": 2023,
+    "isExample": false,
+    "hasDetail": false,
+    "cover": { "src": "/home/hero.png", "alt": "Typography kit" }
+  },
+  {
+    "id": "p-019",
+    "title": "SEO Metadata Pack",
+    "shortDesc": "Metadata patterns: title templates, OG previews, and canonical basics.",
+    "year": 2023,
+    "isExample": false,
+    "hasDetail": false,
+    "cover": { "src": "/home/hero.png", "alt": "SEO metadata" }
+  },
+  {
+    "id": "p-020",
+    "title": "Layout Spacing System",
+    "shortDesc": "Spacing consistency pass using token-first approach.",
+    "year": 2023,
+    "isExample": false,
+    "hasDetail": false,
+    "cover": { "src": "/home/hero.png", "alt": "Spacing system" }
+  },
+  {
+    "id": "p-021",
+    "title": "Brand Badge Set",
+    "shortDesc": "Small brand badge variants for cards and lists.",
+    "year": 2022,
+    "isExample": false,
+    "hasDetail": false,
+    "cover": { "src": "/home/hero.png", "alt": "Brand badges" }
+  },
+  {
+    "id": "p-022",
+    "title": "Dark Theme Tokens Draft",
+    "shortDesc": "Early iteration of cyber/neon token palette.",
+    "year": 2022,
+    "isExample": false,
+    "hasDetail": true,
+    "cover": { "src": "/home/hero.png", "alt": "Theme tokens cover" },
+    "slides": [
+      {
+        "src": "/home/hero.png",
+        "alt": "Theme tokens - palette",
+        "caption": "Palette / accents",
+        "priority": true
+      },
+      {
+        "src": "/home/hero.png",
+        "alt": "Theme tokens - borders",
+        "caption": "Borders / glass layers"
+      },
+      {
+        "src": "/home/hero.png",
+        "alt": "Theme tokens - shadows",
+        "caption": "Shadow depth tuning"
+      }
+    ],
+    "stack": ["CSS Variables"],
+    "highlights": [
+      "Neon accent experiments",
+      "Borders and glass styles",
+      "Shadow tuning"
+    ]
+  },
+  {
+    "id": "p-023",
+    "title": "Content Section Builder",
+    "shortDesc": "Reusable section wrapper and spacing rules.",
+    "year": 2022,
+    "isExample": false,
+    "hasDetail": false,
+    "cover": { "src": "/home/hero.png", "alt": "Section builder" }
+  },
+  {
+    "id": "p-024",
+    "title": "Hero CTA Variants",
+    "shortDesc": "CTA variants for different client audiences.",
+    "year": 2022,
+    "isExample": false,
+    "hasDetail": false,
+    "cover": { "src": "/home/hero.png", "alt": "Hero CTA variants" }
+  },
+  {
+    "id": "p-025",
+    "title": "Mobile Nav Polish",
+    "shortDesc": "Mobile nav improvements with icon grid and link clarity.",
+    "year": 2022,
+    "isExample": false,
+    "hasDetail": false,
+    "cover": { "src": "/home/hero.png", "alt": "Mobile nav" }
+  },
+  {
+    "id": "p-026",
+    "title": "Card Hover Depth Study",
+    "shortDesc": "Explored hover depth and softness across breakpoints.",
+    "year": 2021,
+    "isExample": false,
+    "hasDetail": false,
+    "cover": { "src": "/home/hero.png", "alt": "Hover study" }
+  },
+  {
+    "id": "p-027",
+    "title": "Grid Breakpoint Map",
+    "shortDesc": "Breakpoint strategy for 3→2→1 column responsiveness.",
+    "year": 2021,
+    "isExample": false,
+    "hasDetail": false,
+    "cover": { "src": "/home/hero.png", "alt": "Breakpoint map" }
+  },
+  {
+    "id": "p-028",
+    "title": "Button Styles Pack",
+    "shortDesc": "Primary/ghost button variations for reuse.",
+    "year": 2021,
+    "isExample": false,
+    "hasDetail": false,
+    "cover": { "src": "/home/hero.png", "alt": "Buttons" }
+  },
+  {
+    "id": "p-029",
+    "title": "Glass Panels Prototype",
+    "shortDesc": "Glassmorphism test with border + blur balance.",
+    "year": 2020,
+    "isExample": false,
+    "hasDetail": false,
+    "cover": { "src": "/home/hero.png", "alt": "Glass panels" }
+  },
+  {
+    "id": "p-030",
+    "title": "Typography Pairing Test",
+    "shortDesc": "Tested display/body font pairing and spacing rhythm.",
+    "year": 2020,
+    "isExample": false,
+    "hasDetail": false,
+    "cover": { "src": "/home/hero.png", "alt": "Typography pairing" }
+  }
+]

@@ -1,0 +1,397 @@
+/* src\components\Slider\Slider.css */
+
+.slider {
+  width: 100%;
+  margin: 0 auto;
+  outline: none;
+}
+
+/* Focus ring (you can swap to var(--focus) if you prefer) */
+.slider:focus-visible {
+  outline: 3px solid rgba(56, 189, 248, 0.55);
+  outline-offset: 6px;
+  border-radius: 18px;
+}
+
+.slider__viewport {
+  position: relative;
+  overflow: hidden;
+  border-radius: 18px;
+  border: 1px solid var(--border);
+  background: rgba(0, 0, 0, 0.2);
+
+  /* ✅ touch drag support:
+     allow vertical scroll, but horizontal drag is handled by JS */
+  touch-action: pan-y;
+
+  /* nicer feel on desktop */
+  cursor: grab;
+}
+
+.slider__viewport:active {
+  cursor: grabbing;
+}
+
+.slider__track {
+  display: flex;
+  width: 100%;
+  transform: translate3d(0, 0, 0);
+  transition: transform 320ms ease;
+  will-change: transform;
+
+  /* ✅ prevent text selection while dragging */
+  user-select: none;
+}
+
+.slider__track--no-anim {
+  transition: none !important;
+}
+
+.slider__slide {
+  flex: 0 0 100%;
+}
+
+.slider__figure {
+  margin: 0;
+  display: grid;
+  grid-template-rows: 1fr auto;
+}
+
+.slider__media {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  width: 100%;  
+}
+
+.slider__img {
+  object-fit: contain;  
+
+  /* ✅ prevent browser image dragging ghost */
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* Caption */
+.slider__caption {
+  padding: 0.85rem 1rem;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  text-align: center;
+  background: rgba(0, 0, 0, 0.12);
+}
+
+/* Buttons */
+/* Buttons (floating, swipe-friendly) */
+.slider__btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+
+  width: 48px;
+  height: 48px;
+  border-radius: 999px;
+
+  display: grid;
+  place-items: center;
+
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(179, 167, 167, 0.32);
+  backdrop-filter: blur(1px);
+  color: rgba(255, 255, 255, 0.95);
+
+  cursor: pointer;
+  transition: transform 160ms ease, background 160ms ease, border-color 160ms ease;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Only apply hover effects on real hover devices (desktop / trackpad) */
+@media (hover: hover) and (pointer: fine) {
+  .slider__btn:hover {
+    transform: translateY(-50%) translateY(-1px);
+    border-color: rgba(255, 255, 255, 0.26);
+    backdrop-filter: blur(4px);
+  }
+}
+
+.slider__btn:active {
+  transform: translateY(-50%) scale(0.98);
+}
+
+.slider__btn:focus-visible {
+  outline: 3px solid rgba(56, 189, 248, 0.55);
+  outline-offset: 3px;
+}
+
+.slider__btn--left {
+  left: 12px;
+}
+
+.slider__btn--right {
+  right: 12px;
+}
+
+
+/* Dots */
+.slider__dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  padding: 0 0 1rem 0;
+}
+
+.slider__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.18);
+  cursor: pointer;
+  transition: transform 160ms ease, background 160ms ease, border-color 160ms ease;
+}
+
+.slider__dot:hover {
+  transform: translateY(-1px);
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+.slider__dot.is-active {
+  background: rgba(56, 189, 248, 0.9);
+  border-color: rgba(56, 189, 248, 0.9);
+}
+
+/* Screen-reader helper */
+.slider__sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ✅ Optional: reduce motion friendliness */
+@media (prefers-reduced-motion: reduce) {
+  .slider__track {
+    transition: none !important;
+  }
+  .slider__btn,
+  .slider__dot {
+    transition: none !important;
+  }
+}
+
+/* =========================
+   Modal / Lightbox
+   ========================= */
+.slider__modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+
+  display: grid;
+  place-items: center;
+
+  padding: 1.2rem;
+  background: rgba(10, 14, 10, 0.68);
+  backdrop-filter: blur(10px);
+}
+
+.slider__modalCard {
+  position: relative;
+  width: 100%;
+  max-width: 60vw;
+  border-radius: 18px;
+  overflow: hidden;
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(20, 24, 18, 0.55);
+  box-shadow: 0 28px 90px rgba(0, 0, 0, 0.45);
+
+  animation: sliderModalPop 180ms ease-out;
+}
+
+@keyframes sliderModalPop {
+  from {
+    transform: translateY(10px) scale(0.985);
+    opacity: 0.7;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+.slider__modalClose {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(0, 0, 0, 0.35);
+  color: rgba(255, 255, 255, 0.92);
+
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+
+.slider__modalClose:hover {
+  background: rgba(0, 0, 0, 0.48);
+}
+
+.slider__modalClose:focus-visible {
+  outline: 3px solid rgba(56, 189, 248, 0.55);
+  outline-offset: 3px;
+}
+
+.slider__modalMedia {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.slider__modalImg {
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.slider__modalBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+
+  padding: 0.85rem 0.95rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(0, 0, 0, 0.28);
+}
+
+.slider__modalCaption {
+  display: grid;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.slider__modalTitle {
+  color: rgba(255, 255, 255, 0.92);
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.slider__modalMeta {
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 0.95rem;
+}
+
+.slider__modalControls {
+  display: flex;
+  gap: 0.55rem;
+}
+
+.slider__modalNav {
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(0, 0, 0, 0.30);
+  color: rgba(255, 255, 255, 0.92);
+
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+
+.slider__modalNav:hover {
+  background: rgba(0, 0, 0, 0.46);
+}
+
+.slider__modalNav:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.slider__modalHint {
+  padding: 0.65rem 0.95rem 0.85rem;
+  color: rgba(255, 255, 255, 0.70);
+  font-size: 0.95rem;
+  background: rgba(0, 0, 0, 0.22);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.slider__modalHint kbd {
+  font: inherit;
+  font-weight: 800;
+  padding: 0.08rem 0.35rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(0, 0, 0, 0.35);
+}
+
+/* Zoom button (doesn't block swipe) */
+.slider__zoom {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  z-index: 3;
+
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+
+  display: grid;
+  place-items: center;
+
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(0, 0, 0, 0.32);
+  backdrop-filter: blur(8px);
+  color: rgba(255, 255, 255, 0.95);
+
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.slider__zoom:hover {
+  background: rgba(0, 0, 0, 0.48);
+}
+
+.slider__zoom:focus-visible {
+  outline: 3px solid rgba(56, 189, 248, 0.55);
+  outline-offset: 3px;
+}
+
+
+/* mobile tweaks */
+@media (max-width: 768px) {
+  .slider__modal {
+    padding: 0.75rem;
+  }
+
+  .slider__modalCard {
+    max-width: 100vw;
+    border-radius: 16px;
+  }
+
+  .slider__modalMedia {
+    aspect-ratio: 4 / 3;
+  }
+
+  .slider__modalTitle {
+    font-size: 0.98rem;
+  }
+}
