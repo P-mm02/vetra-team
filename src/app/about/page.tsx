@@ -53,7 +53,7 @@ export default function AboutPage() {
       <AboutHero />
 
       {/* ...everything else stays the same... */}
-      <section className={styles.section}>
+      {/* <section className={styles.section}>
         <div className={styles.container}>
           <div className={styles.grid}>
             <section className={styles.card} aria-label="Story">
@@ -105,7 +105,6 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* (rest unchanged) */}
       <section className={styles.section}>
         <div className={styles.container}>
           <div className={styles.principles}>
@@ -162,7 +161,7 @@ export default function AboutPage() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
     </main>
   )
 }
