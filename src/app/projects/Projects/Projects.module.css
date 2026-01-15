@@ -35,7 +35,8 @@
 
   padding: 0.45rem 0.75rem;
   border-radius: 999px;
-  transition: transform var(--t-fast), border-color var(--t-fast), background var(--t-fast);
+  transition: transform var(--t-fast), border-color var(--t-fast),
+    background var(--t-fast);
 }
 
 .tab:hover {
@@ -48,7 +49,11 @@
   color: var(--text);
   border-color: rgba(125, 231, 255, 0.25);
   background:
-    radial-gradient(380px 120px at 50% 0%, rgba(125, 231, 255, 0.18), rgba(0, 0, 0, 0)),
+    radial-gradient(
+      380px 120px at 50% 0%,
+      rgba(125, 231, 255, 0.18),
+      rgba(0, 0, 0, 0)
+    ),
     rgba(255, 255, 255, 0.04);
   box-shadow: 0 0 0 3px rgba(125, 231, 255, 0.12);
 }
@@ -78,6 +83,9 @@
   opacity: 0.9;
 }
 
+/* =========================
+   Grid
+   ========================= */
 .grid {
   margin-top: 0.95rem;
   display: grid;
@@ -85,15 +93,18 @@
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
-/* --- Card --- */
+/* =========================
+   Card
+   ========================= */
 .card {
-    height: fit-content;
+  height: fit-content;
   border: 1px solid var(--border-soft);
   border-radius: var(--r-lg);
   overflow: hidden;
   background: rgba(14, 12, 30, 0.42);
   box-shadow: var(--shadow-md);
-  transition: transform var(--t-fast), border-color var(--t-fast), box-shadow var(--t-fast);
+  transition: transform var(--t-fast), border-color var(--t-fast),
+    box-shadow var(--t-fast);
 }
 
 .card:hover {
@@ -154,14 +165,19 @@
 .btn {
   border: 1px solid rgba(125, 231, 255, 0.22);
   background:
-    radial-gradient(500px 160px at 20% 20%, rgba(125, 231, 255, 0.18), rgba(0, 0, 0, 0)),
+    radial-gradient(
+      500px 160px at 20% 20%,
+      rgba(125, 231, 255, 0.18),
+      rgba(0, 0, 0, 0)
+    ),
     rgba(255, 255, 255, 0.04);
   color: var(--text);
   cursor: pointer;
 
   padding: 0.45rem 0.7rem;
   border-radius: 999px;
-  transition: transform var(--t-fast), border-color var(--t-fast), box-shadow var(--t-fast);
+  transition: transform var(--t-fast), border-color var(--t-fast),
+    box-shadow var(--t-fast);
 }
 
 .btn:hover {
@@ -179,265 +195,12 @@
   border-radius: 999px;
 }
 
-
-
-/* --- Modal --- */
-.modalOverlay {
-  position: fixed;
-  inset: 0;
-  z-index: 200;
-  display: grid;
-  place-items: center;
-  padding: 1rem;
-  background: rgba(0, 0, 0, 0.7);
-}
-
-.modal {
-    position: relative;
-  width: min(1024px, 90%);
-  height: fit-content;
-  max-height: 96vh;
-  border-radius: 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  background: rgba(14, 12, 30, 0.62);
-  box-shadow: var(--shadow-lg);
-  overflow: auto;              /* better than scroll */
-  scrollbar-width: none;       /* Firefox */
-  -ms-overflow-style: none;    /* old Edge/IE */
-  animation: ModalPop 180ms ease-out;
-}
-
-@keyframes ModalPop {
-  from {
-    transform: translateY(10px) scale(0.985);
-    opacity: 0.7;
-  }
-  to {
-    transform: translateY(0) scale(1);
-    opacity: 1;
-  }
-}
-
-.modalHead {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 0.8rem;
-
-  padding: 0.95rem 1rem 0.85rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.10);
-  background:
-    radial-gradient(900px 220px at 20% 10%, rgba(125, 231, 255, 0.14), rgba(0, 0, 0, 0)),
-    radial-gradient(900px 220px at 85% 24%, rgba(190, 140, 255, 0.14), rgba(0, 0, 0, 0));
-}
-
-.modalKicker {
-  font-size: 0.75rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.72);
-}
-
-.modalTitle {
-  margin-top: 0.2rem;
-  font-family: var(--font-display);
-  font-weight: 900;
-  font-size: 1.2rem;
-  line-height: 1.1;
-  color: var(--text);
-}
-
-.modalSub {
-  margin-top: 0.35rem;
-  color: var(--muted);
-  font-size: 0.86rem;
-  line-height: 1.5;
-  max-width: 70ch;
-}
-
-.modalCloseWrap {
-    position: sticky;
-    top: 0.5rem;    
-    z-index: 5;
-}
-.modalClose {
-    position: absolute;
-    right: 0.5rem;
-    display: inline-flex;
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    background: rgba(255, 255, 255, 0.1);
-    color: var(--text);
-    cursor: pointer;
-    border-radius: 999px;
-    padding: 0.4rem;
-    transition: transform var(--t-fast), border-color var(--t-fast), box-shadow var(--t-fast);
-}
-.modalClose img {
-    filter: invert(0.8) brightness(1.2);
-    width: 2rem;
-    height: 2rem;
-}
-
-.modalClose:hover {
-  transform: translateY(-1px);
-  border-color: rgba(125, 231, 255, 0.24);
-  box-shadow: 0 0 0 3px rgba(125, 231, 255, 0.12);
-}
-
-/* ✅ Modal media column now holds Slider */
-.modalGrid {
-  display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  width: 100%;
-}
-
-.modalMedia {
-  padding: 0.95rem 1rem 0;
-  border-right: 1px solid rgba(255, 255, 255, 0.10);
-  background: rgba(255, 255, 255, 0.02);
-  width: 100%;
-}
-
-.modalBody {
-  padding: 0.95rem 1rem 1rem;
-}
-
-.modalMedia,
-.modalBody {
-  min-width: 0;
-}
-
-.infoRow {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.8rem;
-
-  border: 1px solid rgba(255, 255, 255, 0.10);
-  background: rgba(255, 255, 255, 0.04);
-  border-radius: var(--r-md);
-  padding: 0.55rem 0.65rem;
-  margin-bottom: 0.5rem;
-}
-
-.infoLabel {
-  color: rgba(255, 255, 255, 0.72);
-  font-size: 0.78rem;
-}
-
-.infoValue {
-  color: var(--text);
-  font-weight: 900;
-  font-size: 0.82rem;
-}
-
-.block {
-  margin-top: 0.7rem;
-  padding-top: 0.6rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.10);
-}
-
-.blockTitle {
-  font-family: var(--font-display);
-  font-weight: 900;
-  color: var(--text);
-  font-size: 0.92rem;
-  margin-bottom: 0.45rem;
-}
-
-.pills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.45rem;
-}
-
-.pill {
-  border: 1px solid rgba(125, 231, 255, 0.20);
-  background:
-    radial-gradient(380px 120px at 20% 20%, rgba(125, 231, 255, 0.12), rgba(0, 0, 0, 0)),
-    rgba(255, 255, 255, 0.03);
-  padding: 0.28rem 0.55rem;
-  border-radius: 999px;
-  font-size: 0.74rem;
-  color: rgba(255, 255, 255, 0.90);
-}
-
-.list {
-  list-style: none;
-  display: grid;
-  gap: 0.45rem;
-}
-
-.li {
-  display: grid;
-  grid-template-columns: 14px 1fr;
-  gap: 0.45rem;
-  align-items: start;
-}
-
-.bullet {
-  width: 10px;
-  height: 10px;
-  border-radius: 999px;
-  margin-top: 0.28rem;
-  background: radial-gradient(circle at 30% 30%, var(--accent), var(--accent-strong));
-  box-shadow: 0 0 0 3px rgba(125, 231, 255, 0.12);
-}
-
-.liText {
-  color: var(--muted);
-  font-size: 0.84rem;
-  line-height: 1.45;
-}
-
-.modalFoot {
-  margin-top: 0.85rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.8rem;
-}
-
-.btnGhost {
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  background: rgba(255, 255, 255, 0.04);
-  color: var(--text);
-  cursor: pointer;
-  padding: 0.5rem 0.8rem;
-  border-radius: 999px;
-  transition: transform var(--t-fast), border-color var(--t-fast), box-shadow var(--t-fast);
-}
-
-.btnGhost:hover {
-  transform: translateY(-1px);
-  border-color: rgba(190, 140, 255, 0.22);
-  box-shadow: 0 0 0 3px rgba(190, 140, 255, 0.12);
-}
-
-.footNote {
-  font-size: 0.72rem;
-  color: rgba(255, 255, 255, 0.68);
-}
-
-.kbd {
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  background: rgba(0, 0, 0, 0.25);
-  padding: 0.1rem 0.35rem;
-  border-radius: 8px;
-  font-size: 0.72rem;
-}
-
-/* Responsive */
+/* =========================
+   Responsive
+   ========================= */
 @media (max-width: 1440px) {
   .grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-  .modalGrid {
-    grid-template-columns: 1fr;
-  }
-  .modalMedia {
-    border-right: none;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.10);
   }
 }
 
@@ -446,14 +209,17 @@
     flex-direction: column;
     align-items: stretch;
   }
+
   .meta {
     justify-content: center;
   }
+
   .grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
-@media (max-width: 480px) {  
+
+@media (max-width: 480px) {
   .grid {
     grid-template-columns: 1fr;
   }
