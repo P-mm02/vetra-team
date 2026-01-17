@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://vetra.asia/sitemap.xml
