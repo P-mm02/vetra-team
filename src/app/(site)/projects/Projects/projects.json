@@ -14,44 +14,53 @@
   {
     "id": "p-002-aree-fruit",
     "title": "Aree-fruit",
-    "shortDesc": "เว็บไซต์ร้านผลไม้ โชว์สินค้า โปรโมชันตามฤดูกาล และช่องทางติดต่อที่เน้นปิดการขาย.",
+    "shortDesc": "เว็บไซต์ สวนผลไม้ และร้านผลไม้ โชว์สินค้า และช่องทางติดต่อที่เน้นปิดการขาย",
     "year": 2026,
     "isExample": true,
     "hasDetail": true,
     "cover": {
-      "src": "/images/projects/Aree-fruit.jpg",
-      "alt": "Aree-fruit project cover"
+      "src": "/images/projects/Aree-fruit-1.jpg",
+      "alt": "Aree-fruit-1 project cover"
     },
     "slides": [
       {
-        "src": "/images/projects/Aree-fruit.jpg",
-        "alt": "Aree-fruit slide 1",
-        "caption": "Aree-fruit — Preview 1",
+        "src": "/images/projects/Aree-fruit-1.jpg",
+        "alt": "Aree-fruit-1 slide 1",
+        "caption": "Aree-fruit-1 — Preview 1",
         "priority": true
       },
       {
-        "src": "/images/projects/Aree-fruit.jpg",
-        "alt": "Aree-fruit slide 2",
-        "caption": "Aree-fruit — Preview 2"
+        "src": "/images/projects/Aree-fruit-2.png",
+        "alt": "Aree-fruit-2 slide 2",
+        "caption": "Aree-fruit-2 — Preview 2"
       },
       {
-        "src": "/images/projects/Aree-fruit.jpg",
-        "alt": "Aree-fruit slide 3",
-        "caption": "Aree-fruit — Preview 3"
+        "src": "/images/projects/Aree-fruit-3.png",
+        "alt": "Aree-fruit-3 slide 3",
+        "caption": "Aree-fruit-3 — Preview 3"
+      },
+      {
+        "src": "/images/projects/Aree-fruit-4.png",
+        "alt": "Aree-fruit-4 slide 4",
+        "caption": "Aree-fruit-4 — Preview 4"
+      },
+      {
+        "src": "/images/projects/Aree-fruit-5.png",
+        "alt": "Aree-fruit-5 slide 5",
+        "caption": "Aree-fruit-5 — Preview 5"
       }
     ],
     "stack": [
       "Next.js",
       "TypeScript",
       "Cloudinary (Images)",
-      "CSS Variables",
-      "SEO (Metadata/OG)",
-      "Analytics-ready structure"
+      "CSS Modules",
+      "Vercel"
     ],
     "highlights": [
-      "Product grid + promo sections",
-      "Mobile-first CTA blocks for orders",
-      "Optimized images + fast page load"
+      "เพิ่มยอดขายได้จริง",
+      "ลดเวลาที่ใช้ในการตอบลูกค้า",
+      "ต่อยอดธุรกิจได้ง่าย"
     ]
   },
   {
@@ -59,7 +68,7 @@
     "title": "Aroma massage",
     "shortDesc": "เว็บไซต์สปาคอนเซ็ปต์พรีเมียม มีแพ็กเกจบริการ ราคา และโครงสร้างพร้อมต่อยอดระบบจอง.",
     "year": 2025,
-    "isExample": false,
+    "isExample": true,
     "hasDetail": false,
     "cover": {
       "src": "/images/projects/Aroma massage.png",
@@ -69,44 +78,58 @@
   {
     "id": "p-004-beauty-clinic",
     "title": "Beauty Clinic",
-    "shortDesc": "เว็บไซต์คลินิกเสริมความงาม เน้นหมวดหัตถการ ความน่าเชื่อถือ และฟอร์ม/ช่องทางรับลูกค้า.",
+    "shortDesc": "เว็บไซต์ คลินิกเสริมความงาม ออกแบบให้ดูทันสมัย พร้อมระบบจัดการเนื้อหา (CMS Admin Panel)",
     "year": 2025,
     "isExample": true,
     "hasDetail": true,
     "cover": {
-      "src": "/images/projects/Beauty Clinic.png",
+      "src": "/images/projects/Beauty-Clinic-1.png",
       "alt": "Beauty Clinic project cover"
     },
     "slides": [
       {
-        "src": "/images/projects/Beauty Clinic.png",
-        "alt": "Beauty Clinic slide 1",
-        "caption": "Beauty Clinic — Preview 1",
+        "src": "/images/projects/Beauty-Clinic-1.png",
+        "alt": "Beauty-Clinic-1 slide 1",
+        "caption": "Beauty-Clinic-1 — Preview 1",
         "priority": true
       },
       {
-        "src": "/images/projects/Beauty Clinic.png",
-        "alt": "Beauty Clinic slide 2",
-        "caption": "Beauty Clinic — Preview 2"
+        "src": "/images/projects/Beauty-Clinic-2.jpg",
+        "alt": "Beauty-Clinic-2 slide 2",
+        "caption": "Beauty-Clinic-2 — Preview 2"
       },
       {
-        "src": "/images/projects/Beauty Clinic.png",
-        "alt": "Beauty Clinic slide 3",
-        "caption": "Beauty Clinic — Preview 3"
+        "src": "/images/projects/Beauty-Clinic-3.jpg",
+        "alt": "Beauty-Clinic-3 slide 3",
+        "caption": "Beauty-Clinic-3 — Preview 3"
+      },
+      {
+        "src": "/images/projects/Beauty-Clinic-4.jpg",
+        "alt": "Beauty-Clinic-4 slide 4",
+        "caption": "Beauty-Clinic-4 — Preview 4"
+      },
+      {
+        "src": "/images/projects/Beauty-Clinic-5.jpg",
+        "alt": "Beauty-Clinic-5 slide 5",
+        "caption": "Beauty-Clinic-5 — Preview 5"
+      },
+      {
+        "src": "/images/projects/Beauty-Clinic-6.jpg",
+        "alt": "Beauty-Clinic-6 slide 6",
+        "caption": "Beauty-Clinic-6 — Preview 6"
       }
     ],
     "stack": [
       "Next.js",
       "TypeScript",
       "CSS Modules",
-      "Structured Data (JSON-LD)",
-      "Cloudinary (Images)",
-      "SEO (Local)"
+      "MongoDB + Mongoose",
+      "Cloudinary"
     ],
     "highlights": [
-      "Treatment/category architecture",
-      "Before/after gallery pattern (future-ready)",
-      "Trust blocks: reviews, doctor, certificates"
+      "มี CMS Admin Panel ออกแบบเฉพาะ",
+      "Modern design",
+      "เพิ่มความน่าเชื่อถือ"
     ]
   },
   {
@@ -114,7 +137,7 @@
     "title": "Electronic",
     "shortDesc": "เว็บโชว์สินค้าอิเล็กทรอนิกส์ จัดเลย์เอาต์สเปกและการเทียบรุ่นด้วยการ์ดที่อ่านง่าย.",
     "year": 2025,
-    "isExample": false,
+    "isExample": true,
     "hasDetail": false,
     "cover": {
       "src": "/images/projects/Electronic.png",
@@ -159,7 +182,7 @@
     "title": "Gym-2",
     "shortDesc": "เว็บไซต์ยิม โชว์โปรแกรม/สมาชิก เทรนเนอร์ และปุ่มสมัคร/ติดต่อที่เด่นชัด.",
     "year": 2025,
-    "isExample": false,
+    "isExample": true,
     "hasDetail": false,
     "cover": {
       "src": "/images/projects/Gym-2.png",
@@ -228,7 +251,7 @@
     "title": "OEM-2",
     "shortDesc": "เว็บไซต์โปรไฟล์โรงงาน/OEM เน้นความสามารถ กระบวนการผลิต และปุ่มติดต่อเพื่อรับงาน B2B.",
     "year": 2025,
-    "isExample": false,
+    "isExample": true,
     "hasDetail": false,
     "cover": {
       "src": "/images/projects/OEM-2.png",
@@ -264,7 +287,7 @@
     "title": "Pet-2",
     "shortDesc": "คอนเซ็ปต์เว็บบริการ/ร้านสัตว์เลี้ยง แบ่งหมวดสินค้า มีทิปดูแล และปุ่มติดต่อชัดเจน.",
     "year": 2025,
-    "isExample": false,
+    "isExample": true,
     "hasDetail": false,
     "cover": {
       "src": "/images/projects/Pet-2.png",
@@ -333,74 +356,88 @@
   },
   {
     "id": "p-024-sgw-website",
-    "title": "SGW-website",
-    "shortDesc": "คอนเซ็ปต์รีดีไซน์เว็บองค์กรสายวิศวกรรม เน้นความน่าเชื่อถือ โครงสร้างคอนเทนต์ และ SEO.",
+    "title": "SIAM GROUNDWATER",
+    "shortDesc": "เว็บไซต์ บริษัท เจาะบ่อน้ำบาดาล ให้กับโรงงาน โรงแรมรีสอร์ท ขนาดใหญ่",
     "year": 2024,
     "isExample": true,
     "hasDetail": true,
     "cover": {
-      "src": "/images/projects/SGW-website.png",
-      "alt": "SGW-website project cover"
+      "src": "/images/projects/SGW-website-1.png",
+      "alt": "SGW-website-1 project cover"
     },
     "slides": [
       {
-        "src": "/images/projects/SGW-website.png",
-        "alt": "SGW-website slide 1",
-        "caption": "SGW-website — Preview 1",
+        "src": "/images/projects/SGW-website-1.png",
+        "alt": "SGW-website-1 slide 1",
+        "caption": "SGW-website-1 — Preview 1",
         "priority": true
       },
       {
-        "src": "/images/projects/SGW-website.png",
-        "alt": "SGW-website slide 2",
-        "caption": "SGW-website — Preview 2"
+        "src": "/images/projects/SGW-website-2.png",
+        "alt": "SGW-website-2 slide 2",
+        "caption": "SGW-website-2 — Preview 2"
       },
       {
-        "src": "/images/projects/SGW-website.png",
-        "alt": "SGW-website slide 3",
-        "caption": "SGW-website — Preview 3"
+        "src": "/images/projects/SGW-website-3.png",
+        "alt": "SGW-website-3 slide 3",
+        "caption": "SGW-website-3 — Preview 3"
+      },
+      {
+        "src": "/images/projects/SGW-website-4.png",
+        "alt": "SGW-website-4 slide 4",
+        "caption": "SGW-website-4 — Preview 4"
       }
     ],
     "stack": [
-      "Next.js",
-      "TypeScript",
-      "CSS Modules",
-      "Structured Data (JSON-LD)",
-      "SEO (Sitemap/Robots/OG)",
-      "Performance Optimizations"
+      "WordPress",
+      "PHP",
+      "Plain CSS",
+      "Vanilla JavaScript"
     ],
     "highlights": [
-      "Service pages built for SEO + clarity",
-      "Trust-focused layout (projects/clients/awards)",
-      "Metadata + schema-ready structure"
+      "เพิ่มโอกาสได้งาน",
+      "สร้างความน่าเชื่อถือ",
+      "แสดงผลงานที่ผ่านมา"
     ]
   },
   {
     "id": "p-025-sgw-working",
     "title": "SGW-Working",
-    "shortDesc": "คอนเซ็ปต์หน้าแสดงงานภาคสนาม/งานจริง เน้นความคืบหน้า เอกสาร และระบบรายงานที่เป็นระเบียบ.",
-    "year": 2026,
+    "shortDesc": "ระบบวางแผนการทำงาน และระบบแจ้งเตือนผ่านไลน์ อัตโนมัติ สำหรับบริษัท เจาะบ่อน้ำบาดาล SIAM GROUNDWATER",
+    "year": 2025,
     "isExample": true,
     "hasDetail": true,
     "cover": {
-      "src": "/images/projects/SGW-Working.png",
-      "alt": "SGW-Working project cover"
+      "src": "/images/projects/SGW-Working-1.png",
+      "alt": "SGW-Working-1 project cover"
     },
     "slides": [
       {
-        "src": "/images/projects/SGW-Working.png",
-        "alt": "SGW-Working slide 1",
-        "caption": "SGW-Working — Preview 1",
+        "src": "/images/projects/SGW-Working-1.png",
+        "alt": "SGW-Working-1 slide 1",
+        "caption": "SGW-Working-1 — Preview 1",
         "priority": true
       },
       {
-        "src": "/images/projects/SGW-Working.png",
-        "alt": "SGW-Working slide 2",
-        "caption": "SGW-Working — Preview 2"
+        "src": "/images/projects/SGW-Working-2.png",
+        "alt": "SGW-Working-2 slide 1",
+        "caption": "SGW-Working-2 — Preview 2",
+        "priority": true
       },
       {
-        "src": "/images/projects/SGW-Working.png",
-        "alt": "SGW-Working slide 3",
-        "caption": "SGW-Working — Preview 3"
+        "src": "/images/projects/SGW-Working-3.png",
+        "alt": "SGW-Working-3 slide 2",
+        "caption": "SGW-Working-3 — Preview 3"
+      },
+      {
+        "src": "/images/projects/SGW-Working-4.png",
+        "alt": "SGW-Working-4 slide 3",
+        "caption": "SGW-Working-4 — Preview 4"
+      },
+      {
+        "src": "/images/projects/SGW-Line-Notification-System.png",
+        "alt": "SGW-Line-Notification-System slide 3",
+        "caption": "SGW-Line-Notification-System — Preview 5"
       }
     ],
     "stack": [
@@ -408,13 +445,13 @@
       "TypeScript",
       "MongoDB + Mongoose",
       "Admin CMS Pattern",
-      "File/Image Handling",
-      "Role-based UI"
+      "Plain CSS",
+      "Line API"
     ],
     "highlights": [
-      "Work-log / progress reporting concept",
-      "Document + media organization structure",
-      "Admin-friendly layout for updates"
+      "เพิ่มประสิทธิภาพการทำงาน",
+      "ลดต้นทุนการด้านกำลังคน",
+      "ลดความเสียหายจากความผิดพลาด"
     ]
   },
   {
@@ -444,44 +481,63 @@
   {
     "id": "p-028-swipswap",
     "title": "SwipSwap",
-    "shortDesc": "คอนเซ็ปต์เว็บมาร์เก็ตเพลสสำหรับซื้อขาย/แลกเปลี่ยน มีหมวดหมู่ และเลย์เอาต์ที่เน้นปิดการขาย.",
+    "shortDesc": "เว็บไซต์แจกของใช้ และแลกเปลี่ยนสิ่งของ สำหรับนักศึกษา มหาวิทยาลัย ธรรมศาสตร์ มีระบบลงประกาศ ดูรายการสินค้า จัดการโปรไฟล์ผู้ใช้ และแชทติดต่อผู้ใช้",
     "year": 2023,
     "isExample": true,
     "hasDetail": true,
     "cover": {
-      "src": "/images/projects/SwipSwap.jpg",
-      "alt": "SwipSwap project cover"
+      "src": "/images/projects/SwipSwap-1.png",
+      "alt": "SwipSwap-1 project cover"
     },
     "slides": [
       {
-        "src": "/images/projects/SwipSwap.jpg",
-        "alt": "SwipSwap slide 1",
-        "caption": "SwipSwap — Preview 1",
+        "src": "/images/projects/SwipSwap-1.png",
+        "alt": "SwipSwap-1 slide 1",
+        "caption": "SwipSwap-1 — Preview 1",
         "priority": true
       },
       {
-        "src": "/images/projects/SwipSwap.jpg",
-        "alt": "SwipSwap slide 2",
-        "caption": "SwipSwap — Preview 2"
+        "src": "/images/projects/SwipSwap-2.png",
+        "alt": "SwipSwap-2 slide 2",
+        "caption": "SwipSwap-2 — Preview 2"
       },
       {
-        "src": "/images/projects/SwipSwap.jpg",
-        "alt": "SwipSwap slide 3",
-        "caption": "SwipSwap — Preview 3"
+        "src": "/images/projects/SwipSwap-3.png",
+        "alt": "SwipSwap-3 slide 3",
+        "caption": "SwipSwap-3 — Preview 3"
+      },
+      {
+        "src": "/images/projects/SwipSwap-4.png",
+        "alt": "SwipSwap-4 slide 4",
+        "caption": "SwipSwap-4 — Preview 4"
+      },
+      {
+        "src": "/images/projects/SwipSwap-5.png",
+        "alt": "SwipSwap-5 slide 5",
+        "caption": "SwipSwap-5 — Preview 5"
+      },
+      {
+        "src": "/images/projects/SwipSwap-6.png",
+        "alt": "SwipSwap-6 slide 6",
+        "caption": "SwipSwap-6 — Preview 6"
+      },
+      {
+        "src": "/images/projects/SwipSwap-7.png",
+        "alt": "SwipSwap-7 slide 7",
+        "caption": "SwipSwap-7 — Preview 7"
       }
     ],
     "stack": [
-      "Next.js",
-      "TypeScript",
+      "Node.js",
+      "Express",
       "MongoDB + Mongoose",
-      "Cloudinary (Images)",
-      "CSS Variables",
-      "SEO + Sitemap"
+      "EJS",
+      "Bootstrap"
     ],
     "highlights": [
-      "Category + filter-ready grid system",
-      "Image-heavy UI optimized for speed",
-      "Clear CTA flow (list → detail → contact)"
+      "ระบบแชทแบบเรียลไทม์",
+      "รักษ์โลก อนุรักษ์สิ่งแวดล้อม",
+      "ลดภาระค่าใช้จ่ายสำหรับนักศึกษา"
     ]
   },
   {
@@ -497,21 +553,21 @@
     }
   },
   {
-    "id": "p-030-weedex-2",
-    "title": "WeeDex-2",
-    "shortDesc": "คอนเซ็ปต์เว็บแอปจัดการความรู้/งานส่วนตัว เน้นค้นหาเร็ว UI เนี้ยบ และโครงสร้างข้อมูลที่ขยายได้.",
+    "id": "p-030-weedex",
+    "title": "เว็บไซต์ ซื้อขาย NFT และ สินทรัพย์ดิจิทัล",
+    "shortDesc": "มีระบบลงทะเบียนผู้ใช้, ยืนยันตัวตน(KYC), สร้างรายการสินทรัพย์ดิจิทัล,  ดูรายการสินทรัพย์, จัดการโปรไฟล์ผู้ใช้, บันทึกประวัติการทำธุรกรรม.",
     "year": 2022,
     "isExample": true,
     "hasDetail": true,
     "cover": {
-      "src": "/images/projects/WeeDex-2.png",
-      "alt": "WeeDex-2 project cover"
+      "src": "/images/projects/WeeDex-1.png",
+      "alt": "WeeDex-1 project cover"
     },
     "slides": [
       {
-        "src": "/images/projects/WeeDex-2.png",
-        "alt": "WeeDex-2 slide 1",
-        "caption": "WeeDex-2 — Preview 1",
+        "src": "/images/projects/WeeDex-1.png",
+        "alt": "WeeDex-1 slide 1",
+        "caption": "WeeDex-1 — Preview 1",
         "priority": true
       },
       {
@@ -520,23 +576,38 @@
         "caption": "WeeDex-2 — Preview 2"
       },
       {
-        "src": "/images/projects/WeeDex-2.png",
-        "alt": "WeeDex-2 slide 3",
-        "caption": "WeeDex-2 — Preview 3"
+        "src": "/images/projects/WeeDex-3.png",
+        "alt": "WeeDex-3 slide 3",
+        "caption": "WeeDex-3 — Preview 3"
+      },
+      {
+        "src": "/images/projects/WeeDex-4.png",
+        "alt": "WeeDex-4 slide 4",
+        "caption": "WeeDex-4 — Preview 4"
+      },
+      {
+        "src": "/images/projects/WeeDex-5.png",
+        "alt": "WeeDex-5 slide 5",
+        "caption": "WeeDex-5 — Preview 5"
+      },
+      {
+        "src": "/images/projects/WeeDex-6.png",
+        "alt": "WeeDex-6 slide 6",
+        "caption": "WeeDex-6 — Preview 6"
       }
     ],
     "stack": [
-      "Next.js",
-      "TypeScript",
+      "Solidity",
+      "MetaMask",
+      "Node.js",
+      "Express",
       "MongoDB + Mongoose",
-      "NextAuth (Auth)",
-      "CSS Modules",
-      "SEO (Metadata/OG)"
+      "Plain CSS"
     ],
     "highlights": [
-      "CRUD workflow with clean forms",
-      "Fast list/search UX + detail pages",
-      "Scalable schema design for growth"
+      "BlockChain",
+      "Cryptocurrency",
+      "NFT"
     ]
   },
   {
