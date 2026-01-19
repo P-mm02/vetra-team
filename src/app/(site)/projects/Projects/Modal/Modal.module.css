@@ -15,7 +15,7 @@
   position: relative;
   width: min(1024px, 90%);
   height: fit-content;
-  max-height: 96vh;
+  max-height: 90vh;
   border-radius: 1rem;
   border: 1px solid rgba(255, 255, 255, 0.14);
   background: rgba(14, 12, 30, 0.62);
