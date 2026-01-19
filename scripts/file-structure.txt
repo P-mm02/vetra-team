@@ -14,6 +14,8 @@
       📄 vetra-micro.svg
     📁 logo
       📄 vetra-logo-nobg.svg
+  📄 apple-touch-icon.png
+  📄 favicon-48x48.png
   📄 file.svg
   📄 globe.svg
   📁 home
@@ -33,9 +35,43 @@
       📄 vetra-micro.svg
     📁 preview
       📄 vetra-preview.jpg
+    📁 projects
+      📄 Animal Farm.png
+      📄 Aree-fruit.jpg
+      📄 Aroma massage.png
+      📄 Beauty Clinic.png
+      📄 Electronic.png
+      📄 Farm.png
+      📄 Furniture.png
+      📄 Graphic Design-2.png
+      📄 Gym-2.png
+      📄 Laundry-3.png
+      📄 Maid.png
+      📄 Manhwa Manhua Manga-2.png
+      📄 Night Market.png
+      📄 Novel-2.png
+      📄 OEM-2.png
+      📄 Onsen Sauna-2.png
+      📄 Orchard.png
+      📄 Pet-2.png
+      📄 Pool villa-2.png
+      📄 Pub & Bar-3.png
+      📄 Real estate.png
+      📄 Restaurant-3.png
+      📄 Salon-4.png
+      📄 SGW-website.png
+      📄 SGW-Working.png
+      📄 Snooker.png
+      📄 Street food.png
+      📄 SwipSwap.jpg
+      📄 Underwear-3.png
+      📄 WeeDex-2.png
+      📄 Zoo.png
   📁 logo
     📄 vetra-logo-nobg.svg
   📄 next.svg
+  📄 robots.txt
+  📄 sitemap.xml
   📄 vercel.svg
   📄 window.svg
 📄 README.md
@@ -62,12 +98,12 @@
       📁 services
       📁 terms
     📁 api
+      📁 admin
       📁 auth
     📄 favicon.ico
     📄 layout.tsx
     📄 not-found.module.css
     📄 not-found.tsx
-    📄 sitemap.ts
   📁 components
     📁 footer
       📄 footer.module.css
@@ -88,9 +124,8 @@
     📁 db
       📄 mongoose.ts
   📁 models
-    📄 Session.ts
     📁 User
-    📄 User.ts
+      📄 User.ts
   📁 styles
     📄 globals.css
 📄 tsconfig.json

@@ -73,10 +73,9 @@ export default function AboutHero() {
             <Link className={styles.btnPrimary} href="/contact">
               ติดต่อเพื่อเริ่มโปรเจกต์
             </Link>
-            <Link className={styles.btnGhost} href="/maintenance">
+            <Link className={styles.btnGhost} href="/projects">
               ดูผลงาน
             </Link>
-
           </div>
         </div>
       </div>

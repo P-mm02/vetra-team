@@ -37,7 +37,7 @@ export default function NotFound() {
             <Link className={styles.quickLink} href="/pricing">
               Pricing
             </Link>
-            <Link className={styles.quickLink} href="/work">
+            <Link className={styles.quickLink} href="/projects">
               Work
             </Link>
             <Link className={styles.quickLink} href="/process">

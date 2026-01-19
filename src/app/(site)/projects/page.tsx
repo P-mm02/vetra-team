@@ -2,6 +2,7 @@
 import type { Metadata } from 'next'
 import styles from './page.module.css'
 import Projects from './Projects/Projects'
+import Link from 'next/link'
 
 export const metadata: Metadata = {
   title: 'Projects',
@@ -14,34 +15,17 @@ export default function ProjectsPage() {
     <main className={styles.page}>
       <section className={styles.hero} aria-label="Projects hero">
         <div className={styles.heroInner}>
-          <p className={styles.kicker}>VETRA • WORK</p>
-
+          <Link href="/contact" className={styles.badge}>
+            Projects
+          </Link>
           <h1 className={styles.title}>
-            Projects that look <span className={styles.grad}>premium</span>
-            <br />
-            and ship <span className={styles.grad2}>fast</span>
+            รวมผลงานของเรา (อยู่ระหว่างอัพเดต รูปภาพ และข้อความ)
           </h1>
 
           <p className={styles.subTitle}>
-            A curated mix of client work, internal tools, and UI experiments.
-            Filter by <b>ตัวอย่าง</b> or browse <b>ทั้งหมด</b>.
+            งาน ออกแบบ สร้าง เว็บไซต์ สำหรับธุรกิจหลากหลายประเภท ทั้งเว็บบริษัท แพลตฟอร์มออนไลน์ และระบบบริการงานภายในองค์กร(ERP)
           </p>
 
-          <div className={styles.heroLine} />
-          <div className={styles.stats}>
-            <div className={styles.stat}>
-              <div className={styles.statNum}>30</div>
-              <div className={styles.statLabel}>Project entries</div>
-            </div>
-            <div className={styles.stat}>
-              <div className={styles.statNum}>Next.js</div>
-              <div className={styles.statLabel}>Core stack</div>
-            </div>
-            <div className={styles.stat}>
-              <div className={styles.statNum}>Dark UI</div>
-              <div className={styles.statLabel}>Vetra theme</div>
-            </div>
-          </div>
         </div>
       </section>
 

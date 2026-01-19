@@ -22,7 +22,7 @@ const CONTACT = {
 
   // optional
   websiteUrl: SITE_URL,
-  workUrl: '/work',
+  workUrl: '/projects',
 }
 
 export const metadata: Metadata = {
@@ -90,7 +90,7 @@ export default function ContactPage() {
 
             {/* Quick Actions */}
             <div className={styles.actions} aria-label="Quick actions">
-              <ContactsBox/>
+              <ContactsBox />
             </div>
 
             {/* Contact Grid */}
@@ -161,13 +161,15 @@ export default function ContactPage() {
 
               {/* What to send (helps real use) */}
               <aside className={styles.checklist} aria-label="What to send">
-                <div className={styles.checkTitle}>ข้อมูล</div>
+                <div className={styles.checkTitle}>ข้อมูล เพื่อประเมินราคา</div>
                 <ul className={styles.checkList}>
-                  <li>● ประเภทงาน: Website / Web App / Dashboard</li>
-                  <li>● เป้าหมายหลัก + กลุ่มลูกค้า</li>
-                  <li>● จำนวนหน้า/ฟีเจอร์คร่าว ๆ</li>
-                  <li>● ตัวอย่างเว็บที่ชอบ (reference)</li>
-                  <li>● งบประมาณคร่าว ๆ + deadline</li>
+                  <li>● ต้องการให้เว็บไซต์แสดงข้อมูลอะไรบ้าง</li>
+                  <li>● ตัวอย่างเว็บไซต์ หรือแนวการออกแบบที่ชอบ</li>
+                  <li>● ฟังก์ชันการใช้งาน ฟีเจอร์เพิ่มเติม ที่ต้องการ</li>
+                  <li>● มีคอนเทนต์ ข้อความ รูปภาพ ที่จะใส่ในหน้าเว็บไซต์ไว้แล้วหรือยัง (ถ้ายังไม่มี เราจัดทำให้ได้)</li>
+                  <li>
+                    ● มีสิ่งที่ “ไม่ชอบ” ไหม เช่น สีจัด เว็บแน่น แอนิเมชันเยอะ
+                  </li>
                 </ul>
 
                 <div className={styles.miniCard}>
