@@ -1,0 +1,243 @@
+{
+  "baseTypes": [
+    {
+      "id": "onepage_no_cms",
+      "title": "เว็บไซต์ แบบหน้าเดียว ไม่มี CMS",
+      "subtitle": "รวมข้อมูลทุกอย่างไว้หน้าเดียวกัน",
+      "price": { "min": 2000, "max": 2000 },
+      "details": [
+        "เหมาะกับเว็บที่ มีข้อมูลน้อย ไม่ต้องแก้ไขข้อมูลบ่อย",
+        "ไม่มี CMS ต้องให้ทางเราแก้ไขคอนเทนต์ให้",
+        "SEO พื้นฐาน + Performance ดี"
+      ]
+    },
+    {
+      "id": "multipage_no_cms",
+      "title": "เว็บไซต์ แบบหลายหน้า ไม่มี CMS",
+      "subtitle": "แยกข้อมูลไว้แต่ละหน้าอย่างชัดเจน",
+      "price": { "min": 5000, "max": 5000 },
+      "details": [
+        "เหมาะกับเว็บที่ มีข้อมูลเยอะ ไม่ต้องแก้ไขข้อมูลบ่อย",
+        "ไม่มี CMS ต้องให้ทางเราแก้ไขคอนเทนต์ให้",
+        "SEO เต็มระบบ + Performance ดีมาก"
+      ]
+    },
+    {
+      "id": "multipage_with_cms",
+      "title": "เว็บไซต์ แบบหลายหน้า มี CMS",
+      "subtitle": "แยกข้อมูลไว้แต่ละหน้า และแก้ไขคอนเทนต์เองได้",
+      "price": { "min": 10000, "max": 10000 },
+      "details": [
+        "เหมาะกับเว็บที่ มีข้อมูลเยอะ และต้องแก้ไขข้อมูลบ่อย",
+        "มีระบบ Admin จัดการข้อมูล เนื้อหา รูปภาพ ได้",
+        "SEO เต็มระบบ + Performance ดีมาก",
+        "ความปลอดภัยสูง ปกป้องทุกช่องทาง"
+      ]
+    },
+    {
+      "id": "large_platform",
+      "title": "แพลตฟอร์มออนไลน์ขนาดใหญ่",
+      "subtitle": "ทำบริการออนไลน์ ขนาดใหญ่ หรือระบบเฉพาะทาง",
+      "price": { "min": 50000, "max": 50000 },
+      "details": [
+        "เหมาะกับ Startup หรือเว็บที่ต้องรองรับผู้ใช้จำนวนมาก",
+        "รองรับระบบที่ซับซ้อน ขยายระบบได้ง่ายในอนาคต",
+        "SEO เต็มระบบ + Performance ดีมาก",
+        "ความปลอดภัยสูง ปกป้องทุกช่องทาง"
+      ]
+    }
+  ],
+  "addonsSmall": [
+    {
+      "id": "bilingual_th_en",
+      "title": "สองภาษา",
+      "desc": "สลับภาษา + โครงสร้าง URL/SEO",
+      "price": { "min": 2000, "max": 2000 },
+      "tag": "i18n, SEO"
+    },
+    {
+      "id": "multilanguage",
+      "title": "หลายภาษา (3+)",
+      "desc": "รองรับหลายภาษา พร้อมจัดการข้อความให้เป็นระบบ",
+      "price": { "min": 2000, "max": 4000 },
+      "tag": "i18n, SEO"
+    },
+    {
+      "id": "dark_mode_toggle",
+      "title": "โหมดกลางคืน ",
+      "desc": "ทำสวิตช์(Light/Dark) + จดจำค่า",
+      "price": { "min": 1000, "max": 2000 },
+      "tag": "UI/UX"
+    },
+    {
+      "id": "google_maps_embed",
+      "title": "Google Maps",
+      "desc": "ฝังแผนที่/ปักหมุด/ลิงก์นำทาง",
+      "price": { "min": 200, "max": 500 },
+      "tag": "Embed"
+    },
+    {
+      "id": "facebook_page_embed",
+      "title": "หน้าเพจ Facebook",
+      "desc": "ฝังโพสต์/ฟีด/ปุ่มแชท (ตามที่เหมาะสม)",
+      "price": { "min": 200, "max": 500 },
+      "tag": "Social"
+    },
+    {
+      "id": "contact_form",
+      "title": "ส่งแบบฟอร์มติดต่อ",
+      "desc": "ฟอร์มติดต่อ + ส่งอีเมล",
+      "price": { "min": 500, "max": 1000 },
+      "tag": "Form"
+    },
+    {
+      "id": "search_bar_basic",
+      "title": "แถบค้นหา (Basic)",
+      "desc": "ค้นหาหน้า ค้นหาคอนเทนต์แบบง่าย",
+      "price": { "min": 200, "max": 500 },
+      "tag": "UX"
+    },
+    {
+      "id": "analytics",
+      "title": "เก็บข้อมูลสถิติ",
+      "desc": "ติด Analytics / Tracking พร้อมระบบควบคุม",
+      "price": { "min": 500, "max": 1000 },
+      "tag": "GA4, GTM"
+    },
+    {
+      "id": "chat_widget",
+      "title": "วิดเจ็ตแชท ฟรี แจ้งได้",
+      "desc": " ปุ่มลอย/ลิงก์แชท/LINE/Facebook",
+      "price": { "min": 0, "max": 0 },
+      "tag": "Widget chat"
+    },
+    {
+      "id": "gallery",
+      "title": "แกลเลอรีรูปภาพ",
+      "desc": "Grid + Modal ดูภาพขนาดใหญ่",
+      "price": { "min": 200, "max": 500 },
+      "tag": "UI"
+    },
+    {
+      "id": "faq_accordion",
+      "title": "FAQ ฟรี แจ้งได้",
+      "desc": "คำถามพบบ่อยแบบเปิด/ปิด พร้อม SEO-friendly",
+      "price": { "min": 0, "max": 0 },
+      "tag": "Content"
+    },
+    {
+      "id": "cookie_consent",
+      "title": "นโยบายและข้อกำหนดของเว็บไซต์",
+      "desc": "Cookie Consent / Privacy Policy / Terms of Use",
+      "price": { "min": 200, "max": 500 },
+      "tag": "Compliance"
+    }
+  ],
+  "addonsLarge": [
+    {
+      "id": "ecommerce",
+      "title": "ระบบซื้อขายสินค้า (E-commerce)",
+      "desc": "สินค้า/ตะกร้า/ออเดอร์/จัดการสต็อก (ตามสcope)",
+      "price": { "min": 10000, "max": 20000 },
+      "tag": "Commerce"
+    },
+    {
+      "id": "payments",
+      "title": "ระบบชำระเงิน",
+      "desc": "เชื่อม Payment Gateway / สร้าง flow การชำระเงิน",
+      "price": { "min": 5000, "max": 10000 },
+      "tag": "Finance"
+    },
+    {
+      "id": "booking",
+      "title": "ระบบจองคิว / นัดหมาย",
+      "desc": "เลือกวันเวลา/จัดการคิว/แจ้งเตือน (ตามสcope)",
+      "price": { "min": 5000, "max": 10000 },
+      "tag": "Booking"
+    },
+    {
+      "id": "internal_erp",
+      "title": "ระบบบริหารงานภายในองค์กร (ERP/OPS)",
+      "desc": "แดชบอร์ด/เวิร์กโฟลว์/สิทธิ์ผู้ใช้/รายงาน",
+      "price": { "min": 30000, "max": 40000 },
+      "tag": "Enterprise"
+    },
+    {
+      "id": "auto_notifications",
+      "title": "ระบบแจ้งเตือนอัตโนมัติ",
+      "desc": "Email/LINE/Push + ตั้งกฎแจ้งเตือนตามเวลา/สถานะ",
+      "price": { "min": 3000, "max": 10000 },
+      "tag": "Automation"
+    },
+    {
+      "id": "auth_roles",
+      "title": "ระบบสมาชิก + Role/Permission",
+      "desc": "Login/Signup + แบ่งบทบาท + ปกป้องหน้า",
+      "price": { "min": 5000, "max": 10000 },
+      "tag": "Auth"
+    },
+    {
+      "id": "multi_vendor",
+      "title": "Marketplace / ศูนย์การค้าออนไลน์",
+      "desc": "Multi-vendor/คอมมิชชั่น/แดชบอร์ดผู้ขาย",
+      "price": { "min": 100000, "max": 200000 },
+      "tag": "Marketplace"
+    },
+    {
+      "id": "subscription_membership",
+      "title": "ระบบสมาชิกแบบรายเดือน (Subscription)",
+      "desc": "แพ็กเกจ/การต่ออายุ/สิทธิ์เข้าถึงคอนเทนต์",
+      "price": { "min": 50000, "max": 100000 },
+      "tag": "Subscription"
+    },
+    {
+      "id": "lms_courses",
+      "title": "ระบบคอร์สเรียน (LMS)",
+      "desc": "บทเรียน/ความคืบหน้า/แบบทดสอบ/ใบประกาศ",
+      "price": { "min": 50000, "max": 150000 },
+      "tag": "LMS"
+    },
+    {
+      "id": "realtime_chat",
+      "title": "แชท/เรียลไทม์ (Realtime)",
+      "desc": "แชท/สถานะออนไลน์/แจ้งเตือนทันที",
+      "price": { "min": 10000, "max": 30000 },
+      "tag": "Realtime"
+    },
+    {
+      "id": "api_integrations",
+      "title": "เชื่อมต่อ API ภายนอก",
+      "desc": "เชื่อมระบบอื่น: CRM/ERP/Logistics/Sheets ฯลฯ",
+      "price": { "min": 10000, "max": 20000 },
+      "tag": "Integration"
+    },
+    {
+      "id": "blockchain_crypto",
+      "title": "บล็อกเชน / คริปโทเคอเรนซี",
+      "desc": "เชื่อมวอลเล็ต/ธุรกรรม/โทเคน (ตามสcopeจริง)",
+      "price": { "min": 100000, "max": 1000000 },
+      "tag": "Web3, dApp"
+    },
+    {
+      "id": "search_advanced",
+      "title": "ระบบค้นหาขั้นสูง",
+      "desc": "ฟิลเตอร์หลายมิติ/จัดอันดับผล/ค้นหาเร็ว",
+      "price": { "min": 5000, "max": 10000 },
+      "tag": "Search"
+    },
+    {
+      "id": "reports_export",
+      "title": "รายงาน + Export (PDF/Excel)",
+      "desc": "รายงานสรุป + ดาวน์โหลดไฟล์",
+      "price": { "min": 3000, "max": 10000 },
+      "tag": "Reporting"
+    },
+    {
+      "id": "multi_branch",
+      "title": "หลายสาขา/หลายสโตร์ (Multi-branch)",
+      "desc": "ข้อมูลแยกตามสาขา + สิทธิ์ + รายงาน",
+      "price": { "min": 25000, "max": 50000 },
+      "tag": "Scale"
+    }
+  ]
+}
