@@ -15,9 +15,10 @@
     📁 logo
       📄 vetra-logo-nobg.svg
   📄 apple-touch-icon.png
-  📄 favicon-48x48.png
+  📄 favicon-16x16.png
+  📄 favicon-32x32.png
+  📄 favicon.svg
   📄 file.svg
-  📄 globe.svg
   📁 home
     📄 hero.png
   📁 icons
@@ -37,9 +38,18 @@
       📄 vetra-preview.jpg
     📁 projects
       📄 Animal Farm.png
-      📄 Aree-fruit.jpg
+      📄 Aree-fruit-1.jpg
+      📄 Aree-fruit-2.png
+      📄 Aree-fruit-3.png
+      📄 Aree-fruit-4.png
+      📄 Aree-fruit-5.png
       📄 Aroma massage.png
-      📄 Beauty Clinic.png
+      📄 Beauty-Clinic-1.png
+      📄 Beauty-Clinic-2.jpg
+      📄 Beauty-Clinic-3.jpg
+      📄 Beauty-Clinic-4.jpg
+      📄 Beauty-Clinic-5.jpg
+      📄 Beauty-Clinic-6.jpg
       📄 Electronic.png
       📄 Farm.png
       📄 Furniture.png
@@ -59,21 +69,35 @@
       📄 Real estate.png
       📄 Restaurant-3.png
       📄 Salon-4.png
-      📄 SGW-website.png
-      📄 SGW-Working.png
+      📄 SGW-Line-Notification-System.png
+      📄 SGW-website-1.png
+      📄 SGW-website-2.png
+      📄 SGW-website-3.png
+      📄 SGW-website-4.png
+      📄 SGW-Working-1.png
+      📄 SGW-Working-2.png
+      📄 SGW-Working-3.png
+      📄 SGW-Working-4.png
       📄 Snooker.png
       📄 Street food.png
-      📄 SwipSwap.jpg
+      📄 SwipSwap-1.png
+      📄 SwipSwap-2.png
+      📄 SwipSwap-3.png
+      📄 SwipSwap-4.png
+      📄 SwipSwap-5.png
+      📄 SwipSwap-6.png
+      📄 SwipSwap-7.png
       📄 Underwear-3.png
+      📄 WeeDex-1.png
       📄 WeeDex-2.png
+      📄 WeeDex-3.png
+      📄 WeeDex-4.png
+      📄 WeeDex-5.png
+      📄 WeeDex-6.png
       📄 Zoo.png
   📁 logo
+    📄 vetra-logo-black.svg
     📄 vetra-logo-nobg.svg
-  📄 next.svg
-  📄 robots.txt
-  📄 sitemap.xml
-  📄 vercel.svg
-  📄 window.svg
 📄 README.md
 📁 scripts
   📄 convertProjectsToNewShape.js
@@ -104,6 +128,10 @@
     📄 layout.tsx
     📄 not-found.module.css
     📄 not-found.tsx
+    📁 robots.txt
+      📄 route.ts
+    📁 sitemap.xml
+      📄 route.ts
   📁 components
     📁 footer
       📄 footer.module.css
