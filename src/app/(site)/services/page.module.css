@@ -7,7 +7,7 @@
 .hero {
   background-color: var(--con-bg);
   padding: 1rem;
-  margin: 1rem;
+  margin: 1rem 1rem 0rem 1rem;
   border: 1px solid var(--border);
   border-radius: var(--r-lg);
   box-shadow: var(--shadow-lg);
@@ -22,12 +22,35 @@
   justify-content: center;
 }
 
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.03);
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.92rem;
+  
+}
+
+.badge:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.16);
+  transform: translateY(-1px);
+}
+
+.badge:focus-visible {
+  outline: none;
+  box-shadow: var(--focus);
+}
+
 .h1 {
   font-family: var(--font-display);
   font-weight: 900;
   font-size: 2rem;
   line-height: 1.08;
-  margin-top: 0.5rem;
 }
 
 .sub {

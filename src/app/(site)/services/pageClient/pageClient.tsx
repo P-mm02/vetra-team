@@ -69,6 +69,25 @@ export default function PageClient() {
   const [smallIds, setSmallIds] = useState<string[]>([])
   const [largeIds, setLargeIds] = useState<string[]>([])
 
+  // ✅ open/close "more" state (per group)
+  const [openBaseId, setOpenBaseId] = useState<string | null>(null)
+  const [openSmallIds, setOpenSmallIds] = useState<string[]>([])
+  const [openLargeIds, setOpenLargeIds] = useState<string[]>([])
+
+  function toggleOpenBase(id: string) {
+    setOpenBaseId((prev) => (prev === id ? null : id))
+  }
+  function toggleOpenSmall(id: string) {
+    setOpenSmallIds((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
+    )
+  }
+  function toggleOpenLarge(id: string) {
+    setOpenLargeIds((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
+    )
+  }
+
   // restore
   useEffect(() => {
     try {
@@ -154,12 +173,19 @@ export default function PageClient() {
     setBaseId(DATA.baseTypes[0]?.id ?? '')
     setSmallIds([])
     setLargeIds([])
+
+    // optional: close all
+    setOpenBaseId(null)
+    setOpenSmallIds([])
+    setOpenLargeIds([])
   }
 
   const breakdownText = useMemo(() => {
     const lines: string[] = []
     lines.push(
-      `ประเภทเว็บไซต์: ${base?.title ?? '-'} (${formatRange(base?.price ?? { min: 0, max: 0 })})`,
+      `ประเภทเว็บไซต์: ${base?.title ?? '-'} (${formatRange(
+        base?.price ?? { min: 0, max: 0 },
+      )})`,
     )
 
     if (selectedSmall.length) {
@@ -206,6 +232,7 @@ export default function PageClient() {
             <h2 className={styles.h2}>ประเภทเว็บไซต์</h2>
             <p className={styles.hint}>เลือกได้ 1 แบบ</p>
           </header>
+
           <div
             className={styles.pillList}
             role="radiogroup"
@@ -213,6 +240,8 @@ export default function PageClient() {
           >
             {DATA.baseTypes.map((b) => {
               const active = b.id === baseId
+              const isOpen = openBaseId === b.id
+
               return (
                 <div
                   key={b.id}
@@ -232,7 +261,9 @@ export default function PageClient() {
                     <div className={styles.pillTitle}>{b.title}</div>
                   </div>
 
-                  <div className={styles.more}>
+                  <div
+                    className={`${styles.more} ${isOpen ? styles.moreOpen : ''}`}
+                  >
                     <div className={styles.moreSub}>{b.subtitle}</div>
                     <ul className={styles.moreList}>
                       {b.details.map((d, i) => (
@@ -240,6 +271,36 @@ export default function PageClient() {
                       ))}
                     </ul>
                   </div>
+
+                  <button
+                    type="button"
+                    className={`${styles.moreBtn} ${isOpen ? styles.moreBtnOpen : ''}`}
+                    aria-label="Toggle details"
+                    aria-expanded={isOpen}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      toggleOpenBase(b.id)
+                    }}
+                    onKeyDown={(e) => e.stopPropagation()}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      width="24"
+                      height="24"
+                      aria-hidden="true"
+                      className={styles.moreBtnArrow}
+                    >
+                      <path
+                        d="M14 22 L22 22 L22 14"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </button>
                 </div>
               )
             })}
@@ -252,9 +313,12 @@ export default function PageClient() {
             <h2 className={styles.h2}>ฟังก์ชันเพิ่มเติม (เล็ก)</h2>
             <p className={styles.hint}>เลือกได้หลายอัน</p>
           </header>
+
           <div className={styles.pillList}>
             {DATA.addonsSmall.map((a) => {
               const checked = smallIds.includes(a.id)
+              const isOpen = openSmallIds.includes(a.id)
+
               return (
                 <div
                   key={a.id}
@@ -274,7 +338,9 @@ export default function PageClient() {
                     <div className={styles.pillTitle}>{a.title}</div>
                   </div>
 
-                  <div className={styles.more}>
+                  <div
+                    className={`${styles.more} ${isOpen ? styles.moreOpen : ''}`}
+                  >
                     <div className={styles.moreSub}>{a.desc}</div>
                     {a.tag
                       ? a.tag
@@ -288,6 +354,36 @@ export default function PageClient() {
                           ))
                       : null}
                   </div>
+
+                  <button
+                    type="button"
+                    className={`${styles.moreBtn} ${isOpen ? styles.moreBtnOpen : ''}`}
+                    aria-label="Toggle details"
+                    aria-expanded={isOpen}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      toggleOpenSmall(a.id)
+                    }}
+                    onKeyDown={(e) => e.stopPropagation()}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      width="24"
+                      height="24"
+                      aria-hidden="true"
+                      className={styles.moreBtnArrow}
+                    >
+                      <path
+                        d="M14 22 L22 22 L22 14"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </button>
                 </div>
               )
             })}
@@ -302,9 +398,12 @@ export default function PageClient() {
               ระบบที่ซับซ้อน/มีแบ็กเอนด์/มีฐานข้อมูล
             </p>
           </header>
+
           <div className={styles.pillList}>
             {DATA.addonsLarge.map((a) => {
               const checked = largeIds.includes(a.id)
+              const isOpen = openLargeIds.includes(a.id)
+
               return (
                 <div
                   key={a.id}
@@ -324,10 +423,42 @@ export default function PageClient() {
                     <div className={styles.pillTitle}>{a.title}</div>
                   </div>
 
-                  <div className={styles.more}>
+                  <div
+                    className={`${styles.more} ${isOpen ? styles.moreOpen : ''}`}
+                  >
                     <div className={styles.moreSub}>{a.desc}</div>
                     {a.tag ? <div className={styles.tag}>{a.tag}</div> : null}
                   </div>
+
+                  <button
+                    type="button"
+                    className={`${styles.moreBtn} ${isOpen ? styles.moreBtnOpen : ''}`}
+                    aria-label="Toggle details"
+                    aria-expanded={isOpen}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      toggleOpenLarge(a.id)
+                    }}
+                    onKeyDown={(e) => e.stopPropagation()}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      width="24"
+                      height="24"
+                      aria-hidden="true"
+                      className={styles.moreBtnArrow}
+                    >
+                      <path
+                        d="M14 22 L22 22 L22 14"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </button>
                 </div>
               )
             })}

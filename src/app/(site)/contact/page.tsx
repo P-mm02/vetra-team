@@ -23,6 +23,7 @@ const CONTACT = {
   // optional
   websiteUrl: SITE_URL,
   workUrl: '/projects',
+  serviceUrl: '/services',
 }
 
 export const metadata: Metadata = {
@@ -149,7 +150,10 @@ export default function ContactPage() {
 
                 <div className={styles.metaActions}>
                   <a className={styles.btnSoft} href={CONTACT.workUrl}>
-                    ดูผลงาน (Work)
+                    ผลงาน (Projects)
+                  </a>
+                  <a className={styles.btnSoft} href={CONTACT.serviceUrl}>
+                    บริการ (Services)
                   </a>
                 </div>
 
@@ -166,7 +170,11 @@ export default function ContactPage() {
                   <li>● ต้องการให้เว็บไซต์แสดงข้อมูลอะไรบ้าง</li>
                   <li>● ตัวอย่างเว็บไซต์ หรือแนวการออกแบบที่ชอบ</li>
                   <li>● ฟังก์ชันการใช้งาน ฟีเจอร์เพิ่มเติม ที่ต้องการ</li>
-                  <li>● มีคอนเทนต์ ข้อความ รูปภาพ ที่จะใส่ในหน้าเว็บไซต์ไว้แล้วหรือยัง (ถ้ายังไม่มี เราจัดทำให้ได้)</li>
+                  <li>
+                    ● มีคอนเทนต์ ข้อความ รูปภาพ
+                    ที่จะใส่ในหน้าเว็บไซต์ไว้แล้วหรือยัง (ถ้ายังไม่มี
+                    เราจัดทำให้ได้)
+                  </li>
                   <li>
                     ● มีสิ่งที่ “ไม่ชอบ” ไหม เช่น สีจัด เว็บแน่น แอนิเมชันเยอะ
                   </li>

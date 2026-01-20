@@ -119,9 +119,9 @@ body {
 
   background-position:
     center top,
-    center,
-    center,
-    center;
+    0 0,
+    0 0,
+    center top;
 
   /* optional: keeps texture “anchored” for a premium feel */
   background-attachment:

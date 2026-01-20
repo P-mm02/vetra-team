@@ -2,6 +2,7 @@
 import type { Metadata } from 'next'
 import PageClient from './pageClient/pageClient'
 import styles from './page.module.css'
+import Link from 'next/link'
 
 export const metadata: Metadata = {
   title: 'Services | Vetra',
@@ -15,6 +16,9 @@ export default function ServicesPage() {
       <section className={`section ${styles.hero}`} aria-label="Services Hero">
         <div className="container">
           <div className={styles.heroflex}>
+            <Link href="/services" className={styles.badge}>
+              Services
+            </Link>
             <h1 className={styles.h1}>ประเมินราคาเว็บไซต์</h1>
             <p className={styles.sub}>
               &nbsp;&nbsp;เลือกประเภทเว็บไซต์ และฟังก์ชันที่ต้องการ
