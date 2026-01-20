@@ -64,14 +64,27 @@ export const metadata: Metadata = {
     images: [OG_IMAGE],
   },
   icons: {
-    icon: [
-      { url: '/favicon.ico' },
-      { url: '/favicon-48x48.png', type: 'image/png', sizes: '48x48' },
-    ],
-    shortcut: '/favicon.ico',
+    icon: '/favicon.ico',
     apple: '/apple-touch-icon.png',
+    other: [
+      {
+        rel: 'icon',
+        type: 'image/png',
+        sizes: '32x32',
+        url: '/favicon-32x32.png',
+      },
+      {
+        rel: 'icon',
+        type: 'image/png',
+        sizes: '16x16',
+        url: '/favicon-16x16.png',
+      },
+      { rel: 'icon', type: 'image/svg+xml', url: '/favicon.svg' },
+    ],
   },
 }
+
+
 
 export default function RootLayout({
   children,
