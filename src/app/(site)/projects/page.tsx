@@ -19,7 +19,7 @@ export default function ProjectsPage() {
             Projects
           </Link>
           <h1 className={styles.title}>
-            รวมผลงานของเรา (อยู่ระหว่างอัพเดต รูปภาพ และข้อความ)
+            รวมผลงานของเรา
           </h1>
 
           <p className={styles.subTitle}>
