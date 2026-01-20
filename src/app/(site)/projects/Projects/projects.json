@@ -167,7 +167,7 @@
   },
   {
     "id": "p-008-graphic-design-2",
-    "title": "Graphic Design-2",
+    "title": "Graphic Design",
     "shortDesc": "เว็บพอร์ตงานกราฟิกแบบเคสสตัดดี้ มีการ์ดผลงานและแกลเลอรีที่ดูเป็นมืออาชีพ.",
     "year": 2025,
     "isExample": false,
@@ -179,7 +179,7 @@
   },
   {
     "id": "p-009-gym-2",
-    "title": "Gym-2",
+    "title": "Gym",
     "shortDesc": "เว็บไซต์ยิม โชว์โปรแกรม/สมาชิก เทรนเนอร์ และปุ่มสมัคร/ติดต่อที่เด่นชัด.",
     "year": 2025,
     "isExample": true,
@@ -191,7 +191,7 @@
   },
   {
     "id": "p-010-laundry-3",
-    "title": "Laundry-3",
+    "title": "Laundry",
     "shortDesc": "เว็บร้านซักรีด มีราคาชัดเจน บริการรับ-ส่ง และปุ่มติดต่อ/เรียกใช้บริการแบบเร็ว.",
     "year": 2025,
     "isExample": false,
@@ -212,7 +212,7 @@
   },
   {
     "id": "p-012-manhwa-manhua-manga-2",
-    "title": "Manhwa Manhua Manga-2",
+    "title": "Manhwa Manhua Manga",
     "shortDesc": "คอนเซ็ปต์แพลตฟอร์มอ่านการ์ตูน มีหมวดหมู่และการ์ดคอนเทนต์ที่ขยายต่อได้ง่าย.",
     "year": 2025,
     "isExample": false,
@@ -236,7 +236,7 @@
   },
   {
     "id": "p-014-novel-2",
-    "title": "Novel-2",
+    "title": "Novel",
     "shortDesc": "คอนเซ็ปต์คลังนิยาย มีโซนแนะนำ/มาใหม่ และเลย์เอาต์อ่านง่ายเน้นประสบการณ์ผู้ใช้.",
     "year": 2025,
     "isExample": false,
@@ -248,7 +248,7 @@
   },
   {
     "id": "p-015-oem-2",
-    "title": "OEM-2",
+    "title": "OEM",
     "shortDesc": "เว็บไซต์โปรไฟล์โรงงาน/OEM เน้นความสามารถ กระบวนการผลิต และปุ่มติดต่อเพื่อรับงาน B2B.",
     "year": 2025,
     "isExample": true,
@@ -260,7 +260,7 @@
   },
   {
     "id": "p-016-onsen-sauna-2",
-    "title": "Onsen Sauna-2",
+    "title": "Onsen Sauna",
     "shortDesc": "คอนเซ็ปต์เว็บออนเซ็น/ซาวน่า มีแพ็กเกจ แกลเลอรีบรรยากาศ และสมาชิก/โปรโมชัน.",
     "year": 2025,
     "isExample": false,
@@ -284,7 +284,7 @@
   },
   {
     "id": "p-018-pet-2",
-    "title": "Pet-2",
+    "title": "Pet",
     "shortDesc": "คอนเซ็ปต์เว็บบริการ/ร้านสัตว์เลี้ยง แบ่งหมวดสินค้า มีทิปดูแล และปุ่มติดต่อชัดเจน.",
     "year": 2025,
     "isExample": true,
@@ -296,7 +296,7 @@
   },
   {
     "id": "p-019-pool-villa-2",
-    "title": "Pool villa-2",
+    "title": "Pool villa",
     "shortDesc": "คอนเซ็ปต์เว็บพูลวิลล่าพรีเมียม มีแกลเลอรี สิ่งอำนวยความสะดวก และปุ่มจองที่เด่น.",
     "year": 2025,
     "isExample": false,
@@ -308,7 +308,7 @@
   },
   {
     "id": "p-020-pub-and-bar-3",
-    "title": "Pub & Bar-3",
+    "title": "Pub & Bar",
     "shortDesc": "เว็บไซต์ผับ/บาร์ โชว์อีเวนต์ เมนูเด่น และปุ่มจองโต๊ะ/ติดต่อแบบรวดเร็ว.",
     "year": 2025,
     "isExample": false,
@@ -332,7 +332,7 @@
   },
   {
     "id": "p-022-restaurant-3",
-    "title": "Restaurant-3",
+    "title": "Restaurant",
     "shortDesc": "เว็บไซต์ร้านอาหาร มีเมนู แกลเลอรี และปุ่มจองโต๊ะ/สั่งอาหารที่วางไว้ชัดเจน.",
     "year": 2025,
     "isExample": false,
@@ -542,7 +542,7 @@
   },
   {
     "id": "p-029-underwear-3",
-    "title": "Underwear-3",
+    "title": "Underwear",
     "shortDesc": "คอนเซ็ปต์หน้าโปรดักต์ โชว์ตัวเลือกสินค้า จุดเด่น และปุ่มสั่งซื้อ/ติดต่อที่ชัดเจน.",
     "year": 2025,
     "isExample": false,
