@@ -41,11 +41,11 @@ export default function HomeHero() {
           </div>
 
           <div className={styles.actions}>
-            <SmoothScrollLink className={styles.btnPrimary} href="#contact">
+            <SmoothScrollLink className={styles.btnPrimary} href="/contact">
               เริ่มต้นโปรเจกต์
             </SmoothScrollLink>
 
-            <Link className={styles.btnGhost} href="#services">
+            <Link className={styles.btnGhost} href="/services">
               ดูบริการทั้งหมด
             </Link>
           </div>
