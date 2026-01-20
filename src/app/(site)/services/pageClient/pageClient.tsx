@@ -197,19 +197,6 @@ export default function PageClient() {
   return (
     <div className={styles.wrap}>
       <div className={styles.stack}>
-        <div className={styles.actions}>
-          <button
-            type="button"
-            className={styles.btnPrimary}
-            onClick={copyBrief}
-          >
-            คัดลอกสรุป
-          </button>
-          <button type="button" className={styles.btnGhost} onClick={resetAll}>
-            รีเซ็ต
-          </button>
-        </div>
-
         {/* Base type */}
         <section
           className={`glass ${styles.panel}`}
