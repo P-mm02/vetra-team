@@ -1,4 +1,4 @@
-// src/app/(admin)/login/pageClient.tsx
+// src/app/(admin)/admin/login/pageClient.tsx
 'use client'
 
 import { useMemo, useState } from 'react'
@@ -9,21 +9,20 @@ import styles from './page.module.css'
 type LoginState = 'idle' | 'loading'
 
 function safeNextPath(raw: string | null) {
-  if (!raw) return '/cms'
-  if (!raw.startsWith('/')) return '/cms'
-  if (raw.startsWith('//')) return '/cms'
+  if (!raw) return '/admin/cms'
+  if (!raw.startsWith('/')) return '/admin/cms'
+  if (raw.startsWith('//')) return '/admin/cms'
   return raw
 }
+
 
 export default function PageClient() {
   const sp = useSearchParams()
 
-  // ✅ avoid using `sp` object as dep (it can change identity),
-  // depend on the value you actually read instead
   const nextRaw = sp.get('next')
   const nextPath = useMemo(() => safeNextPath(nextRaw), [nextRaw])
 
-  const [email, setEmail] = useState('')
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [showPw, setShowPw] = useState(false)
 
@@ -44,7 +43,7 @@ export default function PageClient() {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({
-          email: email.trim(),
+          username: username.trim(),
           password,
         }),
       })
@@ -52,7 +51,7 @@ export default function PageClient() {
       const data = await res.json().catch(() => null)
 
       if (!res.ok || !data?.ok) {
-        setError('Email or password is incorrect.')
+        setError('Username or password is incorrect.')
         setState('idle')
         return
       }
@@ -94,17 +93,18 @@ export default function PageClient() {
 
         <form className={styles.form} onSubmit={onSubmit}>
           <label className={styles.label}>
-            <span className={styles.labelText}>Email</span>
+            <span className={styles.labelText}>Username</span>
             <input
               className={styles.input}
-              type="email"
-              inputMode="email"
-              autoComplete="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              type="text"
+              inputMode="text"
+              autoComplete="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               required
-              maxLength={254}
-              placeholder="you@domain.com"
+              minLength={3}
+              maxLength={30}
+              placeholder="owner"
               aria-invalid={!!error}
             />
           </label>
@@ -131,9 +131,9 @@ export default function PageClient() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              minLength={8}
+              minLength={10}
               maxLength={200}
-              placeholder="••••••••"
+              placeholder="••••••••••"
               aria-invalid={!!error}
             />
           </label>

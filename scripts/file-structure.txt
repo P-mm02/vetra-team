@@ -35,6 +35,8 @@
       📄 vetra-hero.svg
       📄 vetra-micro.svg
     📁 preview
+      📄 projects-og.png
+      📄 services-og.png
       📄 vetra-preview.jpg
     📁 projects
       📄 Animal Farm.png
@@ -140,8 +142,12 @@
       📄 nav.module.css
       📄 nav.tsx
     📁 Slider
-      📄 Slider.css
+      📄 function.ts
+      📁 modal
+      📄 Slider.module.css
       📄 Slider.tsx
+      📄 SliderView.tsx
+      📄 useSlider.ts
     📁 ui
       📁 CopyButton
       📁 SmoothScrollLink
@@ -151,6 +157,7 @@
       📄 session.ts
     📁 db
       📄 mongoose.ts
+  📄 middleware.ts
   📁 models
     📁 User
       📄 User.ts

@@ -1,3 +1,4 @@
+// src/app/(admin)/admin/cms/CmsShell/CmsShell.tsx
 'use client'
 
 import { useMemo, useState } from 'react'
@@ -5,15 +6,10 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import styles from './CmsShell.module.css'
-
-type CmsUser = {
-  id: string
-  email: string
-  role: string
-}
+import type { CurrentUser } from '@/lib/auth/session'
 
 function isActive(pathname: string, href: string) {
-  if (href === '/cms') return pathname === '/cms'
+  if (href === '/admin/cms') return pathname === '/admin/cms'
   return pathname === href || pathname.startsWith(`${href}/`)
 }
 
@@ -21,7 +17,7 @@ export default function CmsShell({
   user,
   children,
 }: {
-  user: CmsUser
+  user: CurrentUser
   children: React.ReactNode
 }) {
   const pathname = usePathname()
@@ -47,7 +43,7 @@ export default function CmsShell({
     try {
       await fetch('/api/auth/logout', { method: 'POST' })
     } finally {
-      window.location.href = '/login'
+      window.location.href = '/admin/login'
     }
   }
 
@@ -60,7 +56,7 @@ export default function CmsShell({
         <div className={styles.sideTop}>
           <Link
             className={styles.brand}
-            href="/cms"
+            href="/admin/cms"
             onClick={() => setNavOpen(false)}
           >
             <span className={styles.brandLogo}>
@@ -90,10 +86,8 @@ export default function CmsShell({
 
         <nav className={styles.nav} aria-label="CMS navigation">
           <Link
-            className={`${styles.navItem} ${
-              isActive(pathname, '/cms') ? styles.active : ''
-            }`}
-            href="/cms"
+            className={`${styles.navItem} ${isActive(pathname, '/admin/cms') ? styles.active : ''}`}
+            href="/admin/cms"
             onClick={() => setNavOpen(false)}
           >
             <span className={styles.dot} aria-hidden="true" />
@@ -102,9 +96,9 @@ export default function CmsShell({
 
           <Link
             className={`${styles.navItem} ${
-              isActive(pathname, '/cms/content') ? styles.active : ''
+              isActive(pathname, '/admin/cms/content') ? styles.active : ''
             }`}
-            href="/cms/content"
+            href="/admin/cms/content"
             onClick={() => setNavOpen(false)}
           >
             <span className={styles.dot} aria-hidden="true" />
@@ -113,9 +107,9 @@ export default function CmsShell({
 
           <Link
             className={`${styles.navItem} ${
-              isActive(pathname, '/cms/projects') ? styles.active : ''
+              isActive(pathname, '/admin/cms/projects') ? styles.active : ''
             }`}
-            href="/cms/projects"
+            href="/admin/cms/projects"
             onClick={() => setNavOpen(false)}
           >
             <span className={styles.dot} aria-hidden="true" />
@@ -123,10 +117,8 @@ export default function CmsShell({
           </Link>
 
           <Link
-            className={`${styles.navItem} ${
-              isActive(pathname, '/cms/media') ? styles.active : ''
-            }`}
-            href="/cms/media"
+            className={`${styles.navItem} ${isActive(pathname, '/admin/cms/media') ? styles.active : ''}`}
+            href="/admin/cms/media"
             onClick={() => setNavOpen(false)}
           >
             <span className={styles.dot} aria-hidden="true" />
@@ -134,10 +126,8 @@ export default function CmsShell({
           </Link>
 
           <Link
-            className={`${styles.navItem} ${
-              isActive(pathname, '/cms/users') ? styles.active : ''
-            }`}
-            href="/cms/users"
+            className={`${styles.navItem} ${isActive(pathname, '/admin/cms/users') ? styles.active : ''}`}
+            href="/admin/cms/users"
             onClick={() => setNavOpen(false)}
           >
             <span className={styles.dot} aria-hidden="true" />
@@ -146,9 +136,9 @@ export default function CmsShell({
 
           <Link
             className={`${styles.navItem} ${
-              isActive(pathname, '/cms/settings') ? styles.active : ''
+              isActive(pathname, '/admin/cms/settings') ? styles.active : ''
             }`}
-            href="/cms/settings"
+            href="/admin/cms/settings"
             onClick={() => setNavOpen(false)}
           >
             <span className={styles.dot} aria-hidden="true" />
@@ -159,13 +149,15 @@ export default function CmsShell({
         <div className={styles.sideFoot}>
           <div className={styles.userBox}>
             <div className={styles.userTop}>
-              <div className={styles.userEmail} title={user.email}>
-                {user.email}
+              <div className={styles.userName} title={user.username}>
+                {user.username}
               </div>
               <div className={styles.userRole}>{user.role}</div>
             </div>
 
-            <div className={styles.userHint}>Signed in</div>
+            <div className={styles.userEmail} title={user.email}>
+              {user.email}
+            </div>
           </div>
 
           <div className={styles.sideActions}>

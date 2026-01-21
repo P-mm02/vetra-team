@@ -2,16 +2,20 @@
 import { NextResponse } from 'next/server'
 import { destroySession, assertSameOrigin } from '@/lib/auth/session'
 
-export async function POST(req: Request) {
+export async function POST() {
+  // CSRF hardening: allow only same-origin POSTs
   try {
-    await assertSameOrigin(req)
+    await assertSameOrigin()
   } catch {
     return NextResponse.json(
       { ok: false, message: 'Bad origin' },
-      { status: 403 }
+      { status: 403 },
     )
   }
 
-  await destroySession()
+  // Destroy session + clear cookie (best-effort)
+  await destroySession().catch(() => null)
+
+  // Always return ok (don’t leak if session existed)
   return NextResponse.json({ ok: true })
 }

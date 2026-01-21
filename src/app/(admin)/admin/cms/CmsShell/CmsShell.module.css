@@ -1,4 +1,4 @@
-/* src/app/(admin)/cms/CmsShell/CmsShell.module.css */
+/* src/app/(admin)/admin/cms/CmsShell/CmsShell.module.css */
 /* Self-contained styling, no globals.css vars */
 
 .shell {
@@ -167,7 +167,8 @@
   gap: 0.2rem;
 }
 
-.userEmail {
+/* NEW: username (primary identity shown) */
+.userName {
   font-weight: 900;
   letter-spacing: 0.1px;
   overflow: hidden;
@@ -175,6 +176,7 @@
   white-space: nowrap;
 }
 
+/* role pill */
 .userRole {
   display: inline-flex;
   justify-self: start;
@@ -187,10 +189,14 @@
   font-size: 0.9rem;
 }
 
-.userHint {
+/* NEW: email (recovery/reference) */
+.userEmail {
   margin-top: 0.55rem;
   color: rgba(255, 255, 255, 0.62);
   font-size: 0.92rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .sideActions {

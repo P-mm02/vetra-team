@@ -14,6 +14,7 @@ type SessionDoc = {
   lastUsedAt: Date
 }
 
+// 1) Session schema (safe + TTL)
 const SessionSchema =
   mongoose.models.Session?.schema ||
   new mongoose.Schema(
@@ -25,58 +26,65 @@ const SessionSchema =
         index: true,
       },
 
-      // ✅ unique already creates an index (no need index: true)
+      // unique already creates an index
       tokenHash: { type: String, required: true, unique: true },
 
-      // ✅ TTL handled via schema.index() below
+      // TTL via schema.index() below
       expiresAt: { type: Date, required: true },
 
       lastUsedAt: { type: Date, required: true },
     },
-    { timestamps: { createdAt: true, updatedAt: false } }
+    { timestamps: { createdAt: true, updatedAt: false } },
   )
 
-// ✅ TTL index: add only once (avoid dev hot-reload duplicate warnings)
+// 2) TTL index added once (avoid hot-reload duplicates)
 const hasExpiresTtl = SessionSchema.indexes().some(
   (entry: [Record<string, unknown>, Record<string, unknown>]) => {
     const [keys, opts] = entry
     return keys.expiresAt === 1 && opts.expireAfterSeconds === 0
-  }
+  },
 )
-
 if (!hasExpiresTtl) {
   SessionSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 })
 }
 
-
+// 3) Model (avoid overwrite in dev)
 const Session =
   (mongoose.models.Session as mongoose.Model<SessionDoc>) ||
   mongoose.model<SessionDoc>('Session', SessionSchema)
 
+// 4) Cookie + secret config
 const COOKIE_NAME = process.env.SESSION_COOKIE_NAME || '__Host-vetra_session'
-const AUTH_SECRET = process.env.AUTH_SECRET || ''
+
+// Safety: require a strong secret
+const envSecret = process.env.AUTH_SECRET
+if (!envSecret || envSecret.length < 16) {
+  throw new Error('Missing/weak env: AUTH_SECRET (min 16 chars recommended)')
+}
+const AUTH_SECRET: string = envSecret
 
 const SESSION_DAYS = Number(process.env.SESSION_DAYS || 30)
 const SESSION_TTL_MS = SESSION_DAYS * 24 * 60 * 60 * 1000
 
-function sha256(input: string) {
-  return crypto.createHash('sha256').update(input).digest('hex')
-}
-
+// 5) Token helpers
 function makeToken() {
   return crypto.randomBytes(32).toString('base64url')
 }
 
+// Safer than sha256(token + "." + secret): use HMAC
 function tokenToHash(token: string) {
-  return sha256(`${token}.${AUTH_SECRET}`)
+  return crypto.createHmac('sha256', AUTH_SECRET).update(token).digest('hex')
 }
 
+// 6) Public type returned to app (username for login, email for recovery)
 export type CurrentUser = {
   id: string
+  username: string
   email: string
   role: string
 }
 
+// 7) Create session + set cookie
 export async function createSession(userId: string) {
   await connectMongo()
 
@@ -99,13 +107,14 @@ export async function createSession(userId: string) {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
-    path: '/',
+    path: '/', // required for __Host- cookies
     maxAge: Math.floor(SESSION_TTL_MS / 1000),
   })
 
   return { ok: true }
 }
 
+// 8) Destroy session + clear cookie
 export async function destroySession() {
   await connectMongo()
 
@@ -130,6 +139,7 @@ export async function destroySession() {
   return { ok: true }
 }
 
+// 9) Resolve current user from session cookie
 export async function getCurrentUser(): Promise<CurrentUser | null> {
   await connectMongo()
 
@@ -147,31 +157,54 @@ export async function getCurrentUser(): Promise<CurrentUser | null> {
 
   if (!session) return null
 
-  const user = await User.findById(session.userId).lean()
+  // Only read what you need
+  const user = await User.findById(session.userId)
+    .select({ username: 1, email: 1, role: 1, isActive: 1 })
+    .lean()
+
   if (!user || !user.isActive) {
     await Session.deleteOne({ tokenHash }).catch(() => null)
     return null
   }
 
+  // If username is required in your system, treat missing username as invalid session
+  if (!user.username) {
+    await Session.deleteOne({ tokenHash }).catch(() => null)
+    return null
+  }
+
+  // Best-effort last-used update
   await Session.updateOne({ tokenHash }, { $set: { lastUsedAt: now } }).catch(
-    () => null
+    () => null,
   )
 
   return {
     id: String(user._id),
+    username: String(user.username),
     email: String(user.email),
     role: String(user.role),
   }
 }
 
-export async function assertSameOrigin(req: Request) {
+/**
+ * 10) CSRF basic guard for mutation routes:
+ * - Compares Origin host to effective host.
+ * - Works behind proxies by preferring x-forwarded-host.
+ */
+export async function assertSameOrigin() {
   const h = await headers()
   const origin = h.get('origin')
-  const host = h.get('host')
+  const host = h.get('x-forwarded-host') || h.get('host') || undefined
 
   if (!origin || !host) return
 
-  const originHost = new URL(origin).host
+  let originHost = ''
+  try {
+    originHost = new URL(origin).host
+  } catch {
+    return
+  }
+
   if (originHost !== host) {
     throw new Error('Bad origin')
   }

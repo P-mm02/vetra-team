@@ -1,224 +1,40 @@
 // src/app/(site)/services/pageClient/pageClient.tsx
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
 import styles from './pageClient.module.css'
-import servicesData from './services.json'
-
-type PriceRange = { min: number; max?: number | null }
-
-type BaseType = {
-  id: string
-  title: string
-  subtitle: string
-  price: PriceRange
-  details: string[]
-}
-
-type Addon = {
-  id: string
-  title: string
-  desc: string
-  price: PriceRange
-  tag?: string
-}
-
-type ServicesJSON = {
-  baseTypes: BaseType[]
-  addonsSmall: Addon[]
-  addonsLarge: Addon[]
-}
-
-const DATA = servicesData as ServicesJSON
-const LS_KEY = 'vetra_services_calc_v3'
-
-function formatTHB(n: number) {
-  return new Intl.NumberFormat('th-TH').format(n)
-}
-
-function formatRange(r: PriceRange) {
-  const min = formatTHB(r.min)
-  const max = r.max == null ? null : formatTHB(r.max)
-  if (max == null) return `${min}+ บาท`
-  if (r.min === r.max) return `${min} บาท`
-  return `${min} – ${max} บาท`
-}
-
-function addRanges(a: PriceRange, b: PriceRange): PriceRange {
-  const min = a.min + b.min
-  const max =
-    a.max == null || b.max == null
-      ? null
-      : (a.max as number) + (b.max as number)
-  return { min, max }
-}
-
-function sumRanges(ranges: PriceRange[]) {
-  return ranges.reduce<PriceRange>((acc, r) => addRanges(acc, r), {
-    min: 0,
-    max: 0,
-  })
-}
-
-function uniq(ids: string[]) {
-  return Array.from(new Set(ids))
-}
+import { usePageClient } from './usePageClient'
 
 export default function PageClient() {
-  const [baseId, setBaseId] = useState<string>(DATA.baseTypes[0]?.id ?? '')
-  const [smallIds, setSmallIds] = useState<string[]>([])
-  const [largeIds, setLargeIds] = useState<string[]>([])
+  const {
+    DATA,
 
-  // ✅ open/close "more" state (per group)
-  const [openBaseId, setOpenBaseId] = useState<string | null>(null)
-  const [openSmallIds, setOpenSmallIds] = useState<string[]>([])
-  const [openLargeIds, setOpenLargeIds] = useState<string[]>([])
+    baseId,
+    setBaseId,
+    smallIds,
+    largeIds,
 
-  function toggleOpenBase(id: string) {
-    setOpenBaseId((prev) => (prev === id ? null : id))
-  }
-  function toggleOpenSmall(id: string) {
-    setOpenSmallIds((prev) =>
-      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
-    )
-  }
-  function toggleOpenLarge(id: string) {
-    setOpenLargeIds((prev) =>
-      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
-    )
-  }
+    openBaseId,
+    openSmallIds,
+    openLargeIds,
 
-  // restore
-  useEffect(() => {
-    try {
-      const raw = localStorage.getItem(LS_KEY)
-      if (!raw) return
-      const parsed = JSON.parse(raw) as {
-        baseId?: string
-        smallIds?: string[]
-        largeIds?: string[]
-      }
+    toggleOpenBase,
+    toggleOpenSmall,
+    toggleOpenLarge,
 
-      if (parsed.baseId && DATA.baseTypes.some((b) => b.id === parsed.baseId)) {
-        setBaseId(parsed.baseId)
-      }
+    toggleSmall,
+    toggleLarge,
+    resetAll,
 
-      if (Array.isArray(parsed.smallIds)) {
-        const ok = parsed.smallIds.filter((id) =>
-          DATA.addonsSmall.some((a) => a.id === id),
-        )
-        setSmallIds(uniq(ok))
-      }
+    base,
+    selectedSmall,
+    selectedLarge,
+    total,
+    breakdownText,
+    formatRange,
 
-      if (Array.isArray(parsed.largeIds)) {
-        const ok = parsed.largeIds.filter((id) =>
-          DATA.addonsLarge.some((a) => a.id === id),
-        )
-        setLargeIds(uniq(ok))
-      }
-    } catch {
-      // ignore
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  // persist
-  useEffect(() => {
-    try {
-      localStorage.setItem(
-        LS_KEY,
-        JSON.stringify({ baseId, smallIds, largeIds }),
-      )
-    } catch {
-      // ignore
-    }
-  }, [baseId, smallIds, largeIds])
-
-  const base = useMemo(
-    () => DATA.baseTypes.find((b) => b.id === baseId) ?? DATA.baseTypes[0],
-    [baseId],
-  )
-
-  const selectedSmall = useMemo(
-    () => DATA.addonsSmall.filter((a) => smallIds.includes(a.id)),
-    [smallIds],
-  )
-
-  const selectedLarge = useMemo(
-    () => DATA.addonsLarge.filter((a) => largeIds.includes(a.id)),
-    [largeIds],
-  )
-
-  const total = useMemo(() => {
-    const parts: PriceRange[] = []
-    if (base?.price) parts.push(base.price)
-    parts.push(...selectedSmall.map((x) => x.price))
-    parts.push(...selectedLarge.map((x) => x.price))
-    return sumRanges(parts)
-  }, [base, selectedSmall, selectedLarge])
-
-  function toggleSmall(id: string) {
-    setSmallIds((prev) =>
-      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
-    )
-  }
-
-  function toggleLarge(id: string) {
-    setLargeIds((prev) =>
-      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
-    )
-  }
-
-  function resetAll() {
-    setBaseId(DATA.baseTypes[0]?.id ?? '')
-    setSmallIds([])
-    setLargeIds([])
-
-    // optional: close all
-    setOpenBaseId(null)
-    setOpenSmallIds([])
-    setOpenLargeIds([])
-  }
-
-  const breakdownText = useMemo(() => {
-    const lines: string[] = []
-    lines.push(
-      `ประเภทเว็บไซต์: ${base?.title ?? '-'} (${formatRange(
-        base?.price ?? { min: 0, max: 0 },
-      )})`,
-    )
-
-    if (selectedSmall.length) {
-      lines.push('')
-      lines.push('ฟังก์ชันเพิ่มเติม (เล็ก):')
-      for (const a of selectedSmall)
-        lines.push(`- ${a.title} (${formatRange(a.price)})`)
-    }
-
-    if (selectedLarge.length) {
-      lines.push('')
-      lines.push('ฟังก์ชันเพิ่มเติม (ใหญ่):')
-      for (const a of selectedLarge)
-        lines.push(`- ${a.title} (${formatRange(a.price)})`)
-    }
-
-    lines.push('')
-    lines.push(`รวมโดยประมาณ: ${formatRange(total)}`)
-    lines.push('')
-    lines.push(
-      'หมายเหตุ: เป็นราคาโดยประมาณเท่านั้น ราคาจริงจะมีหักส่วนลด และแถมฟังก์ชันให้ โดยคิดตามความยากง่ายของงาน',
-    )
-
-    return lines.join('\n')
-  }, [base, selectedSmall, selectedLarge, total])
-
-  async function copyBrief() {
-    try {
-      await navigator.clipboard.writeText(breakdownText)
-    } catch {
-      // ignore
-    }
-  }
+    copied,
+    copyBrief,
+  } = usePageClient()
 
   return (
     <div className={styles.wrap}>
@@ -342,6 +158,7 @@ export default function PageClient() {
                     className={`${styles.more} ${isOpen ? styles.moreOpen : ''}`}
                   >
                     <div className={styles.moreSub}>{a.desc}</div>
+
                     {a.tag
                       ? a.tag
                           .split(',')
@@ -523,9 +340,12 @@ export default function PageClient() {
               type="button"
               className={styles.btnPrimary}
               onClick={copyBrief}
+              data-state={copied ? 'copied' : 'idle'}
+              aria-live="polite"
             >
-              คัดลอกสรุป
+              {copied ? 'คัดลอก \u00A0 ✓' : 'คัดลอกสรุป'}
             </button>
+
             <button
               type="button"
               className={styles.btnGhost}
@@ -555,14 +375,18 @@ export default function PageClient() {
           <div className={styles.totalDockLabel}>รวม</div>
           <div className={styles.totalDockValue}>{formatRange(total)}</div>
         </div>
+
         <div className={styles.actions}>
           <button
             type="button"
             className={styles.btnPrimary}
             onClick={copyBrief}
+            data-state={copied ? 'copied' : 'idle'}
+            aria-live="polite"
           >
-            คัดลอกสรุป
+            {copied ? 'คัดลอก \u00A0 ✓' : 'คัดลอกสรุป'}
           </button>
+
           <button type="button" className={styles.btnGhost} onClick={resetAll}>
             รีเซ็ต
           </button>

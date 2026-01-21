@@ -29,7 +29,7 @@ export default function CmsHomePage() {
       await fetch('/api/auth/logout', { method: 'POST' })
     } finally {
       // Always redirect to login
-      window.location.href = '/login'
+      window.location.href = '/admin/login'
     }
   }
 
@@ -87,7 +87,7 @@ export default function CmsHomePage() {
       </section>
 
       <section className={styles.grid} aria-label="CMS modules">
-        <Link className={styles.card} href="/cms/content">
+        <Link className={styles.card} href="/admin/cms/content">
           <div className={styles.cardTop}>
             <div className={styles.cardIcon} aria-hidden="true">
               ✦
@@ -97,10 +97,10 @@ export default function CmsHomePage() {
           <p className={styles.cardDesc}>
             Manage pages, sections, and reusable text blocks.
           </p>
-          <div className={styles.cardMeta}>/cms/content</div>
+          <div className={styles.cardMeta}>/admin/cms/content</div>
         </Link>
 
-        <Link className={styles.card} href="/cms/projects">
+        <Link className={styles.card} href="/admin/cms/projects">
           <div className={styles.cardTop}>
             <div className={styles.cardIcon} aria-hidden="true">
               ◈
@@ -110,10 +110,10 @@ export default function CmsHomePage() {
           <p className={styles.cardDesc}>
             Add and update project portfolio items with images and highlights.
           </p>
-          <div className={styles.cardMeta}>/cms/projects</div>
+          <div className={styles.cardMeta}>/admin/cms/projects</div>
         </Link>
 
-        <Link className={styles.card} href="/cms/media">
+        <Link className={styles.card} href="/admin/cms/media">
           <div className={styles.cardTop}>
             <div className={styles.cardIcon} aria-hidden="true">
               ⬡
@@ -123,10 +123,10 @@ export default function CmsHomePage() {
           <p className={styles.cardDesc}>
             Upload and organize images/files for your websites.
           </p>
-          <div className={styles.cardMeta}>/cms/media</div>
+          <div className={styles.cardMeta}>/admin/cms/media</div>
         </Link>
 
-        <Link className={styles.card} href="/cms/users">
+        <Link className={styles.card} href="/admin/cms/users">
           <div className={styles.cardTop}>
             <div className={styles.cardIcon} aria-hidden="true">
               ⦿
@@ -136,10 +136,10 @@ export default function CmsHomePage() {
           <p className={styles.cardDesc}>
             Manage admin accounts, roles, and permissions.
           </p>
-          <div className={styles.cardMeta}>/cms/users</div>
+          <div className={styles.cardMeta}>/admin/cms/users</div>
         </Link>
 
-        <Link className={styles.card} href="/cms/settings">
+        <Link className={styles.card} href="/admin/cms/settings">
           <div className={styles.cardTop}>
             <div className={styles.cardIcon} aria-hidden="true">
               ⚙
@@ -149,7 +149,7 @@ export default function CmsHomePage() {
           <p className={styles.cardDesc}>
             Configure site identity, SEO, and feature toggles.
           </p>
-          <div className={styles.cardMeta}>/cms/settings</div>
+          <div className={styles.cardMeta}>/admin/cms/settings</div>
         </Link>
 
         <a
@@ -177,7 +177,7 @@ export default function CmsHomePage() {
           <div className={styles.noteTitle}>Next steps</div>
           <ul className={styles.noteList}>
             <li>
-              Create the first module route: <code>/cms/content</code>
+              Create the first module route: <code>/admin/cms/content</code>
             </li>
             <li>Add role checks (admin/editor/viewer) in CMS layouts</li>
             <li>Add login rate limiting + audit logs for security</li>

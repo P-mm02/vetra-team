@@ -84,7 +84,7 @@
 }
 
 .pillTitle {
-  font-weight: 900;
+  font-weight: 600;
   color: var(--text);
   opacity: 0.95;
   line-height: 1.25;
@@ -293,6 +293,7 @@
 }
 
 .btnPrimary {
+  position: relative;
   background:
     radial-gradient(circle at 20% 20%, rgba(125, 231, 255, 0.18), transparent 55%),
     radial-gradient(circle at 90% 20%, rgba(190, 140, 255, 0.12), transparent 55%),
@@ -305,6 +306,29 @@
 .btnPrimary:hover {
   transform: translateY(-1px);
   border-color: rgba(125, 231, 255, 0.45);
+}
+
+.btnPrimary[data-state="copied"] {
+  border-color: rgba(90, 255, 180, 0.55);
+  transform: translateY(-1px);
+}
+
+/* Optional: tiny check bubble at right */
+.btnPrimary[data-state="copied"]::after {
+  content: "✓";
+  position: absolute;
+  right: 0.55rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  font-weight: 900;
+  font-size: 0.85rem;
+  background: rgba(90, 255, 180, 0.16);
+  border: 1px solid rgba(90, 255, 180, 0.35);
 }
 
 .btnGhost {
