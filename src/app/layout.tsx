@@ -7,8 +7,6 @@ const SITE_URL = (
   process.env.NEXT_PUBLIC_SITE_URL || 'https://vetra.asia'
 ).replace(/\/+$/, '')
 
-const OG_IMAGE = '/images/preview/vetra-preview.jpg'
-
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
@@ -16,14 +14,16 @@ export const viewport: Viewport = {
   colorScheme: 'dark',
 }
 
+const BASE_DESC =
+  'สร้างเว็บไซต์ ทันสมัย ระดับพรีเมี่ยม ด้วย Next.js เว็บไซต์เพื่อธุรกิจ ดีไซน์สวยงาม ทำ SEO เต็มระบบ AI และ Google ค้นหาเจอง่าย เพิ่มยอดขายได้มาก'
+
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
     default: 'VETRA',
-    template: '%s VETRA',
+    template: '%s | VETRA',
   },
-  description:
-    'สร้างเว็บไซต์ ทันสมัย ระดับพรีเมี่ยม ด้วย Next.js เว็บไซต์เพื่อธุรกิจ ดีไซน์สวยงาม ทำ SEO เต็มระบบ AI และ Google ค้นหาเจอง่าย เพิ่มยอดขายได้มาก',
+  description: BASE_DESC,
   applicationName: 'VETRA',
   robots: {
     index: true,
@@ -44,24 +44,15 @@ export const metadata: Metadata = {
     url: '/',
     siteName: 'VETRA',
     title: 'VETRA',
-    description:
-      'สร้างเว็บไซต์ ทันสมัย ระดับพรีเมี่ยม ด้วย Next.js เว็บไซต์เพื่อธุรกิจ ดีไซน์สวยงาม ทำ SEO เต็มระบบ AI และ Google ค้นหาเจอง่าย เพิ่มยอดขายได้มาก',
+    description: BASE_DESC,
     locale: 'th_TH',
-    images: [
-      {
-        url: OG_IMAGE,
-        width: 1200,
-        height: 630,
-        alt: 'Wee | Freelance',
-      },
-    ],
+    // ❌ DO NOT set images here (set per page)
   },
   twitter: {
     card: 'summary_large_image',
     title: 'VETRA',
-    description:
-      'สร้างเว็บไซต์ ทันสมัย ระดับพรีเมี่ยม ด้วย Next.js เว็บไซต์เพื่อธุรกิจ ดีไซน์สวยงาม ทำ SEO เต็มระบบ AI และ Google ค้นหาเจอง่าย เพิ่มยอดขายได้มาก',
-    images: [OG_IMAGE],
+    description: BASE_DESC,
+    // ❌ DO NOT set images here (set per page)
   },
   icons: {
     icon: [
@@ -73,8 +64,6 @@ export const metadata: Metadata = {
     apple: [{ url: '/apple-touch-icon.png', sizes: '180x180' }],
   },
 }
-
-
 
 export default function RootLayout({
   children,
@@ -88,28 +77,7 @@ export default function RootLayout({
           href="https://fonts.gstatic.com"
           crossOrigin="anonymous"
         />
-
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-        <link
-          rel="icon"
-          href="/favicon-32x32.png"
-          type="image/png"
-          sizes="32x32"
-        />
-        <link
-          rel="icon"
-          href="/favicon-16x16.png"
-          type="image/png"
-          sizes="16x16"
-        />
-        <link
-          rel="apple-touch-icon"
-          href="/apple-touch-icon.png"
-          sizes="180x180"
-        />
       </head>
-
       <body>{children}</body>
     </html>
   )
