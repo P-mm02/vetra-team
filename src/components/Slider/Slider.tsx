@@ -1,16 +1,20 @@
+// src/components/Slider/Slider.tsx
 'use client'
 
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { flushSync } from 'react-dom'
 import Image from 'next/image'
-import './Slider.css'
 
-export type Slide = {
-  src: string
-  alt: string
-  caption: string
-  priority?: boolean
-}
+import styles from './Slider.module.css'
+import Modal from './modal/Modal'
+
+import {
+  type Slide,
+  clampTrackIndex,
+  getLoopSlides,
+  getRealIndex,
+  isInteractiveTarget,
+} from './function'
 
 type SliderProps = {
   slides: Slide[]
@@ -26,26 +30,24 @@ export default function Slider({
   const total = slides.length
   const isLoop = total > 1
 
-  const loopSlides = useMemo(() => {
-    if (!isLoop) return slides
-    return [slides[total - 1], ...slides, slides[0]]
-  }, [slides, total, isLoop])
+  const loopSlides = useMemo(() => getLoopSlides(slides), [slides])
 
+  // track index (loop: 0..total+1, non-loop: 0..total-1)
   const [index, setIndex] = useState(isLoop ? 1 : 0)
+
   const [isHovering, setIsHovering] = useState(false)
 
-  // swipe/drag
+  // drag
   const [isDragging, setIsDragging] = useState(false)
   const [dragPx, setDragPx] = useState(0)
   const [enableTransition, setEnableTransition] = useState(true)
 
   // modal
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [modalIndex, setModalIndex] = useState(0) // real slide index (0..total-1)
+  const [modalIndex, setModalIndex] = useState(0) // real index 0..total-1
 
   const rootRef = useRef<HTMLDivElement | null>(null)
   const viewportRef = useRef<HTMLDivElement | null>(null)
-  const closeBtnRef = useRef<HTMLButtonElement | null>(null)
 
   // drag refs (no re-render)
   const pointerIdRef = useRef<number | null>(null)
@@ -69,12 +71,37 @@ export default function Slider({
     isLoopRef.current = isLoop
   }, [isLoop])
 
-  const isInteractiveTarget = (t: EventTarget | null) => {
-    if (!(t instanceof HTMLElement)) return false
-    return Boolean(
-      t.closest('button, a, input, textarea, select, [role="button"]')
-    )
-  }
+  // ✅ FIX: prevent index from ever going out of valid range (loop bug)
+  const next = useCallback(() => {
+    if (total <= 1) return
+    setIndex((v) => clampTrackIndex(v + 1, total, isLoop))
+  }, [total, isLoop])
+
+  const prev = useCallback(() => {
+    if (total <= 1) return
+    setIndex((v) => clampTrackIndex(v - 1, total, isLoop))
+  }, [total, isLoop])
+
+  const nextModal = useCallback(() => {
+    if (total <= 1) return
+    setModalIndex((v) => (v + 1) % total)
+  }, [total])
+
+  const prevModal = useCallback(() => {
+    if (total <= 1) return
+    setModalIndex((v) => (v - 1 + total) % total)
+  }, [total])
+
+  const openModal = useCallback(
+    (realIdx: number) => {
+      if (total <= 0) return
+      setModalIndex(Math.min(Math.max(realIdx, 0), total - 1))
+      setIsModalOpen(true)
+    },
+    [total],
+  )
+
+  const closeModal = useCallback(() => setIsModalOpen(false), [])
 
   // Reset index cleanly when slide set changes
   useEffect(() => {
@@ -85,44 +112,16 @@ export default function Slider({
       setIsDragging(false)
       didDragRef.current = false
 
-      // keep modal index safe
       setModalIndex((v) => {
         if (total <= 0) return 0
         return Math.min(Math.max(v, 0), total - 1)
       })
     })
+
     requestAnimationFrame(() => {
       requestAnimationFrame(() => setEnableTransition(true))
     })
   }, [isLoop, total])
-
-  const next = () => {
-    if (total <= 1) return
-    setIndex((v) => v + 1)
-  }
-
-  const prev = () => {
-    if (total <= 1) return
-    setIndex((v) => v - 1)
-  }
-
-  const nextModal = () => {
-    if (total <= 1) return
-    setModalIndex((v) => (v + 1) % total)
-  }
-
-  const prevModal = () => {
-    if (total <= 1) return
-    setModalIndex((v) => (v - 1 + total) % total)
-  }
-
-  const openModal = (realIdx: number) => {
-    if (total <= 0) return
-    setModalIndex(Math.min(Math.max(realIdx, 0), total - 1))
-    setIsModalOpen(true)
-  }
-
-  const closeModal = () => setIsModalOpen(false)
 
   // Keyboard for slider root
   useEffect(() => {
@@ -131,7 +130,6 @@ export default function Slider({
 
     const onKeyDown = (e: KeyboardEvent) => {
       if (isModalOpen) return
-
       if (e.key === 'ArrowLeft') {
         e.preventDefault()
         prev()
@@ -144,10 +142,9 @@ export default function Slider({
 
     el.addEventListener('keydown', onKeyDown)
     return () => el.removeEventListener('keydown', onKeyDown)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [total, isModalOpen])
+  }, [isModalOpen, next, prev])
 
-  // ✅ Fix: when tab becomes visible again, normalize index so it never goes huge
+  // Normalize when tab becomes visible again
   useEffect(() => {
     const onVisibility = () => {
       if (document.hidden) return
@@ -167,12 +164,8 @@ export default function Slider({
           return
         }
 
-        if (loop) {
-          const normalized = (((current - 1) % t) + t) % t // 0..t-1
-          setIndex(normalized + 1) // 1..t
-        } else {
-          setIndex(Math.min(Math.max(current, 0), t - 1))
-        }
+        // clamp to safe range so we never keep a huge number
+        setIndex(clampTrackIndex(current, t, loop))
       })
 
       requestAnimationFrame(() => {
@@ -199,12 +192,14 @@ export default function Slider({
 
     const id = window.setInterval(() => next(), intervalMs)
     return () => window.clearInterval(id)
-  }, [isHovering, isDragging, isModalOpen, intervalMs, total])
+  }, [isHovering, isDragging, isModalOpen, intervalMs, total, next])
 
-  const onTransitionEnd = () => {
+  const onTransitionEnd = useCallback(() => {
     if (!isLoop) return
+    if (total <= 1) return
 
-    if (index === 0) {
+    // ✅ handle boundary safely (>= / <=) so we never get stuck
+    if (index <= 0) {
       flushSync(() => {
         setEnableTransition(false)
         setIndex(total)
@@ -214,7 +209,7 @@ export default function Slider({
       })
     }
 
-    if (index === total + 1) {
+    if (index >= total + 1) {
       flushSync(() => {
         setEnableTransition(false)
         setIndex(1)
@@ -223,16 +218,13 @@ export default function Slider({
         requestAnimationFrame(() => setEnableTransition(true))
       })
     }
-  }
+  }, [index, isLoop, total])
 
-  // --- Pointer (touch/mouse) drag handlers ---
+  // --- Pointer drag handlers ---
   const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
     if (total <= 1) return
     if (isModalOpen) return
-
-    // ✅ don't start dragging when clicking UI controls
     if (isInteractiveTarget(e.target)) return
-
     if (e.button !== 0 && e.pointerType === 'mouse') return
 
     const el = viewportRef.current
@@ -304,56 +296,16 @@ export default function Slider({
     endDrag(e.pointerId)
   }
 
-  // Modal: lock scroll + focus close button
-  useEffect(() => {
-    if (!isModalOpen) return
-
-    const prevOverflow = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
-
-    requestAnimationFrame(() => {
-      closeBtnRef.current?.focus()
-    })
-
-    return () => {
-      document.body.style.overflow = prevOverflow
-    }
-  }, [isModalOpen])
-
-  // Modal: keyboard controls
-  useEffect(() => {
-    if (!isModalOpen) return
-
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        e.preventDefault()
-        closeModal()
-      }
-      if (e.key === 'ArrowLeft') {
-        e.preventDefault()
-        prevModal()
-      }
-      if (e.key === 'ArrowRight') {
-        e.preventDefault()
-        nextModal()
-      }
-    }
-
-    window.addEventListener('keydown', onKeyDown)
-    return () => window.removeEventListener('keydown', onKeyDown)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isModalOpen, total])
-
   if (total === 0) return null
 
-  const realIndex = isLoop ? (index - 1 + total) % total : index
+  const realIndex = getRealIndex(index, total, isLoop)
   const modalSlide = slides[modalIndex]
 
   return (
     <>
       <div
         ref={rootRef}
-        className="slider"
+        className={styles.root}
         tabIndex={0}
         role="region"
         aria-roledescription="carousel"
@@ -363,29 +315,27 @@ export default function Slider({
       >
         <div
           ref={viewportRef}
-          className="slider__viewport"
+          className={styles.viewport}
           onPointerDown={onPointerDown}
           onPointerMove={onPointerMove}
           onPointerUp={onPointerUp}
           onPointerCancel={onPointerCancel}
         >
           <div
-            className={`slider__track ${
-              enableTransition ? '' : 'slider__track--no-anim'
+            className={`${styles.track} ${
+              enableTransition ? '' : styles.trackNoAnim
             }`}
             style={{
-              transform: `translate3d(calc(${
-                -index * 100
-              }% + ${dragPx}px), 0, 0)`,
+              transform: `translate3d(calc(${-index * 100}% + ${dragPx}px), 0, 0)`,
             }}
             onTransitionEnd={onTransitionEnd}
           >
             {loopSlides.map((s, i) => (
-              <div className="slider__slide" key={`${s.src}-${i}`}>
-                <figure className="slider__figure">
-                  <div className="slider__media">
+              <div className={styles.slide} key={`${s.src}-${i}`}>
+                <figure className={styles.figure}>
+                  <div className={styles.media}>
                     <Image
-                      className="slider__img"
+                      className={styles.img}
                       src={s.src}
                       alt={s.alt}
                       fill
@@ -395,7 +345,7 @@ export default function Slider({
                     />
                   </div>
 
-                  <figcaption className="slider__caption">
+                  <figcaption className={styles.caption}>
                     <span>{s.caption}</span>
                   </figcaption>
                 </figure>
@@ -405,7 +355,7 @@ export default function Slider({
 
           <button
             type="button"
-            className="slider__btn slider__btn--left"
+            className={`${styles.btn} ${styles.btnLeft}`}
             onPointerDown={(e) => e.stopPropagation()}
             onClick={(e) => {
               e.stopPropagation()
@@ -427,7 +377,7 @@ export default function Slider({
 
           <button
             type="button"
-            className="slider__btn slider__btn--right"
+            className={`${styles.btn} ${styles.btnRight}`}
             onPointerDown={(e) => e.stopPropagation()}
             onClick={(e) => {
               e.stopPropagation()
@@ -447,10 +397,9 @@ export default function Slider({
             </svg>
           </button>
 
-          {/* ✅ Zoom button (doesn't break swipe) */}
           <button
             type="button"
-            className="slider__zoom"
+            className={styles.zoom}
             onPointerDown={(e) => e.stopPropagation()}
             onClick={(e) => {
               e.stopPropagation()
@@ -489,7 +438,7 @@ export default function Slider({
         </div>
 
         <div
-          className="slider__dots"
+          className={styles.dots}
           role="tablist"
           aria-label="Slide navigation"
         >
@@ -499,7 +448,7 @@ export default function Slider({
               <button
                 key={`dot-${i}`}
                 type="button"
-                className={`slider__dot ${active ? 'is-active' : ''}`}
+                className={`${styles.dot} ${active ? styles.dotActive : ''}`}
                 onPointerDown={(e) => e.stopPropagation()}
                 onClick={() => setIndex(isLoop ? i + 1 : i)}
                 aria-label={`Go to slide ${i + 1}: ${s.caption}`}
@@ -510,124 +459,20 @@ export default function Slider({
           })}
         </div>
 
-        <p className="slider__sr" aria-live="polite">
+        <p className={styles.sr} aria-live="polite">
           Showing slide {realIndex + 1} of {total}
         </p>
       </div>
 
-      {isModalOpen && (
-        <div
-          className="slider__modal"
-          role="dialog"
-          aria-modal="true"
-          aria-label="Image preview"
-          onMouseDown={(e) => {
-            if (e.target === e.currentTarget) closeModal()
-          }}
-        >
-          <div className="slider__modalCard">
-            <button
-              ref={closeBtnRef}
-              type="button"
-              className="slider__modalClose"
-              onClick={closeModal}
-              aria-label="Close"
-            >
-              <svg
-                viewBox="0 0 24 24"
-                width="22"
-                height="22"
-                aria-hidden="true"
-              >
-                <path
-                  d="M18 6L6 18M6 6l12 12"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.4"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </button>
-
-            <div className="slider__modalMedia">
-              <Image
-                src={modalSlide.src}
-                alt={modalSlide.alt}
-                fill
-                sizes="(max-width: 768px) 96vw, 1100px"
-                className="slider__modalImg"
-                priority
-                draggable={false}
-              />
-            </div>
-
-            <div className="slider__modalBar">
-              <div className="slider__modalCaption">
-                <div className="slider__modalTitle">{modalSlide.caption}</div>
-                <div className="slider__modalMeta">
-                  {modalIndex + 1} / {total}
-                </div>
-              </div>
-
-              <div className="slider__modalControls">
-                <button
-                  type="button"
-                  className="slider__modalNav"
-                  onClick={prevModal}
-                  aria-label="Previous image"
-                  disabled={total <= 1}
-                >
-                  <svg
-                    viewBox="0 0 24 24"
-                    width="22"
-                    height="22"
-                    aria-hidden="true"
-                  >
-                    <path
-                      d="M15 18l-6-6 6-6"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2.4"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </button>
-
-                <button
-                  type="button"
-                  className="slider__modalNav"
-                  onClick={nextModal}
-                  aria-label="Next image"
-                  disabled={total <= 1}
-                >
-                  <svg
-                    viewBox="0 0 24 24"
-                    width="22"
-                    height="22"
-                    aria-hidden="true"
-                  >
-                    <path
-                      d="M9 6l6 6-6 6"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2.4"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </button>
-              </div>
-            </div>
-
-            <div className="slider__modalHint">
-              Tip: Press <kbd>Esc</kbd> to close, <kbd>←</kbd>/<kbd>→</kbd> to
-              navigate.
-            </div>
-          </div>
-        </div>
-      )}
+      <Modal
+        isOpen={isModalOpen}
+        slide={modalSlide}
+        index={modalIndex}
+        total={total}
+        onClose={closeModal}
+        onPrev={prevModal}
+        onNext={nextModal}
+      />
     </>
   )
 }

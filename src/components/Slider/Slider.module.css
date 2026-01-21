@@ -1,0 +1,200 @@
+/* src/components/Slider/Slider.module.css */
+
+.root {
+  width: 100%;
+  margin: 0 auto;
+  outline: none;
+}
+
+.root:focus-visible {
+  outline: 3px solid rgba(56, 189, 248, 0.55);
+  outline-offset: 6px;
+  border-radius: 18px;
+}
+
+.viewport {
+  position: relative;
+  overflow: hidden;
+  border-radius: 18px;
+  border: 1px solid var(--border);
+  background: rgba(0, 0, 0, 0.2);
+
+  touch-action: pan-y;
+  cursor: grab;
+}
+
+.viewport:active {
+  cursor: grabbing;
+}
+
+.track {
+  display: flex;
+  width: 100%;
+  transform: translate3d(0, 0, 0);
+  transition: transform 320ms ease;
+  will-change: transform;
+  user-select: none;
+}
+
+.trackNoAnim {
+  transition: none !important;
+}
+
+.slide {
+  flex: 0 0 100%;
+}
+
+.figure {
+  margin: 0;
+  display: grid;
+  grid-template-rows: 1fr auto;
+}
+
+.media {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  width: 100%;
+}
+
+.img {
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.caption {
+  padding: 0.85rem 1rem;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  text-align: center;
+  background: rgba(0, 0, 0, 0.12);
+}
+
+.btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+
+  width: 48px;
+  height: 48px;
+  border-radius: 999px;
+
+  display: grid;
+  place-items: center;
+
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(179, 167, 167, 0.32);
+  backdrop-filter: blur(1px);
+  color: rgba(255, 255, 255, 0.95);
+
+  cursor: pointer;
+  transition: transform 160ms ease, background 160ms ease, border-color 160ms ease;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .btn:hover {
+    transform: translateY(-50%) translateY(-1px);
+    border-color: rgba(255, 255, 255, 0.26);
+    backdrop-filter: blur(4px);
+  }
+}
+
+.btn:active {
+  transform: translateY(-50%) scale(0.98);
+}
+
+.btn:focus-visible {
+  outline: 3px solid rgba(56, 189, 248, 0.55);
+  outline-offset: 3px;
+}
+
+.btnLeft {
+  left: 12px;
+}
+
+.btnRight {
+  right: 12px;
+}
+
+.zoom {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  z-index: 3;
+
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+
+  display: grid;
+  place-items: center;
+
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(0, 0, 0, 0.32);
+  backdrop-filter: blur(8px);
+  color: rgba(255, 255, 255, 0.95);
+
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.zoom:hover {
+  background: rgba(0, 0, 0, 0.48);
+}
+
+.zoom:focus-visible {
+  outline: 3px solid rgba(56, 189, 248, 0.55);
+  outline-offset: 3px;
+}
+
+.dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  padding: 0 0 1rem 0;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.18);
+  cursor: pointer;
+  transition: transform 160ms ease, background 160ms ease, border-color 160ms ease;
+}
+
+.dot:hover {
+  transform: translateY(-1px);
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+.dotActive {
+  background: rgba(56, 189, 248, 0.9);
+  border-color: rgba(56, 189, 248, 0.9);
+}
+
+.sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track {
+    transition: none !important;
+  }
+  .btn,
+  .dot {
+    transition: none !important;
+  }
+}
