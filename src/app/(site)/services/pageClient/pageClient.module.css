@@ -66,11 +66,6 @@
   transition: transform var(--t-fast), border-color var(--t-fast), background var(--t-fast);
 }
 
-.pill:hover {
-  transform: translateY(-2px);
-  border-color: rgba(125, 231, 255, 0.6);
-}
-
 .pillOn {
   border-color: rgba(125, 231, 255, 0.68);
   background: linear-gradient(
@@ -158,9 +153,7 @@
   background-color: rgba(66, 66, 66, 0.2);
 }
 
-.moreBtn:hover {
-  background-color: rgba(66, 66, 66, 0.6);
-}
+
 
 .moreBtnOpen {
   background-color: rgba(66, 66, 66, 0.55);
@@ -176,7 +169,22 @@
   transform-origin: center;
 }
 
-.moreBtn:hover .moreBtnArrow {
+@media (hover: hover) and (pointer: fine) {
+  .pill:hover {
+    transform: translateY(-2px);
+    border-color: rgba(125, 231, 255, 0.6);
+  }
+
+  .moreBtn:hover {
+    background-color: rgba(66, 66, 66, 0.6);
+  }
+}
+
+.pill:active { transform: translateY(-1px); }
+.moreBtn:active { background-color: rgba(66, 66, 66, 0.6); }
+
+
+.moreBtn:hover .moreBtnArrow,.moreBtn:active .moreBtnArrow {
   opacity: 0.9;
 }
 
