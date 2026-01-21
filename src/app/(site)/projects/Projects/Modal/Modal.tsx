@@ -3,7 +3,8 @@
 
 import { useEffect, useRef } from 'react'
 import Image from 'next/image'
-import Slider, { type Slide } from '@/components/Slider/Slider'
+import Slider from '@/components/Slider/Slider'
+import { type Slide } from '@/components/Slider/function'
 import styles from './Modal.module.css'
 
 export type ProjectItem = {

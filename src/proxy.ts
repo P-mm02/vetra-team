@@ -1,4 +1,4 @@
-// src/middleware.ts
+// src/proxy.ts
 import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 
@@ -11,13 +11,11 @@ function toLogin(req: NextRequest) {
   return url
 }
 
-export function middleware(req: NextRequest) {
+export function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl
 
-  // Always allow admin login
   if (pathname.startsWith('/admin/login')) return NextResponse.next()
 
-  // Protect admin CMS
   if (pathname.startsWith('/admin/cms')) {
     const token = req.cookies.get(COOKIE_NAME)?.value
     if (!token) return NextResponse.redirect(toLogin(req))
