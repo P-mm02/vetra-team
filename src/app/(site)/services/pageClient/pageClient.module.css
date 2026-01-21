@@ -62,7 +62,7 @@
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0rem;
   transition: transform var(--t-fast), border-color var(--t-fast), background var(--t-fast);
 }
 
@@ -93,7 +93,6 @@
 
 /* ✅ details collapsible (smooth open/close) */
 .more {
-  padding: 0;
   overflow: hidden;
   max-height: 0;
   opacity: 0;
@@ -115,6 +114,7 @@
 }
 
 .moreSub {
+  margin-top: 0.5rem;
   color: var(--muted);
   line-height: 1.55;
   font-size: 0.9rem;
