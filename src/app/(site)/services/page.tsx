@@ -4,10 +4,30 @@ import PageClient from './pageClient/pageClient'
 import styles from './page.module.css'
 import Link from 'next/link'
 
+const TH_DESC =
+  'ประเมินราคาเว็บไซต์และเว็บแอป เลือกประเภทบริการและฟังก์ชันเสริม ระบบจะคำนวณราคารวมให้โดยอัตโนมัติ (ราคาโดยประมาณ)'
+
 export const metadata: Metadata = {
-  title: 'Services | Vetra',
-  description:
-    'Estimate website and web app pricing by selecting service type and add-on features.',
+  title: 'Services |',
+  description: TH_DESC,
+  openGraph: {
+    title: 'Services | VETRA',
+    description: TH_DESC,
+    images: [
+      {
+        url: '/images/preview/services-og.png',
+        width: 1200,
+        height: 630,
+        alt: 'ประเมินราคาเว็บไซต์ | Vetra',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Services | Vetra',
+    description: TH_DESC,
+    images: ['/images/preview/services-og.png'],
+  },
 }
 
 export default function ServicesPage() {
