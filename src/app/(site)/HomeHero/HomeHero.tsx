@@ -1,7 +1,6 @@
 // src/app/HomeHero/HomeHero.tsx
 import Link from 'next/link'
 import styles from './HomeHero.module.css'
-import SmoothScrollLink from '@/components/ui/SmoothScrollLink/SmoothScrollLink'
 import Image from 'next/image'
 
 const highlights = [
@@ -41,9 +40,9 @@ export default function HomeHero() {
           </div>
 
           <div className={styles.actions}>
-            <SmoothScrollLink className={styles.btnPrimary} href="/contact">
-              เริ่มต้นโปรเจกต์
-            </SmoothScrollLink>
+            <Link className={styles.btnPrimary} href="/projects">
+              ผลงานตัวอย่าง
+            </Link>
 
             <Link className={styles.btnGhost} href="/services">
               ดูบริการทั้งหมด
