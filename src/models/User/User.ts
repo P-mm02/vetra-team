@@ -1,7 +1,7 @@
 // src/models/User/User.ts
 import mongoose, { Schema, type InferSchemaType, type Model } from 'mongoose'
 
-export type UserRole = 'owner' | 'admin' | 'editor' | 'viewer'
+export type UserRole = 'dev' | 'admin' | 'editor' | 'viewer'
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const USERNAME_REGEX = /^[a-z0-9](?:[a-z0-9_\.]*[a-z0-9])?$/i // letters/numbers/._ , no leading/trailing symbol
@@ -52,7 +52,7 @@ const UserSchema = new Schema(
       type: String,
       required: true,
       default: 'viewer',
-      enum: ['owner', 'admin', 'editor', 'viewer'],
+      enum: ['dev', 'admin', 'editor', 'viewer'],
     },
 
     // Account state

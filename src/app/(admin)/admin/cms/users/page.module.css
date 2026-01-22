@@ -1,0 +1,203 @@
+/* src/app/(admin)/admin/cms/users/page.module.css */
+/* Self-contained, safe for reuse across projects */
+
+.page {
+  width: min(1200px, 100%);
+  margin: 0 auto;
+  display: grid;
+  gap: 0.9rem;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.2rem 0;
+}
+
+.headerText {
+  min-width: 0;
+}
+
+.h1 {
+  margin: 0;
+  font-family: "Playfair Display", "Prompt", "Noto Sans Thai", serif;
+  font-weight: 900;
+  letter-spacing: 0.2px;
+  font-size: 1.4rem;
+  line-height: 1.15;
+}
+
+.sub {
+  margin: 0.4rem 0 0;
+  color: rgba(255, 255, 255, 0.72);
+  line-height: 1.6;
+}
+
+.headerActions {
+  display: flex;
+  gap: 0.6rem;
+  flex: 0 0 auto;
+}
+
+.btn {
+  border-radius: 999px;
+  padding: 0.62rem 0.9rem;
+  font-weight: 900;
+  cursor: pointer;
+  letter-spacing: 0.2px;
+  border: 1px solid rgba(125, 231, 255, 0.28);
+  background: linear-gradient(
+    180deg,
+    rgba(125, 231, 255, 0.18),
+    rgba(190, 140, 255, 0.12)
+  );
+  color: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 14px 44px rgba(0, 0, 0, 0.35);
+  transition: transform 140ms ease, border-color 140ms ease, box-shadow 140ms ease;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.panel {
+  border-radius: 26px;
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  background: rgba(14, 12, 30, 0.5);
+  box-shadow: 0 14px 44px rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+}
+
+.tableWrap {
+  overflow: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  min-width: 980px;
+}
+
+.table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  text-align: left;
+  font-size: 0.9rem;
+  letter-spacing: 0.2px;
+  padding: 0.85rem 0.9rem;
+  color: rgba(255, 255, 255, 0.78);
+  background: rgba(14, 12, 30, 0.7);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.table tbody td {
+  padding: 0.8rem 0.9rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  vertical-align: middle;
+}
+
+.table tbody tr:hover td {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.empty {
+  padding: 1.2rem 0.9rem !important;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.userLink {
+  display: grid;
+  gap: 0.15rem;
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.92);
+  min-width: 0;
+}
+
+.userName {
+  font-weight: 900;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.userId {
+  color: rgba(255, 255, 255, 0.55);
+  font-weight: 800;
+  font-size: 0.82rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
+  font-size: 0.95em;
+}
+
+.rolePill {
+  display: inline-flex;
+  border-radius: 999px;
+  padding: 0.22rem 0.6rem;
+  border: 1px solid rgba(190, 140, 255, 0.22);
+  background: rgba(190, 140, 255, 0.1);
+  color: rgba(255, 255, 255, 0.86);
+  font-weight: 900;
+  font-size: 0.9rem;
+}
+
+.statusPill {
+  display: inline-flex;
+  border-radius: 999px;
+  padding: 0.22rem 0.6rem;
+  font-weight: 900;
+  font-size: 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.statusOn {
+  border-color: rgba(90, 255, 170, 0.25);
+  background: rgba(90, 255, 170, 0.08);
+}
+
+.statusOff {
+  border-color: rgba(255, 120, 150, 0.25);
+  background: rgba(255, 120, 150, 0.08);
+}
+
+.foot {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.85rem 0.9rem;
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 0.92rem;
+}
+
+.footDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: radial-gradient(
+    circle at 30% 30%,
+    rgba(125, 231, 255, 0.9),
+    rgba(190, 140, 255, 0.55)
+  );
+  box-shadow: 0 0 0 3px rgba(125, 231, 255, 0.08);
+}
+
+@media (max-width: 720px) {
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

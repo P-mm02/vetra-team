@@ -1,0 +1,201 @@
+/* src/app/(admin)/admin/cms/users/[id]/page.module.css */
+
+.page {
+  width: min(1200px, 100%);
+  margin: 0 auto;
+  display: grid;
+  gap: 0.9rem;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.headerLeft {
+  min-width: 0;
+}
+
+.back {
+  display: inline-flex;
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.78);
+  font-weight: 900;
+  margin-bottom: 0.5rem;
+}
+
+.back:hover {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.h1 {
+  margin: 0;
+  font-family: "Playfair Display", "Prompt", "Noto Sans Thai", serif;
+  font-weight: 900;
+  letter-spacing: 0.2px;
+  font-size: 1.5rem;
+  line-height: 1.15;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sub {
+  margin: 0.45rem 0 0;
+  color: rgba(255, 255, 255, 0.72);
+  line-height: 1.6;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.headerRight {
+  display: flex;
+  gap: 0.6rem;
+  flex: 0 0 auto;
+}
+
+.rolePill {
+  display: inline-flex;
+  border-radius: 999px;
+  padding: 0.22rem 0.6rem;
+  border: 1px solid rgba(190, 140, 255, 0.22);
+  background: rgba(190, 140, 255, 0.1);
+  color: rgba(255, 255, 255, 0.86);
+  font-weight: 900;
+  font-size: 0.9rem;
+}
+
+.statusPill {
+  display: inline-flex;
+  border-radius: 999px;
+  padding: 0.22rem 0.6rem;
+  font-weight: 900;
+  font-size: 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.statusOn {
+  border-color: rgba(90, 255, 170, 0.25);
+  background: rgba(90, 255, 170, 0.08);
+}
+
+.statusOff {
+  border-color: rgba(255, 120, 150, 0.25);
+  background: rgba(255, 120, 150, 0.08);
+}
+
+.ghostBtn,
+.primaryBtn {
+  border-radius: 999px;
+  padding: 0.62rem 0.9rem;
+  font-weight: 900;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  letter-spacing: 0.2px;
+  transition: transform 140ms ease, border-color 140ms ease, box-shadow 140ms ease;
+}
+
+.ghostBtn {
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.primaryBtn {
+  border: 1px solid rgba(125, 231, 255, 0.28);
+  background: linear-gradient(
+    180deg,
+    rgba(125, 231, 255, 0.18),
+    rgba(190, 140, 255, 0.12)
+  );
+  color: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 14px 44px rgba(0, 0, 0, 0.35);
+}
+
+.ghostBtn:disabled,
+.primaryBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+
+.card {
+  border-radius: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(14, 12, 30, 0.45);
+  padding: 0.9rem 0.95rem;
+}
+
+.k {
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 800;
+  font-size: 0.92rem;
+}
+
+.v {
+  margin-top: 0.35rem;
+  font-weight: 900;
+  letter-spacing: 0.15px;
+}
+
+.vMono {
+  margin-top: 0.35rem;
+  font-weight: 900;
+  letter-spacing: 0.1px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.panel {
+  border-radius: 26px;
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  background: rgba(14, 12, 30, 0.35);
+  padding: 1rem 1.05rem;
+}
+
+.h2 {
+  margin: 0;
+  font-family: "Playfair Display", "Prompt", "Noto Sans Thai", serif;
+  font-weight: 900;
+  letter-spacing: 0.2px;
+  font-size: 1.15rem;
+}
+
+.list {
+  margin: 0.65rem 0 0;
+  padding-left: 1.2rem;
+  color: rgba(255, 255, 255, 0.74);
+  line-height: 1.7;
+}
+
+@media (max-width: 920px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .headerRight {
+    justify-content: flex-start;
+  }
+}

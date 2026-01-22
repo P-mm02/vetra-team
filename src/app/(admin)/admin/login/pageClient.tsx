@@ -104,7 +104,7 @@ export default function PageClient() {
               required
               minLength={3}
               maxLength={30}
-              placeholder="owner"
+              placeholder="username"
               aria-invalid={!!error}
             />
           </label>
@@ -131,7 +131,7 @@ export default function PageClient() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              minLength={10}
+              minLength={8}
               maxLength={200}
               placeholder="••••••••••"
               aria-invalid={!!error}

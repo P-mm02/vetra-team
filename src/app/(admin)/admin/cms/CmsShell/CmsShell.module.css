@@ -109,9 +109,11 @@
 }
 
 .navItem {
-  display: flex;
+  display: grid;
+  grid-template-columns: 42px 1fr 14px;
   align-items: center;
   gap: 0.65rem;
+
   padding: 0.65rem 0.75rem;
   border-radius: 18px;
   border: 1px solid rgba(255, 255, 255, 0.00);
@@ -127,6 +129,32 @@
   background: rgba(255, 255, 255, 0.05);
 }
 
+.navItemActive {
+  border-color: rgba(125, 231, 255, 0.28);
+  background: rgba(125, 231, 255, 0.08);
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.navIcon {
+  width: 38px;
+  height: 38px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  display: grid;
+  place-items: center;
+  font-weight: 900;
+}
+
+.navLabel {
+  font-weight: 900;
+  letter-spacing: 0.15px;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .dot {
   width: 10px;
   height: 10px;
@@ -134,15 +162,10 @@
   background: rgba(255, 255, 255, 0.30);
   box-shadow: 0 0 0 3px rgba(125, 231, 255, 0.00);
   transition: box-shadow 140ms ease, background 140ms ease;
+  justify-self: end;
 }
 
-.active {
-  border-color: rgba(125, 231, 255, 0.28);
-  background: rgba(125, 231, 255, 0.08);
-  color: rgba(255, 255, 255, 0.92);
-}
-
-.active .dot {
+.dotActive {
   background: rgba(125, 231, 255, 0.95);
   box-shadow: 0 0 0 3px rgba(125, 231, 255, 0.12);
 }
@@ -167,7 +190,6 @@
   gap: 0.2rem;
 }
 
-/* NEW: username (primary identity shown) */
 .userName {
   font-weight: 900;
   letter-spacing: 0.1px;
@@ -176,7 +198,6 @@
   white-space: nowrap;
 }
 
-/* role pill */
 .userRole {
   display: inline-flex;
   justify-self: start;
@@ -189,7 +210,6 @@
   font-size: 0.9rem;
 }
 
-/* NEW: email (recovery/reference) */
 .userEmail {
   margin-top: 0.55rem;
   color: rgba(255, 255, 255, 0.62);

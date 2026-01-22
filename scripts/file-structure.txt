@@ -108,9 +108,8 @@
 📁 src
   📁 app
     📁 (admin)
-      📁 cms
+      📁 admin
       📄 layout.tsx
-      📁 login
     📁 (site)
       📁 about
       📁 contact
@@ -157,10 +156,10 @@
       📄 session.ts
     📁 db
       📄 mongoose.ts
-  📄 middleware.ts
   📁 models
     📁 User
       📄 User.ts
+  📄 proxy.ts
   📁 styles
     📄 globals.css
 📄 tsconfig.json

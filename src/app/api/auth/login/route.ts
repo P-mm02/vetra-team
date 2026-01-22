@@ -10,7 +10,7 @@ import { createSession, assertSameOrigin } from '@/lib/auth/session'
 // 1) Validate request body (username + password)
 const BodySchema = z.object({
   username: z.string().min(3).max(30),
-  password: z.string().min(10).max(200),
+  password: z.string().min(8).max(200),
 })
 
 // 2) Brute-force protection

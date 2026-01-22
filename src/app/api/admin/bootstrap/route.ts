@@ -91,13 +91,13 @@ export async function POST(req: Request) {
     )
   }
 
-  // 8) Create owner
+  // 8) Create Dev
   const passwordHash = await hashPassword(password)
-  const owner = await User.create({
+  const dev = await User.create({
     username,
     email,
     passwordHash,
-    role: 'owner',
+    role: 'dev',
     isActive: true,
     lastLoginAt: null,
     loginAttempts: 0,
@@ -108,10 +108,10 @@ export async function POST(req: Request) {
   return NextResponse.json({
     ok: true,
     user: {
-      id: String(owner._id),
-      username: owner.username,
-      email: owner.email,
-      role: owner.role,
+      id: String(dev._id),
+      username: dev.username,
+      email: dev.email,
+      role: dev.role,
     },
   })
 }

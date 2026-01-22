@@ -41,7 +41,9 @@ const SessionSchema =
 const hasExpiresTtl = SessionSchema.indexes().some(
   (entry: [Record<string, unknown>, Record<string, unknown>]) => {
     const [keys, opts] = entry
-    return keys.expiresAt === 1 && opts.expireAfterSeconds === 0
+    return (
+      (keys as any).expiresAt === 1 && (opts as any).expireAfterSeconds === 0
+    )
   },
 )
 if (!hasExpiresTtl) {
@@ -63,7 +65,8 @@ if (!envSecret || envSecret.length < 16) {
 }
 const AUTH_SECRET: string = envSecret
 
-const SESSION_DAYS = Number(process.env.SESSION_DAYS || 30)
+const rawDays = Number(process.env.SESSION_DAYS || 30)
+const SESSION_DAYS = Number.isFinite(rawDays) && rawDays > 0 ? rawDays : 30
 const SESSION_TTL_MS = SESSION_DAYS * 24 * 60 * 60 * 1000
 
 // 5) Token helpers
@@ -71,7 +74,7 @@ function makeToken() {
   return crypto.randomBytes(32).toString('base64url')
 }
 
-// Safer than sha256(token + "." + secret): use HMAC
+// Use HMAC for token hashing
 function tokenToHash(token: string) {
   return crypto.createHmac('sha256', AUTH_SECRET).update(token).digest('hex')
 }
@@ -139,6 +142,14 @@ export async function destroySession() {
   return { ok: true }
 }
 
+type LeanUser = {
+  _id: mongoose.Types.ObjectId
+  username?: string | null
+  email: string
+  role: string
+  isActive: boolean
+}
+
 // 9) Resolve current user from session cookie
 export async function getCurrentUser(): Promise<CurrentUser | null> {
   await connectMongo()
@@ -157,30 +168,26 @@ export async function getCurrentUser(): Promise<CurrentUser | null> {
 
   if (!session) return null
 
-  // Only read what you need
   const user = await User.findById(session.userId)
     .select({ username: 1, email: 1, role: 1, isActive: 1 })
-    .lean()
+    .lean<LeanUser | null>()
 
   if (!user || !user.isActive) {
     await Session.deleteOne({ tokenHash }).catch(() => null)
     return null
   }
 
-  // If username is required in your system, treat missing username as invalid session
-  if (!user.username) {
-    await Session.deleteOne({ tokenHash }).catch(() => null)
-    return null
-  }
+  // ✅ Don’t hard-kill sessions if username is missing (migration-safe)
+  // Fallback: use email prefix (still safe for UI)
+  const fallbackUsername = String(user.email).split('@')[0] || 'user'
 
-  // Best-effort last-used update
   await Session.updateOne({ tokenHash }, { $set: { lastUsedAt: now } }).catch(
     () => null,
   )
 
   return {
     id: String(user._id),
-    username: String(user.username),
+    username: String(user.username || fallbackUsername),
     email: String(user.email),
     role: String(user.role),
   }
