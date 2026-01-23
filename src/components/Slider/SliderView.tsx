@@ -44,7 +44,7 @@ type Props = {
   nextModal: () => void
   prevModal: () => void
 
-  didDragRef: React.MutableRefObject<boolean>
+  lastDragAtRef: React.RefObject<number>
 }
 
 export default function SliderView({
@@ -83,7 +83,7 @@ export default function SliderView({
   nextModal,
   prevModal,
 
-  didDragRef,
+  lastDragAtRef,
 }: Props) {
   const modalSlide = slides[modalIndex]
 
@@ -186,7 +186,7 @@ export default function SliderView({
             onPointerDown={(e) => e.stopPropagation()}
             onClick={(e) => {
               e.stopPropagation()
-              if (didDragRef.current) return
+              if (performance.now() - lastDragAtRef.current < 250) return
               openModal(realIndex)
             }}
             aria-label="Zoom image"

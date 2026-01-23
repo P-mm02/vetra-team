@@ -32,6 +32,8 @@ export function useSlider({
   const [isDragging, setIsDragging] = useState(false)
   const [dragPx, setDragPx] = useState(0)
   const [enableTransition, setEnableTransition] = useState(true)
+  const lastDragAtRef = useRef<number>(-Infinity)
+
 
   // modal
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -257,9 +259,14 @@ export function useSlider({
       const goPrev = dx > threshold
       const goNext = dx < -threshold
 
-        setEnableTransition(true)
-        setDragPx(0)
-        setIsDragging(false)
+      // ✅ remember if we actually dragged in this gesture
+      if (didDragRef.current) lastDragAtRef.current = performance.now()
+      // ✅ reset so it doesn't block future zoom clicks
+      didDragRef.current = false
+
+      setEnableTransition(true)
+      setDragPx(0)
+      setIsDragging(false)
 
       if (goPrev) prev()
       if (goNext) next()
@@ -268,6 +275,7 @@ export function useSlider({
     },
     [next, prev],
   )
+
 
   const onPointerUp = useCallback(
     (e: React.PointerEvent<HTMLDivElement>) => {
@@ -334,6 +342,6 @@ export function useSlider({
     prevModal,
 
     // drag flag
-    didDragRef,
+    lastDragAtRef,
   }
 }
