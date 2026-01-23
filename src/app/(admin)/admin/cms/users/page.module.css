@@ -97,6 +97,22 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+/* clickable row (Option A) */
+.rowLink {
+  cursor: pointer;
+}
+
+.rowLink:hover td {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* keyboard focus (accessibility) */
+.rowLink:focus-visible td {
+  outline: 2px solid rgba(125, 231, 255, 0.55);
+  outline-offset: -2px;
+}
+
+
 .table tbody td {
   padding: 0.8rem 0.9rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);

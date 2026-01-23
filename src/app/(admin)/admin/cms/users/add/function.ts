@@ -1,11 +1,11 @@
 // src/app/(admin)/admin/cms/users/add/function.ts
 'use server'
 
-import bcrypt from 'bcryptjs'
 import { redirect } from 'next/navigation'
 import { connectMongo } from '@/lib/db/mongoose'
 import { getCurrentUser } from '@/lib/auth/session'
 import { User } from '@/models/User/User'
+import { hashPassword, isSafePasswordLength } from '@/lib/auth/password'
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const USERNAME_REGEX = /^[a-z0-9](?:[a-z0-9_\.]*[a-z0-9])?$/i
@@ -28,14 +28,6 @@ function asRole(v: unknown) {
   return ok ? r : 'viewer'
 }
 
-async function hashPassword(password: string) {
-  const rounds = 12
-  return bcrypt.hash(password, rounds)
-}
-
-/**
- * Server Action: create user from Add User form
- */
 export async function createUserAction(formData: FormData) {
   const me = await getCurrentUser()
   if (!me) redirect('/admin/login?next=/admin/cms/users/add')
@@ -55,13 +47,11 @@ export async function createUserAction(formData: FormData) {
   backQs.set('role', roleRaw)
   backQs.set('isActive', isActiveRaw ? '1' : '0')
 
-  // required
   if (!usernameRaw || !emailRaw || !password || !password2) {
     backQs.set('err', 'missing')
     redirect(`/admin/cms/users/add?${backQs.toString()}`)
   }
 
-  // validate
   if (!EMAIL_REGEX.test(emailRaw)) {
     backQs.set('err', 'bad_email')
     redirect(`/admin/cms/users/add?${backQs.toString()}`)
@@ -76,7 +66,7 @@ export async function createUserAction(formData: FormData) {
     redirect(`/admin/cms/users/add?${backQs.toString()}`)
   }
 
-  if (password.length < 8) {
+  if (!isSafePasswordLength(password)) {
     backQs.set('err', 'bad_password')
     redirect(`/admin/cms/users/add?${backQs.toString()}`)
   }
@@ -87,6 +77,8 @@ export async function createUserAction(formData: FormData) {
   }
 
   await connectMongo()
+
+  let createdId = ''
 
   try {
     const passwordHash = await hashPassword(password)
@@ -100,7 +92,7 @@ export async function createUserAction(formData: FormData) {
       passwordChangedAt: new Date(),
     })
 
-    redirect(`/admin/cms/users/${String(created._id)}`)
+    createdId = String(created._id)
   } catch (e: unknown) {
     const msg = e instanceof Error ? e.message : ''
 
@@ -116,4 +108,7 @@ export async function createUserAction(formData: FormData) {
     backQs.set('err', code)
     redirect(`/admin/cms/users/add?${backQs.toString()}`)
   }
+
+  // ✅ redirect outside try/catch so it won't be caught
+  redirect(`/admin/cms/users/${createdId}`)
 }

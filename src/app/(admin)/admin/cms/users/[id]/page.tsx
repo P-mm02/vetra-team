@@ -6,6 +6,7 @@ import { connectMongo } from '@/lib/db/mongoose'
 import { getCurrentUser } from '@/lib/auth/session'
 import { User } from '@/models/User/User'
 import styles from './page.module.css'
+import DeleteUser from './DeleteUser/DeleteUser'
 
 type UserView = {
   _id: unknown
@@ -17,6 +18,8 @@ type UserView = {
   updatedAt?: Date
   lastLoginAt?: Date | null
 }
+
+type SearchParams = Record<string, string | string[] | undefined>
 
 function fmtDateTime(d?: Date | null) {
   if (!d) return '—'
@@ -34,12 +37,22 @@ function canManageUsers(role: string) {
   return role === 'dev' || role === 'admin'
 }
 
+function pickOne(v: string | string[] | undefined) {
+  if (!v) return ''
+  return Array.isArray(v) ? (v[0] ?? '') : v
+}
+
 export default async function UserDetailPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>
+  searchParams: Promise<SearchParams>
 }) {
   const { id } = await params
+  const sp = await searchParams
+
+  const errCode = pickOne(sp.err)
 
   const me = await getCurrentUser()
   if (!me)
@@ -64,6 +77,7 @@ export default async function UserDetailPage({
 
   if (!user) notFound()
 
+  const userId = String(user._id)
   const username = String(user.username || '—')
   const email = String(user.email || '—')
   const role = String(user.role || 'viewer')
@@ -74,7 +88,7 @@ export default async function UserDetailPage({
       <header className={styles.header}>
         <div className={styles.headerLeft}>
           <Link className={styles.back} href="/admin/cms/users">
-            ← Back to Users
+            {'<'} Back to Users
           </Link>
           <h1 className={styles.h1}>{username}</h1>
           <p className={styles.sub}>
@@ -90,7 +104,6 @@ export default async function UserDetailPage({
         </div>
 
         <div className={styles.headerRight}>
-          {/* placeholders for future actions */}
           <button className={styles.ghostBtn} type="button" disabled>
             Reset password (soon)
           </button>
@@ -103,7 +116,7 @@ export default async function UserDetailPage({
       <section className={styles.grid} aria-label="User info">
         <article className={styles.card}>
           <div className={styles.k}>User ID</div>
-          <div className={styles.vMono}>{String(user._id)}</div>
+          <div className={styles.vMono}>{userId}</div>
         </article>
 
         <article className={styles.card}>
@@ -121,6 +134,15 @@ export default async function UserDetailPage({
           <div className={styles.v}>{fmtDateTime(user.lastLoginAt)}</div>
         </article>
       </section>
+
+      <DeleteUser
+        userId={userId}
+        username={username}
+        targetRole={role}
+        meId={String(me.id)}
+        meRole={String(me.role)}
+        errCode={errCode}
+      />
 
       <section className={styles.panel} aria-label="Notes">
         <h2 className={styles.h2}>Next steps</h2>

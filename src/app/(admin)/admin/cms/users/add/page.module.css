@@ -81,29 +81,6 @@
   overflow: hidden;
 }
 
-.error {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  padding: 0.85rem 0.9rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 120, 150, 0.08);
-  color: rgba(255, 255, 255, 0.92);
-  font-weight: 800;
-}
-
-.errorDot {
-  width: 10px;
-  height: 10px;
-  border-radius: 999px;
-  background: radial-gradient(
-    circle at 30% 30%,
-    rgba(255, 120, 150, 0.95),
-    rgba(190, 140, 255, 0.55)
-  );
-  box-shadow: 0 0 0 3px rgba(255, 120, 150, 0.12);
-}
-
 .form {
   padding: 0.9rem;
   display: grid;

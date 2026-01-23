@@ -56,7 +56,12 @@ const Session =
   mongoose.model<SessionDoc>('Session', SessionSchema)
 
 // 4) Cookie + secret config
-const COOKIE_NAME = process.env.SESSION_COOKIE_NAME || '__Host-vetra_session'
+// ✅ Use __Host- only in production (dev on http would reject it)
+const COOKIE_NAME =
+  process.env.SESSION_COOKIE_NAME ||
+  (process.env.NODE_ENV === 'production'
+    ? '__Host-vetra_session'
+    : 'vetra_session')
 
 // Safety: require a strong secret
 const envSecret = process.env.AUTH_SECRET
@@ -110,7 +115,7 @@ export async function createSession(userId: string) {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
-    path: '/', // required for __Host- cookies
+    path: '/',
     maxAge: Math.floor(SESSION_TTL_MS / 1000),
   })
 
@@ -139,6 +144,16 @@ export async function destroySession() {
     maxAge: 0,
   })
 
+  return { ok: true }
+}
+
+// ✅ helper for admin actions (delete user, force logout, etc.)
+export async function revokeAllSessionsForUser(userId: string) {
+  await connectMongo()
+  if (!mongoose.isValidObjectId(userId)) return { ok: false }
+  await Session.deleteMany({
+    userId: new mongoose.Types.ObjectId(userId),
+  }).catch(() => null)
   return { ok: true }
 }
 
@@ -177,8 +192,7 @@ export async function getCurrentUser(): Promise<CurrentUser | null> {
     return null
   }
 
-  // ✅ Don’t hard-kill sessions if username is missing (migration-safe)
-  // Fallback: use email prefix (still safe for UI)
+  // Fallback: use email prefix
   const fallbackUsername = String(user.email).split('@')[0] || 'user'
 
   await Session.updateOne({ tokenHash }, { $set: { lastUsedAt: now } }).catch(
@@ -195,8 +209,8 @@ export async function getCurrentUser(): Promise<CurrentUser | null> {
 
 /**
  * 10) CSRF basic guard for mutation routes:
- * - Compares Origin host to effective host.
- * - Works behind proxies by preferring x-forwarded-host.
+ * - If Origin/Host missing -> allow (relaxed)
+ * - Origin host must match Host / x-forwarded-host
  */
 export async function assertSameOrigin() {
   const h = await headers()
@@ -205,14 +219,22 @@ export async function assertSameOrigin() {
 
   if (!origin || !host) return
 
-  let originHost = ''
-  try {
-    originHost = new URL(origin).host
-  } catch {
-    return
-  }
+  const originHost = new URL(origin).host
+  if (originHost !== host) throw new Error('Bad origin')
+}
 
-  if (originHost !== host) {
-    throw new Error('Bad origin')
-  }
+/**
+ * ✅ Strict CSRF guard for ADMIN mutation routes:
+ * - If Origin/Host missing -> reject (fail closed)
+ * - Origin host must match Host / x-forwarded-host
+ */
+export async function assertSameOriginStrict() {
+  const h = await headers()
+  const origin = h.get('origin')
+  const host = h.get('x-forwarded-host') || h.get('host') || undefined
+
+  if (!origin || !host) throw new Error('Missing origin/host')
+
+  const originHost = new URL(origin).host
+  if (originHost !== host) throw new Error('Bad origin')
 }

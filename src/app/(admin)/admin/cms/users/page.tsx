@@ -5,6 +5,7 @@ import { connectMongo } from '@/lib/db/mongoose'
 import { getCurrentUser } from '@/lib/auth/session'
 import { User } from '@/models/User/User'
 import styles from './page.module.css'
+import UsersTableClient from './UsersTableClient'
 
 type RowUser = {
   _id: unknown
@@ -49,6 +50,19 @@ export default async function UsersPage() {
     .limit(200)
     .lean<RowUser[]>()
 
+  const rows = users.map((u) => {
+    const id = String(u._id)
+    return {
+      id,
+      username: String(u.username || '—'),
+      email: String(u.email || '—'),
+      role: String(u.role || 'viewer'),
+      active: Boolean(u.isActive),
+      created: fmtDate(u.createdAt),
+      lastLogin: fmtDate(u.lastLoginAt),
+    }
+  })
+
   return (
     <main className={styles.page} aria-label="Users">
       <header className={styles.header}>
@@ -60,7 +74,6 @@ export default async function UsersPage() {
         </div>
 
         <div className={styles.headerActions}>
-          {/* placeholder for future "Create user" */}
           <Link href="/admin/cms/users/add">
             <button className={styles.btn} type="button">
               + Create user
@@ -83,62 +96,14 @@ export default async function UsersPage() {
               </tr>
             </thead>
 
-            <tbody>
-              {users.length === 0 ? (
-                <tr>
-                  <td className={styles.empty} colSpan={6}>
-                    No users found.
-                  </td>
-                </tr>
-              ) : (
-                users.map((u) => {
-                  const id = String(u._id)
-                  const username = String(u.username || '—')
-                  const email = String(u.email || '—')
-                  const role = String(u.role || 'viewer')
-                  const active = Boolean(u.isActive)
-
-                  return (
-                    <tr key={id}>
-                      <td>
-                        <Link
-                          className={styles.userLink}
-                          href={`/admin/cms/users/${id}`}
-                        >
-                          <span className={styles.userName}>{username}</span>
-                          <span className={styles.userId}>{id}</span>
-                        </Link>
-                      </td>
-
-                      <td className={styles.mono}>{email}</td>
-
-                      <td>
-                        <span className={styles.rolePill}>{role}</span>
-                      </td>
-
-                      <td>
-                        <span
-                          className={`${styles.statusPill} ${
-                            active ? styles.statusOn : styles.statusOff
-                          }`}
-                        >
-                          {active ? 'Active' : 'Disabled'}
-                        </span>
-                      </td>
-
-                      <td className={styles.mono}>{fmtDate(u.createdAt)}</td>
-                      <td className={styles.mono}>{fmtDate(u.lastLoginAt)}</td>
-                    </tr>
-                  )
-                })
-              )}
-            </tbody>
+            {/* clickable rows (client) */}
+            <UsersTableClient rows={rows} />
           </table>
         </div>
 
         <footer className={styles.foot}>
           <span className={styles.footDot} aria-hidden="true" />
-          Showing up to {Math.min(users.length, 200)} users.
+          Showing up to {Math.min(rows.length, 200)} users.
         </footer>
       </section>
     </main>

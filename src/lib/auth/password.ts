@@ -37,7 +37,7 @@ function scryptPromise(
 
 // Keep it sane to reduce abuse / huge payloads
 export function isSafePasswordLength(password: string) {
-  return password.length >= 10 && password.length <= 200
+  return password.length >= 8 && password.length <= 200
 }
 
 // Optional: basic strength check (tune to your taste)

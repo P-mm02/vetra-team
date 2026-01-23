@@ -3,7 +3,8 @@ import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { getCurrentUser } from '@/lib/auth/session'
 import styles from './page.module.css'
-import { createUserAction } from './function'
+import AddUserForm from './AddUserForm'
+import Notice from '@/app/(admin)/admin/Notice/Notice'
 
 type SearchParams = Record<string, string | string[] | undefined>
 
@@ -34,7 +35,6 @@ function errText(code: string) {
       return 'This username is already used.'
     case 'forbidden':
       return 'You don’t have permission to manage users.'
-    case 'unknown':
     default:
       return 'Something went wrong. Please try again.'
   }
@@ -43,17 +43,22 @@ function errText(code: string) {
 export default async function AddUserPage({
   searchParams,
 }: {
-  searchParams: SearchParams
+  // ✅ Next.js 16: Promise
+  searchParams: Promise<SearchParams>
 }) {
   const me = await getCurrentUser()
   if (!me) redirect('/admin/login?next=/admin/cms/users/add')
   if (!canManageUsers(String(me.role))) redirect('/admin/cms')
 
-  const err = pickOne(searchParams.err)
-  const username = pickOne(searchParams.username)
-  const email = pickOne(searchParams.email)
-  const role = pickOne(searchParams.role) || 'viewer'
-  const isActiveParam = pickOne(searchParams.isActive)
+  const sp = await searchParams
+
+  const err = pickOne(sp.err)
+  const ok = pickOne(sp.ok)
+
+  const username = pickOne(sp.username)
+  const email = pickOne(sp.email)
+  const role = pickOne(sp.role) || 'viewer'
+  const isActiveParam = pickOne(sp.isActive)
   const isActive = isActiveParam ? isActiveParam !== '0' : true
 
   return (
@@ -80,131 +85,35 @@ export default async function AddUserPage({
       </header>
 
       <section className={styles.panel} aria-label="Create user form">
+        {/* ✅ show Notice only when err/ok exists */}
         {err ? (
-          <div className={styles.error} role="status" aria-live="polite">
-            <span className={styles.errorDot} aria-hidden="true" />
-            {errText(err)}
-          </div>
+          <Notice
+            tone="danger"
+            title="Create user failed"
+            message={errText(err)}
+            code={400}
+            dismissible
+            clearQueryKey="err"
+          />
+        ) : ok ? (
+          <Notice
+            tone="success"
+            title="Looks good (test mode)"
+            message={ok}
+            code={200}
+            dismissible
+            clearQueryKey="ok"
+          />
         ) : null}
 
-        <form className={styles.form} action={createUserAction}>
-          <div className={styles.grid}>
-            <label className={styles.field}>
-              <span className={styles.label}>Username *</span>
-              <input
-                className={styles.input}
-                name="username"
-                placeholder="e.g. vetra_admin"
-                defaultValue={username}
-                autoComplete="username"
-                required
-                minLength={3}
-                maxLength={30}
-              />
-              <span className={styles.hint}>
-                Allowed: letters/numbers, underscore, dot. Lowercase preferred.
-              </span>
-            </label>
-
-            <label className={styles.field}>
-              <span className={styles.label}>Email *</span>
-              <input
-                className={styles.input}
-                name="email"
-                type="email"
-                placeholder="e.g. admin@yourdomain.com"
-                defaultValue={email}
-                autoComplete="email"
-                required
-              />
-              <span className={styles.hint}>
-                Used for recovery/reference (not for login).
-              </span>
-            </label>
-
-            <label className={styles.field}>
-              <span className={styles.label}>Role *</span>
-              <select className={styles.select} name="role" defaultValue={role}>
-                <option value="dev">dev</option>
-                <option value="admin">admin</option>
-                <option value="editor">editor</option>
-                <option value="viewer">viewer</option>
-              </select>
-              <span className={styles.hint}>
-                Only <b>dev/admin</b> can manage users.
-              </span>
-            </label>
-
-            <label className={styles.field}>
-              <span className={styles.label}>Status</span>
-              <div className={styles.switchRow}>
-                <input
-                  className={styles.check}
-                  id="isActive"
-                  name="isActive"
-                  type="checkbox"
-                  defaultChecked={isActive}
-                />
-                <span className={styles.switchText}>
-                  Active (can login and access CMS)
-                </span>
-              </div>
-              <span className={styles.hint}>
-                Disable if you want to revoke access without deleting.
-              </span>
-            </label>
-          </div>
-
-          <div className={styles.divider} />
-
-          <div className={styles.grid2}>
-            <label className={styles.field}>
-              <span className={styles.label}>Password *</span>
-              <input
-                className={styles.input}
-                name="password"
-                type="password"
-                placeholder="Min 8 characters"
-                autoComplete="new-password"
-                required
-                minLength={8}
-              />
-            </label>
-
-            <label className={styles.field}>
-              <span className={styles.label}>Confirm password *</span>
-              <input
-                className={styles.input}
-                name="password2"
-                type="password"
-                placeholder="Re-type password"
-                autoComplete="new-password"
-                required
-                minLength={8}
-              />
-            </label>
-          </div>
-
-          <footer className={styles.actions}>
-            <Link className={styles.ghostBtn} href="/admin/cms/users">
-              Cancel
-            </Link>
-            <button className={styles.btn} type="submit">
-              + Create user
-            </button>
-          </footer>
-        </form>
+        <AddUserForm
+          defaultUsername={username}
+          defaultEmail={email}
+          defaultRole={role}
+          defaultIsActive={isActive}
+          testMode={false} // ✅ Option A enabled
+        />
       </section>
-
-      <aside className={styles.note} aria-label="Notes">
-        <div className={styles.noteCard}>
-          <div className={styles.noteTitle}>Tip</div>
-          <div className={styles.noteText}>
-            Use a unique <b>email</b> even if the username is the main login
-            identifier.
-          </div>
-        </div>
-      </aside>
     </main>
   )
 }

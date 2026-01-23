@@ -1,0 +1,255 @@
+/* src/app/(admin)/admin/cms/users/[id]/DeleteUser/DeleteUser.module.css */
+
+.danger {
+  border-radius: 26px;
+  border: 1px solid rgba(255, 120, 150, 0.22);
+  background: rgba(255, 120, 150, 0.06);
+  padding: 1rem 1.05rem;
+}
+
+.head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.h2 {
+  margin: 0;
+  font-family: "Playfair Display", "Prompt", "Noto Sans Thai", serif;
+  font-weight: 900;
+  letter-spacing: 0.2px;
+  font-size: 1.15rem;
+}
+
+.sub {
+  margin: 0.4rem 0 0;
+  color: rgba(255, 255, 255, 0.74);
+  line-height: 1.6;
+}
+
+/* =========================
+   Primary delete button
+   ========================= */
+
+.deleteBtn {
+  border-radius: 999px;
+  padding: 0.62rem 0.95rem;
+  font-weight: 900;
+  cursor: pointer;
+  text-align: center;
+  letter-spacing: 0.2px;
+
+  border: 1px solid rgba(255, 120, 150, 0.35);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 120, 150, 0.22),
+    rgba(255, 120, 150, 0.10)
+  );
+  color: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 14px 44px rgba(0, 0, 0, 0.35);
+
+  transition: transform 140ms ease, border-color 140ms ease, box-shadow 140ms ease;
+}
+
+/* ✅ prevent “sticky hover” on touch */
+@media (hover: hover) and (pointer: fine) {
+  .deleteBtn:hover {
+    transform: translateY(-1px);
+    border-color: rgba(255, 120, 150, 0.55);
+  }
+}
+
+.deleteBtn:disabled,
+.deleteBtn[aria-disabled="true"] {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.deleteBtn:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 2px rgba(7, 7, 20, 0.9),
+    0 0 0 5px rgba(255, 120, 150, 0.35),
+    0 14px 44px rgba(0, 0, 0, 0.35);
+}
+
+/* =========================
+   Note + error
+   ========================= */
+
+.note {
+  margin-top: 0.75rem;
+  padding: 0.75rem 0.85rem;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(14, 12, 30, 0.35);
+  color: rgba(255, 255, 255, 0.78);
+  line-height: 1.6;
+}
+
+.error {
+  margin-top: 0.75rem;
+  display: flex;
+  gap: 0.55rem;
+  align-items: center;
+  padding: 0.75rem 0.85rem;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 120, 150, 0.25);
+  background: rgba(255, 120, 150, 0.10);
+  color: rgba(255, 255, 255, 0.92);
+  font-weight: 900;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(255, 120, 150, 0.9);
+  box-shadow: 0 0 0 6px rgba(255, 120, 150, 0.12);
+}
+
+/* =========================
+   Confirm “dialog” box (MISSING before)
+   ========================= */
+
+.confirmBox {
+  margin-top: 0.85rem;
+  padding: 0.95rem 0.95rem;
+  border-radius: 20px;
+
+  border: 1px solid rgba(255, 120, 150, 0.22);
+  background:
+    radial-gradient(800px 220px at 20% 0%, rgba(255, 120, 150, 0.12), rgba(255, 120, 150, 0)),
+    rgba(14, 12, 30, 0.38);
+
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.35);
+  display: grid;
+  gap: 0.55rem;
+}
+
+.confirmTitle {
+  font-weight: 900;
+  letter-spacing: 0.2px;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.confirmText {
+  color: rgba(255, 255, 255, 0.74);
+  line-height: 1.6;
+}
+
+/* form wrapper */
+.confirmActions {
+  margin-top: 0.25rem;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.55rem;
+  flex-wrap: wrap;
+}
+
+/* =========================
+   Confirm buttons (MISSING before)
+   ========================= */
+
+.ghost,
+.dangerBtn {
+  border-radius: 999px;
+  padding: 0.62rem 0.95rem;
+  font-weight: 900;
+  letter-spacing: 0.2px;
+  cursor: pointer;
+  transition: transform 140ms ease, border-color 140ms ease, box-shadow 140ms ease;
+}
+
+.ghost {
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.88);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ghost:hover {
+    transform: translateY(-1px);
+    border-color: rgba(255, 255, 255, 0.22);
+  }
+}
+
+.ghost:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 2px rgba(7, 7, 20, 0.9),
+    0 0 0 5px rgba(125, 231, 255, 0.25);
+}
+
+.dangerBtn {
+  border: 1px solid rgba(255, 120, 150, 0.45);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 120, 150, 0.28),
+    rgba(255, 120, 150, 0.14)
+  );
+  color: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 14px 44px rgba(0, 0, 0, 0.35);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .dangerBtn:hover {
+    transform: translateY(-1px);
+    border-color: rgba(255, 120, 150, 0.62);
+  }
+}
+
+.dangerBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.dangerBtn:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 2px rgba(7, 7, 20, 0.9),
+    0 0 0 5px rgba(255, 120, 150, 0.35),
+    0 14px 44px rgba(0, 0, 0, 0.35);
+}
+
+/* =========================
+   Responsive
+   ========================= */
+
+@media (max-width: 920px) {
+  .head {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .deleteBtn {
+    width: 100%;
+  }
+
+  .confirmActions {
+    justify-content: stretch;
+  }
+
+  .ghost,
+  .dangerBtn {
+    width: 100%;
+  }
+}
+
+/* =========================
+   Reduce motion
+   ========================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .deleteBtn,
+  .ghost,
+  .dangerBtn {
+    transition: none;
+  }
+}
