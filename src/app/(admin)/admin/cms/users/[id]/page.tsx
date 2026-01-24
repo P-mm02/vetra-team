@@ -6,6 +6,10 @@ import { connectMongo } from '@/lib/db/mongoose'
 import { getCurrentUser } from '@/lib/auth/session'
 import { User } from '@/models/User/User'
 import styles from './page.module.css'
+
+import Notice from '@/app/(admin)/admin/Notice/Notice'
+import EditUserForm from './EditUserForm'
+import ChangePassword from './ChangePassword/ChangePassword'
 import DeleteUser from './DeleteUser/DeleteUser'
 
 type UserView = {
@@ -42,7 +46,47 @@ function pickOne(v: string | string[] | undefined) {
   return Array.isArray(v) ? (v[0] ?? '') : v
 }
 
-export default async function UserDetailPage({
+function errText(code: string) {
+  switch (code) {
+    case 'missing':
+      return 'Please fill in all required fields.'
+    case 'bad_email':
+      return 'Email format looks invalid.'
+    case 'bad_username':
+      return 'Username must be 3–30 chars and only contain letters, numbers, underscore (_) or dot (.)'
+    case 'dup_email':
+      return 'This email is already used.'
+    case 'dup_username':
+      return 'This username is already used.'
+    case 'forbidden':
+      return 'You don’t have permission to edit this user (dev-only restriction).'
+    case 'self_edit':
+      return 'You cannot change your own role or disable your own account here.'
+    case 'bad_id':
+      return 'Invalid user id.'
+    default:
+      return 'Something went wrong. Please try again.'
+  }
+}
+
+function cpErrText(code: string) {
+  switch (code) {
+    case 'missing':
+      return 'Please fill in all required fields.'
+    case 'bad_password':
+      return 'Password must be 8–200 characters.'
+    case 'no_match':
+      return 'Passwords do not match.'
+    case 'forbidden':
+      return 'You don’t have permission to change this password.'
+    case 'bad_id':
+      return 'Invalid user id.'
+    default:
+      return 'Something went wrong. Please try again.'
+  }
+}
+
+export default async function UserEditPage({
   params,
   searchParams,
 }: {
@@ -51,8 +95,6 @@ export default async function UserDetailPage({
 }) {
   const { id } = await params
   const sp = await searchParams
-
-  const errCode = pickOne(sp.err)
 
   const me = await getCurrentUser()
   if (!me)
@@ -78,27 +120,48 @@ export default async function UserDetailPage({
   if (!user) notFound()
 
   const userId = String(user._id)
-  const username = String(user.username || '—')
-  const email = String(user.email || '—')
-  const role = String(user.role || 'viewer')
-  const active = Boolean(user.isActive)
+
+  // ✅ DB truth (do NOT trust querystring for locks)
+  const targetRoleNow = String(user.role || 'viewer')
+
+  // ✅ edit form qs
+  const err = pickOne(sp.err)
+  const ok = pickOne(sp.ok)
+
+  const qUsername = pickOne(sp.username)
+  const qEmail = pickOne(sp.email)
+  const qRole = pickOne(sp.role)
+  const qIsActive = pickOne(sp.isActive)
+
+  const username = qUsername || String(user.username || '')
+  const email = qEmail || String(user.email || '')
+  const role = qRole || targetRoleNow
+  const isActive = qIsActive !== '' ? qIsActive !== '0' : Boolean(user.isActive)
+
+  // ✅ change password qs (separate)
+  const cpErr = pickOne(sp.cp_err)
+  const cpOk = pickOne(sp.cp_ok)
+
+  const isSelf = String(me.id) === userId
 
   return (
-    <main className={styles.page} aria-label="User detail">
+    <main className={styles.page} aria-label="Edit user">
       <header className={styles.header}>
         <div className={styles.headerLeft}>
           <Link className={styles.back} href="/admin/cms/users">
             {'<'} Back to Users
           </Link>
-          <h1 className={styles.h1}>{username}</h1>
+
+          <h1 className={styles.h1}>Edit: {username || '—'}</h1>
+
           <p className={styles.sub}>
-            {email} • <span className={styles.rolePill}>{role}</span>{' '}
+            {email || '—'} • <span className={styles.rolePill}>{role}</span>{' '}
             <span
               className={`${styles.statusPill} ${
-                active ? styles.statusOn : styles.statusOff
+                isActive ? styles.statusOn : styles.statusOff
               }`}
             >
-              {active ? 'Active' : 'Disabled'}
+              {isActive ? 'Active' : 'Disabled'}
             </span>
           </p>
         </div>
@@ -107,13 +170,10 @@ export default async function UserDetailPage({
           <button className={styles.ghostBtn} type="button" disabled>
             Reset password (soon)
           </button>
-          <button className={styles.primaryBtn} type="button" disabled>
-            Save changes (soon)
-          </button>
         </div>
       </header>
 
-      <section className={styles.grid} aria-label="User info">
+      <section className={styles.grid} aria-label="User meta">
         <article className={styles.card}>
           <div className={styles.k}>User ID</div>
           <div className={styles.vMono}>{userId}</div>
@@ -135,26 +195,71 @@ export default async function UserDetailPage({
         </article>
       </section>
 
+      <section className={styles.panel} aria-label="Edit form">
+        {err ? (
+          <Notice
+            tone="danger"
+            title="Save failed"
+            message={errText(err)}
+            code={400}
+            dismissible
+            clearQueryKey="err"
+          />
+        ) : ok ? (
+          <Notice
+            tone="success"
+            title="Saved"
+            message={ok}
+            code={200}
+            dismissible
+            clearQueryKey="ok"
+          />
+        ) : null}
+
+        <EditUserForm
+          userId={userId}
+          defaultUsername={username}
+          defaultEmail={email}
+          defaultRole={role}
+          defaultIsActive={isActive}
+          meRole={String(me.role)}
+          isSelf={isSelf}
+          targetRoleNow={targetRoleNow}
+        />
+      </section>
+
+      <section className={styles.panel} aria-label="Change password">
+        {cpErr ? (
+          <Notice
+            tone="danger"
+            title="Change password failed"
+            message={cpErrText(cpErr)}
+            code={400}
+            dismissible
+            clearQueryKey="cp_err"
+          />
+        ) : cpOk ? (
+          <Notice
+            tone="success"
+            title="Password updated"
+            message="New password saved."
+            code={200}
+            dismissible
+            clearQueryKey="cp_ok"
+          />
+        ) : null}
+
+        <ChangePassword userId={userId} />
+      </section>
+
       <DeleteUser
         userId={userId}
-        username={username}
+        username={username || '—'}
         targetRole={role}
         meId={String(me.id)}
         meRole={String(me.role)}
-        errCode={errCode}
+        errCode={err ? err : undefined}
       />
-
-      <section className={styles.panel} aria-label="Notes">
-        <h2 className={styles.h2}>Next steps</h2>
-        <ul className={styles.list}>
-          <li>
-            Add “Change role” + “Disable account” actions (server actions or
-            API).
-          </li>
-          <li>Prevent editing your own dev role accidentally.</li>
-          <li>Audit log for role/status changes.</li>
-        </ul>
-      </section>
     </main>
   )
 }

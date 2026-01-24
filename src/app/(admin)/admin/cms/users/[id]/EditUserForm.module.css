@@ -1,0 +1,267 @@
+/* src/app/(admin)/admin/cms/users/[id]/EditUserForm.module.css */
+/* Self-contained form styles (safe across projects) */
+
+.form {
+  display: grid;
+  gap: 0.95rem;
+
+  /* ✅ help native controls (select menu) render dark on supported browsers */
+  color-scheme: dark;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+
+.grid2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+
+.field {
+  display: grid;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.label {
+  font-weight: 900;
+  letter-spacing: 0.2px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.hint {
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
+.input,
+.select {
+  width: 100%;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.92);
+  padding: 0.72rem 0.8rem;
+  outline: none;
+  transition: border-color 140ms ease, box-shadow 140ms ease,
+    transform 140ms ease;
+
+  /* ✅ also hint to browser that this control is dark */
+  color-scheme: dark;
+}
+
+.select {
+  padding-right: 2.2rem;
+}
+
+.input::placeholder {
+  color: rgba(255, 255, 255, 0.48);
+}
+
+.input:focus,
+.select:focus {
+  border-color: rgba(125, 231, 255, 0.35);
+  box-shadow: 0 0 0 4px rgba(125, 231, 255, 0.12);
+}
+
+.input:disabled,
+.select:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.fieldError {
+  margin-top: 0.1rem;
+  color: rgba(255, 160, 180, 0.98);
+  font-weight: 900;
+  font-size: 0.92rem;
+  line-height: 1.35;
+}
+
+.divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 0.3rem 0 0.1rem;
+}
+
+.switchRow {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.62rem 0.65rem;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.check {
+  width: 18px;
+  height: 18px;
+  accent-color: rgba(125, 231, 255, 0.95);
+}
+
+.switchText {
+  color: rgba(255, 255, 255, 0.88);
+  font-weight: 800;
+}
+
+.actions {
+  display: flex;
+  gap: 0.65rem;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 0.2rem;
+}
+
+.ghostBtn,
+.btn {
+  border-radius: 999px;
+  padding: 0.72rem 1.05rem;
+  font-weight: 900;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  letter-spacing: 0.2px;
+  border: 1px solid transparent;
+  transition: transform 140ms ease, border-color 140ms ease,
+    box-shadow 140ms ease, background 140ms ease;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.ghostBtn {
+  border-color: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.btn {
+  border-color: rgba(125, 231, 255, 0.28);
+  background: linear-gradient(
+    180deg,
+    rgba(125, 231, 255, 0.18),
+    rgba(190, 140, 255, 0.12)
+  );
+  color: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 14px 44px rgba(0, 0, 0, 0.35);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ghostBtn:hover,
+  .btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 16px 54px rgba(0, 0, 0, 0.42);
+  }
+}
+
+.ghostBtn:disabled,
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* =========================
+   Better Select (native)
+   ========================= */
+
+/* closed control */
+.select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  padding-right: 2.75rem;
+  border-radius: 16px;
+
+  /* slightly richer glass */
+  background:
+    radial-gradient(520px 140px at 20% 0%, rgba(125, 231, 255, 0.12), rgba(0, 0, 0, 0)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.04));
+  border: 1px solid rgba(125, 231, 255, 0.18);
+
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.25) inset,
+    0 14px 44px rgba(0, 0, 0, 0.32);
+
+  /* custom arrow */
+  background-repeat: no-repeat;
+  background-position: right 0.95rem center, 0 0;
+  background-size: 12px 12px, auto;
+
+  /* arrow svg (soft) */
+  background-image:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.75)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M6 9l6 6 6-6'/></svg>"),
+    radial-gradient(520px 140px at 20% 0%, rgba(125, 231, 255, 0.12), rgba(0, 0, 0, 0)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.04));
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .select:hover {
+    border-color: rgba(125, 231, 255, 0.28);
+    box-shadow:
+      0 0 0 1px rgba(0, 0, 0, 0.25) inset,
+      0 18px 64px rgba(0, 0, 0, 0.38);
+    transform: translateY(-1px);
+  }
+}
+
+/* focus ring nicer */
+.select:focus {
+  border-color: rgba(125, 231, 255, 0.38);
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.25) inset,
+    0 0 0 4px rgba(125, 231, 255, 0.12),
+    0 18px 64px rgba(0, 0, 0, 0.42);
+}
+
+/* =========================
+   Dropdown menu options
+   (still limited by OS)
+   ========================= */
+
+/* consistent dark list */
+.select option,
+.select optgroup {
+  background: rgb(12, 10, 26);
+  color: rgba(255, 255, 255, 0.92);
+}
+
+/* more readable spacing (some browsers honor it) */
+.select option {
+  padding: 10px 12px;
+}
+
+/* selected row (some browsers ignore) */
+.select option:checked {
+  background: rgba(125, 231, 255, 0.20);
+  color: rgba(255, 255, 255, 0.98);
+}
+
+/* hover row (some browsers ignore) */
+.select option:hover {
+  background: rgba(125, 231, 255, 0.14);
+}
+
+/* If your browser uses system highlight, this can soften it (supported in some) */
+.select {
+  accent-color: rgba(125, 231, 255, 0.95);
+}
+
+@media (max-width: 920px) {
+  .grid,
+  .grid2 {
+    grid-template-columns: 1fr;
+  }
+
+  .actions {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+}
