@@ -3,7 +3,7 @@
 
 import { redirect } from 'next/navigation'
 import { connectMongo } from '@/lib/db/mongoose'
-import { getCurrentUser } from '@/lib/auth/session'
+import { assertSameOriginStrict, getCurrentUser } from '@/lib/auth/session'
 import { User } from '@/models/User/User'
 import { hashPassword, isSafePasswordLength } from '@/lib/auth/password'
 
@@ -22,13 +22,30 @@ function normLower(v: unknown) {
   return typeof v === 'string' ? v.trim().toLowerCase() : ''
 }
 
-function asRole(v: unknown) {
+type Role = 'dev' | 'admin' | 'editor' | 'viewer'
+
+function parseRole(v: unknown): Role | null {
   const r = typeof v === 'string' ? v : ''
-  const ok = r === 'dev' || r === 'admin' || r === 'editor' || r === 'viewer'
-  return ok ? r : 'viewer'
+  if (r === 'dev' || r === 'admin' || r === 'editor' || r === 'viewer') return r
+  return null
+}
+
+function parseBoolLike(v: unknown) {
+  if (typeof v !== 'string') return null
+  const s = v.trim().toLowerCase()
+  if (s === 'on' || s === '1' || s === 'true') return true
+  if (s === '0' || s === 'false') return false
+  return null
 }
 
 export async function createUserAction(formData: FormData) {
+  // ✅ Strict CSRF guard for admin mutations
+  try {
+    await assertSameOriginStrict()
+  } catch {
+    redirect('/admin/cms/users/add?err=csrf')
+  }
+
   const me = await getCurrentUser()
   if (!me) redirect('/admin/login?next=/admin/cms/users/add')
   if (!canManageUsers(String(me.role)))
@@ -36,15 +53,33 @@ export async function createUserAction(formData: FormData) {
 
   const usernameRaw = normLower(formData.get('username'))
   const emailRaw = normLower(formData.get('email'))
-  const roleRaw = asRole(formData.get('role'))
-  const isActiveRaw = formData.get('isActive') === 'on'
+
+  const roleParsed = parseRole(formData.get('role'))
+  const isActiveField = formData.get('isActive')
+
+  // default: unchecked -> null (missing) -> false? (but your UI likely sets it)
+  // We'll treat "missing" as false only if it truly isn't provided.
+  // If provided but invalid -> reject.
+  let isActiveRaw = false
+  if (isActiveField == null) {
+    isActiveRaw = false
+  } else {
+    const parsed = parseBoolLike(isActiveField)
+    if (parsed === null) {
+      const qs = new URLSearchParams()
+      qs.set('err', 'bad_active')
+      redirect(`/admin/cms/users/add?${qs.toString()}`)
+    }
+    isActiveRaw = parsed
+  }
+
   const password = norm(formData.get('password'))
   const password2 = norm(formData.get('password2'))
 
   const backQs = new URLSearchParams()
   backQs.set('username', usernameRaw)
-  backQs.set('email', emailRaw)
-  backQs.set('role', roleRaw)
+  backQs.set('email', emailRaw) // (optional privacy improvement: remove later)
+  backQs.set('role', roleParsed ?? 'viewer')
   backQs.set('isActive', isActiveRaw ? '1' : '0')
 
   if (!usernameRaw || !emailRaw || !password || !password2) {
@@ -76,6 +111,19 @@ export async function createUserAction(formData: FormData) {
     redirect(`/admin/cms/users/add?${backQs.toString()}`)
   }
 
+  // ✅ Reject invalid role instead of silently falling back
+  if (!roleParsed) {
+    backQs.set('err', 'bad_role')
+    redirect(`/admin/cms/users/add?${backQs.toString()}`)
+  }
+
+  // ✅ Only dev can create a dev user
+  const meRole = String(me.role)
+  if (roleParsed === 'dev' && meRole !== 'dev') {
+    backQs.set('err', 'forbidden')
+    redirect(`/admin/cms/users/add?${backQs.toString()}`)
+  }
+
   await connectMongo()
 
   let createdId = ''
@@ -86,7 +134,7 @@ export async function createUserAction(formData: FormData) {
     const created = await User.create({
       username: usernameRaw,
       email: emailRaw,
-      role: roleRaw,
+      role: roleParsed,
       isActive: isActiveRaw,
       passwordHash,
       passwordChangedAt: new Date(),
@@ -109,6 +157,5 @@ export async function createUserAction(formData: FormData) {
     redirect(`/admin/cms/users/add?${backQs.toString()}`)
   }
 
-  // ✅ redirect outside try/catch so it won't be caught
   redirect(`/admin/cms/users/${createdId}`)
 }

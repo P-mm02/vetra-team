@@ -1,24 +1,28 @@
-import { useMemo } from 'react'
-import styles from '../CmsShell.module.css'
+// src/app/(admin)/admin/cms/CmsShell/Topbar/CmsTopbar.tsx
+import styles from './CmsTopbar.module.css'
+import type { CurrentUser } from '@/lib/auth/session'
+import { useState } from 'react'
 
-export default function CmsTopbar({
-  pathname,
-  onOpenNav,
-}: {
-  pathname: string
+type Props = {
   onOpenNav: () => void
-}) {
-  const nowLabel = useMemo(() => {
-    try {
-      return new Intl.DateTimeFormat('en-GB', {
-        dateStyle: 'medium',
-        timeStyle: 'short',
-      }).format(new Date())
-    } catch {
-      return ''
-    }
-  }, [])
+  user: CurrentUser
+}
 
+type ActionState = 'idle' | 'loading'
+
+export default function CmsTopbar({ onOpenNav, user }: Props) {
+    const [state, setState] = useState<ActionState>('idle')
+    const isLoading = state === 'loading'
+
+    async function onLogout() {
+      if (isLoading) return
+      setState('loading')
+      try {
+        await fetch('/api/auth/logout', { method: 'POST' })
+      } finally {
+        window.location.href = '/admin/login'
+      }
+    }
   return (
     <header className={styles.topbar}>
       <button
@@ -30,13 +34,22 @@ export default function CmsTopbar({
         ☰
       </button>
 
-      <div className={styles.topbarTitle}>
-        <span className={styles.topbarKicker}>Admin</span>
-        <span className={styles.topbarPath}>{pathname}</span>
-      </div>
-
-      <div className={styles.topbarRight}>
-        <span className={styles.timePill}>{nowLabel}</span>
+      <div className={styles.userBox}>
+        <div className={styles.userTop}>
+          <div className={styles.userName} title={user.username}>
+            {user.username}
+          </div>
+          <div className={styles.userRole}>{user.role}</div>
+          
+          <button
+            type="button"
+            className={styles.primaryBtn}
+            onClick={onLogout}
+            disabled={isLoading}
+          >
+            {isLoading ? 'Logging out…' : 'Logout'}
+          </button>
+        </div>
       </div>
     </header>
   )

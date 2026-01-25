@@ -12,10 +12,11 @@
   align-items: start;
 
   border-radius: 18px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid var(--border);
   background: rgba(14, 12, 30, 0.35);
   padding: 0.85rem 0.95rem;
   z-index: 999;
+
   box-shadow: 0 18px 60px rgba(0, 0, 0, 0.45);
   backdrop-filter: blur(10px);
 }
@@ -25,6 +26,7 @@
   height: 10px;
   border-radius: 999px;
   margin-top: 0.35rem;
+
   background: rgba(255, 255, 255, 0.35);
   box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.06);
 }
@@ -50,12 +52,13 @@
 .title {
   font-weight: 900;
   letter-spacing: 0.2px;
+  color: var(--text);
 }
 
 .code {
   font-weight: 900;
   font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.72);
+  color: var(--muted);
   white-space: nowrap;
 }
 
@@ -70,21 +73,25 @@
   width: 34px;
   height: 34px;
   border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(255, 255, 255, 0.06);
-  color: rgba(255, 255, 255, 0.9);
+  border: 1px solid var(--border);
+  background: var(--soft);
+  color: var(--text);
   font-weight: 900;
   font-size: 1.25rem;
   line-height: 1;
   cursor: pointer;
   flex: 0 0 auto;
+
   transition: transform 140ms ease, border-color 140ms ease, background 140ms ease;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.close:hover {
-  transform: translateY(-1px);
-  border-color: rgba(255, 255, 255, 0.22);
-  background: rgba(255, 255, 255, 0.10);
+@media (hover: hover) and (pointer: fine) {
+  .close:hover {
+    transform: translateY(-1px);
+    border-color: rgba(255, 255, 255, 0.22);
+    background: rgba(255, 255, 255, 0.10);
+  }
 }
 
 .close:active {
@@ -92,18 +99,21 @@
 }
 
 .close:focus-visible {
-  outline: 2px solid rgba(125, 231, 255, 0.55);
-  outline-offset: 2px;
+  outline: none;
+  box-shadow:
+    0 0 0 2px rgba(7, 7, 20, 0.9),
+    0 0 0 5px rgba(125, 231, 255, 0.35);
 }
 
-/* tones */
+/* =========================
+   tones
+   ========================= */
+
 .info {
   border-color: rgba(125, 231, 255, 0.22);
-  background: linear-gradient(
-    180deg,
-    rgba(125, 231, 255, 0.10),
-    rgba(14, 12, 30, 0.35)
-  );
+  background:
+    radial-gradient(900px 240px at 18% 0%, rgba(125, 231, 255, 0.12), rgba(0, 0, 0, 0)),
+    rgba(14, 12, 30, 0.35);
 }
 .info .dot {
   background: rgba(125, 231, 255, 0.9);
@@ -112,11 +122,9 @@
 
 .success {
   border-color: rgba(90, 255, 170, 0.22);
-  background: linear-gradient(
-    180deg,
-    rgba(90, 255, 170, 0.10),
-    rgba(14, 12, 30, 0.35)
-  );
+  background:
+    radial-gradient(900px 240px at 18% 0%, rgba(90, 255, 170, 0.10), rgba(0, 0, 0, 0)),
+    rgba(14, 12, 30, 0.35);
 }
 .success .dot {
   background: rgba(90, 255, 170, 0.95);
@@ -125,11 +133,9 @@
 
 .warning {
   border-color: rgba(255, 210, 90, 0.22);
-  background: linear-gradient(
-    180deg,
-    rgba(255, 210, 90, 0.10),
-    rgba(14, 12, 30, 0.35)
-  );
+  background:
+    radial-gradient(900px 240px at 18% 0%, rgba(255, 210, 90, 0.10), rgba(0, 0, 0, 0)),
+    rgba(14, 12, 30, 0.35);
 }
 .warning .dot {
   background: rgba(255, 210, 90, 0.95);
@@ -138,13 +144,18 @@
 
 .danger {
   border-color: rgba(255, 120, 150, 0.22);
-  background: linear-gradient(
-    180deg,
-    rgba(255, 120, 150, 0.10),
-    rgba(14, 12, 30, 0.35)
-  );
+  background:
+    radial-gradient(900px 240px at 18% 0%, rgba(255, 120, 150, 0.10), rgba(0, 0, 0, 0)),
+    rgba(14, 12, 30, 0.35);
 }
 .danger .dot {
   background: rgba(255, 120, 150, 0.95);
   box-shadow: 0 0 0 6px rgba(255, 120, 150, 0.10);
+}
+
+/* Reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  .close {
+    transition: none;
+  }
 }

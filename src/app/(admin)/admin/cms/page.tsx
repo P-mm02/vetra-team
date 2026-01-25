@@ -171,19 +171,6 @@ export default function CmsHomePage() {
           <div className={styles.cardMeta}>/</div>
         </a>
       </section>
-
-      <section className={styles.note} aria-label="CMS notes">
-        <div className={styles.noteInner}>
-          <div className={styles.noteTitle}>Next steps</div>
-          <ul className={styles.noteList}>
-            <li>
-              Create the first module route: <code>/admin/cms/content</code>
-            </li>
-            <li>Add role checks (admin/editor/viewer) in CMS layouts</li>
-            <li>Add login rate limiting + audit logs for security</li>
-          </ul>
-        </div>
-      </section>
     </main>
   )
 }

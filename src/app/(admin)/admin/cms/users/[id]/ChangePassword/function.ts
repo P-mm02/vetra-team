@@ -4,7 +4,12 @@
 import { redirect } from 'next/navigation'
 import mongoose from 'mongoose'
 import { connectMongo } from '@/lib/db/mongoose'
-import { getCurrentUser } from '@/lib/auth/session'
+import {
+  assertSameOriginStrict,
+  createSession,
+  getCurrentUser,
+  revokeAllSessionsForUser,
+} from '@/lib/auth/session'
 import { User } from '@/models/User/User'
 import { hashPassword, isSafePasswordLength } from '@/lib/auth/password'
 
@@ -17,6 +22,13 @@ function norm(v: unknown) {
 }
 
 export async function changePasswordAction(userId: string, formData: FormData) {
+  // ✅ Strict CSRF guard for admin mutations
+  try {
+    await assertSameOriginStrict()
+  } catch {
+    redirect(`/admin/cms/users/${encodeURIComponent(userId)}?cp_err=csrf`)
+  }
+
   const me = await getCurrentUser()
   if (!me)
     redirect(`/admin/login?next=/admin/cms/users/${encodeURIComponent(userId)}`)
@@ -51,12 +63,11 @@ export async function changePasswordAction(userId: string, formData: FormData) {
   const targetRole = String(target.role || 'viewer')
   const isSelf = String(me.id) === String(userId)
 
-  // ✅ allow self password change
-  // ✅ otherwise must have manage permission
+  // allow self password change, otherwise must have manage permission
   if (!isSelf && !canManageUsers(meRole))
     redirect(`/admin/cms/users/${encodeURIComponent(userId)}?cp_err=forbidden`)
 
-  // ✅ only dev can change a dev user's password (same restriction style)
+  // only dev can change a dev user's password
   if (targetRole === 'dev' && meRole !== 'dev')
     redirect(`/admin/cms/users/${encodeURIComponent(userId)}?cp_err=forbidden`)
 
@@ -72,6 +83,14 @@ export async function changePasswordAction(userId: string, formData: FormData) {
         },
       },
     )
+
+    // ✅ revoke all sessions for that user after password change
+    await revokeAllSessionsForUser(userId)
+
+    // ✅ keep the user logged in if they changed their own password
+    if (isSelf) {
+      await createSession(userId)
+    }
   } catch {
     redirect(`/admin/cms/users/${encodeURIComponent(userId)}?cp_err=unknown`)
   }

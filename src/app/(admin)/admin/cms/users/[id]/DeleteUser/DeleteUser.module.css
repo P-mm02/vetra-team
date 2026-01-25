@@ -16,15 +16,15 @@
 
 .h2 {
   margin: 0;
-  font-family: "Playfair Display", "Prompt", "Noto Sans Thai", serif;
   font-weight: 900;
   letter-spacing: 0.2px;
   font-size: 1.15rem;
+  color: var(--text);
 }
 
 .sub {
   margin: 0.4rem 0 0;
-  color: rgba(255, 255, 255, 0.74);
+  color: var(--muted);
   line-height: 1.6;
 }
 
@@ -35,7 +35,7 @@
 .deleteBtn {
   border-radius: 999px;
   padding: 0.62rem 0.95rem;
-  font-weight: 900;
+  font-weight: 600;
   cursor: pointer;
   text-align: center;
   letter-spacing: 0.2px;
@@ -52,7 +52,6 @@
   transition: transform 140ms ease, border-color 140ms ease, box-shadow 140ms ease;
 }
 
-/* ✅ prevent “sticky hover” on touch */
 @media (hover: hover) and (pointer: fine) {
   .deleteBtn:hover {
     transform: translateY(-1px);
@@ -84,9 +83,9 @@
   margin-top: 0.75rem;
   padding: 0.75rem 0.85rem;
   border-radius: 18px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(14, 12, 30, 0.35);
-  color: rgba(255, 255, 255, 0.78);
+  border: 1px solid var(--border);
+  background: var(--soft);
+  color: var(--muted);
   line-height: 1.6;
 }
 
@@ -99,7 +98,7 @@
   border-radius: 18px;
   border: 1px solid rgba(255, 120, 150, 0.25);
   background: rgba(255, 120, 150, 0.10);
-  color: rgba(255, 255, 255, 0.92);
+  color: var(--text);
   font-weight: 900;
 }
 
@@ -112,7 +111,7 @@
 }
 
 /* =========================
-   Confirm “dialog” box (MISSING before)
+   Confirm “dialog”
    ========================= */
 
 .confirmBox {
@@ -133,15 +132,14 @@
 .confirmTitle {
   font-weight: 900;
   letter-spacing: 0.2px;
-  color: rgba(255, 255, 255, 0.92);
+  color: var(--text);
 }
 
 .confirmText {
-  color: rgba(255, 255, 255, 0.74);
+  color: var(--muted);
   line-height: 1.6;
 }
 
-/* form wrapper */
 .confirmActions {
   margin-top: 0.25rem;
   display: flex;
@@ -152,7 +150,7 @@
 }
 
 /* =========================
-   Confirm buttons (MISSING before)
+   Confirm buttons
    ========================= */
 
 .ghost,
@@ -166,9 +164,9 @@
 }
 
 .ghost {
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  background: rgba(255, 255, 255, 0.06);
-  color: rgba(255, 255, 255, 0.88);
+  border: 1px solid var(--border);
+  background: var(--soft);
+  color: var(--text);
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -241,10 +239,6 @@
     width: 100%;
   }
 }
-
-/* =========================
-   Reduce motion
-   ========================= */
 
 @media (prefers-reduced-motion: reduce) {
   .deleteBtn,

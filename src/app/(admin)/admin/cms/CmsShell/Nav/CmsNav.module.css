@@ -1,0 +1,143 @@
+/* src/app/(admin)/admin/cms/CmsShell/Nav/CmsNav.module.css */
+/* Sidebar top + navigation */
+
+.sideTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.6rem 0.6rem 0.4rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.10); /* keep: subtle separator */
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  color: var(--text);
+  min-width: 0;
+}
+
+.brandLogo {
+  width: 4rem;
+  height: 4rem;
+}
+
+.brandLogo img {
+  width: 100%;
+  height: 100%;
+}
+
+.brandText {
+  display: grid;
+  line-height: 1.05;
+  min-width: 0;
+  text-align: center;
+}
+
+.brandName {
+  font-family: var(--font-display);
+  font-weight: 900;
+  letter-spacing: 0.2rem;
+  font-size: 1.2rem;
+  margin-bottom: 0.2rem;
+}
+
+.brandTag {
+  color: var(--muted);
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: 0.2rem;
+}
+
+.closeBtn {
+  display: none;
+  border: 1px solid var(--border-soft);
+  background: var(--soft);
+  color: rgba(255, 255, 255, 0.84); /* keep: slightly dimmer than text */
+  border-radius: 1rem;
+  width: 3rem;
+  height: 3rem;
+  cursor: pointer;
+  font-weight: 900;
+  font-size: 1.5rem;
+}
+
+.nav {
+  padding: 0.85rem 0.6rem;
+  display: grid;
+  gap: 0.35rem;
+  overflow: auto;
+}
+
+.navItem {
+  display: grid;
+  grid-template-columns: 42px 1fr 14px;
+  align-items: center;
+  gap: 0.65rem;
+
+  padding: 0.65rem 0.75rem;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.00);
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.84);
+  background: transparent;
+  transition: transform var(--t-fast), border-color var(--t-fast),
+    background var(--t-fast);
+}
+
+.navItem:hover {
+  transform: translateY(-1px);
+  border-color: rgba(125, 231, 255, 0.22);
+  background: rgba(255, 255, 255, 0.05); /* keep: not same as --soft */
+}
+
+.navItemActive {
+  border-color: rgba(125, 231, 255, 0.28);
+  background: rgba(125, 231, 255, 0.08);
+  color: var(--text);
+}
+
+.navIcon {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.12); /* keep: icon tile */
+  background: rgba(255, 255, 255, 0.06);
+  display: grid;
+  place-items: center;
+  font-weight: 900;
+  font-size: 1.2rem;
+}
+
+.navLabel {
+  font-weight: 600;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dot {
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.30);
+  box-shadow: 0 0 0 3px rgba(125, 231, 255, 0.00);
+  transition: box-shadow var(--t-fast), background var(--t-fast);
+  justify-self: end;
+}
+
+.dotActive {
+  background: var(--accent);
+  box-shadow: 0 0 0 3px rgba(125, 231, 255, 0.12);
+}
+
+/* Responsive (Nav-only bits) */
+@media (max-width: 980px) {
+  .closeBtn {
+    display: inline-grid;
+    place-items: center;
+  }
+}

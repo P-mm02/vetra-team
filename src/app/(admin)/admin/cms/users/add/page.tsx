@@ -67,7 +67,7 @@ export default async function AddUserPage({
         <div className={styles.headerText}>
           <div className={styles.breadcrumb}>
             <Link className={styles.back} href="/admin/cms/users">
-              ← Users
+              {'<'} Users
             </Link>
             <span className={styles.sep} aria-hidden="true">
               /

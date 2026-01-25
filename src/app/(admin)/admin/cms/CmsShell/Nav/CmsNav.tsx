@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import styles from '../CmsShell.module.css'
+import styles from './CmsNav.module.css'
 import { CMS_NAV, isActivePath } from './navConfig'
 
 export default function CmsNav({
@@ -18,8 +18,8 @@ export default function CmsNav({
             <Image
               src="/admin/logo/vetra-logo-nobg.svg"
               alt="VETRA"
-              width={28}
-              height={28}
+              width={56}
+              height={56}
               priority
             />
           </span>

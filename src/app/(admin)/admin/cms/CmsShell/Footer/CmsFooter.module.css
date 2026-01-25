@@ -1,0 +1,37 @@
+/* src/app/(admin)/admin/cms/CmsShell/Footer/CmsFooter.module.css */
+/* Sidebar footer */
+
+.sideFoot {
+  padding: 0.6rem 1rem 0.6rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.10); /* keep: subtle separator */
+}
+
+.sideActions {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.55rem;
+}
+
+.ghostBtn {
+  border-radius: 999px;
+  padding: 0.62rem 0.9rem;
+  font-weight: 900;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  letter-spacing: 0.2px;
+  transition: transform var(--t-fast), border-color var(--t-fast),
+    box-shadow var(--t-fast);
+}
+
+.ghostBtn {
+  border: 1px solid var(--border-soft);
+  background: var(--soft);
+  color: var(--text);
+}
+
+.ghostBtn:hover {
+  transform: translateY(-1px);
+  border-color: rgba(125, 231, 255, 0.24);
+  box-shadow: var(--shadow-md);
+}

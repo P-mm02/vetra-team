@@ -1,7 +1,6 @@
 // src/app/layout.tsx
 import type { Metadata, Viewport } from 'next'
 import type { ReactNode } from 'react'
-import '@/styles/globals.css'
 
 const SITE_URL = (
   process.env.NEXT_PUBLIC_SITE_URL || 'https://vetra.asia'
@@ -76,7 +75,7 @@ export default function RootLayout({
           rel="preconnect"
           href="https://fonts.gstatic.com"
           crossOrigin="anonymous"
-        />
+        />        
       </head>
       <body>{children}</body>
     </html>

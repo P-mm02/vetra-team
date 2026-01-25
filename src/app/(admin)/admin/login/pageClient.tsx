@@ -74,21 +74,22 @@ export default function PageClient() {
               <Image
                 src="/admin/logo/vetra-logo-nobg.svg"
                 alt="VETRA"
-                width={28}
-                height={28}
+                width={56}
+                height={56}
                 priority
               />
             </div>
 
-            <div className={styles.badge} aria-hidden="true">
-              CMS
+            <div className={styles.badgeWrap}>
+              VETRA
+              <div className={styles.badge} aria-hidden="true">
+                CMS
+              </div>
             </div>
           </div>
 
-          <h1 className={styles.title}>VETRA Admin</h1>
-          <p className={styles.sub}>
-            Sign in to manage your content & projects securely.
-          </p>
+          <h1 className={styles.title}>Authorized access only</h1>
+          <p className={styles.sub}>Sign in to your secure control panel</p>
         </header>
 
         <form className={styles.form} onSubmit={onSubmit}>
@@ -149,13 +150,13 @@ export default function PageClient() {
           </button>
 
           <p className={styles.hint}>
-            Access is restricted. If you need an account, contact the owner.
+            Access is restricted. If you need an account, contact the Admin.
           </p>
         </form>
 
         <footer className={styles.foot}>
           <span className={styles.footDot} aria-hidden="true" />
-          Sessions are stored securely (httpOnly cookie).
+          Secure session handling. No client-side access
         </footer>
       </section>
     </main>

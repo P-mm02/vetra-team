@@ -26,7 +26,7 @@ export default function CmsShell({
         className={`${styles.sidebar} ${navOpen ? styles.sidebarOpen : ''}`}
       >
         <CmsNav pathname={pathname} onClose={() => setNavOpen(false)} />
-        <CmsFooter user={user} />
+        <CmsFooter />
       </aside>
 
       {/* Backdrop (mobile) */}
@@ -39,7 +39,10 @@ export default function CmsShell({
 
       {/* Main */}
       <div className={styles.main}>
-        <CmsTopbar pathname={pathname} onOpenNav={() => setNavOpen(true)} />
+        <CmsTopbar
+          onOpenNav={() => setNavOpen(true)}
+          user={user}
+        />
         <div className={styles.content}>{children}</div>
       </div>
     </div>

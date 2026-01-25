@@ -1,16 +1,21 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;900&family=Noto+Sans+Thai:wght@400;600;900&family=Prompt:wght@400;600;900&display=swap');
+/* src/app/(admin)/globals.css */
 
 /* =========================
    Vetra Design Tokens (Global)
+   Fonts are injected by next/font in (admin)/layout.tsx:
+   - --font-playfair
+   - --font-prompt
+   - --font-noto
    ========================= */
 :root {
-  color-scheme: dark;
-  
+  /* layout */
   --container: 100%;
   --pad-x: 2rem;
 
-  --font-display: "Playfair Display", "Noto Sans Thai", "Prompt", sans-serif;
-  --font-body: "Noto Sans Thai", "Prompt",  sans-serif;
+  /* typography (next/font will override these variables on <html> via className) */
+  --font-playfair: system-ui, sans-serif;
+  --font-prompt: system-ui, sans-serif;
+  --font-noto: system-ui, sans-serif;
 
   /* Cyber / neon + sci-fi purple */
   --bg: #070714;
@@ -33,9 +38,9 @@
   --shadow-lg: 0 22px 70px rgba(0, 0, 0, 0.55);
   --shadow-md: 0 14px 44px rgba(0, 0, 0, 0.35);
 
-  --r-lg: 26px;
-  --r-md: 22px;
-  --r-sm: 18px;
+  --r-lg: 1.8rem;
+  --r-md: 1.4rem;
+  --r-sm: 1rem;
 
   --t-fast: 140ms ease;
   --t-med: 160ms ease;
@@ -47,43 +52,48 @@
   --bad: rgba(255, 120, 150, 0.92);
 }
 
-/* 📐 Root font-size for rem scaling */
-html { font-size: 24px !important; }
+/* =========================
+   Root + base layout
+   ========================= */
+html {
+  color-scheme: dark;
+  font-size: 24px; /* default */
+}
+
 @media (max-width: 2559px) {
-  html { font-size: 20px !important; }
+  html { font-size: 20px; }
 }
 @media (max-width: 1440px) {
-  html { font-size: 19px !important; }
+  html { font-size: 19px; }
   .DW1440-display-none { display: none !important; }
 }
 @media (max-width: 1280px) {
-  html { font-size: 18px !important; }
+  html { font-size: 18px; }
   .DW1280-display-none { display: none !important; }
   .display-grid-column { grid-template-columns: repeat(3, 1fr) !important; }
 }
 @media (max-width: 1024px) {
-  html { font-size: 17px !important; }
+  html { font-size: 17px; }
   .DW1024-display-none { display: none !important; }
   .display-grid-column { grid-template-columns: repeat(2, 1fr) !important; }
 }
 @media (max-width: 769px) {
-  html { font-size: 16px !important; }
+  html { font-size: 16px; }
+  :root { --pad-x: 1rem; }
   .DW768-display-none { display: none !important; }
   .display-grid-column { grid-template-columns: 1fr !important; }
-  :root { 
-    --pad-x: 1rem;
-  }
 }
 @media (max-width: 426px) {
-  html { font-size: 15px !important; }
+  html { font-size: 15px; }
 }
 @media (max-width: 376px) {
-  html { font-size: 14px !important; }
+  html { font-size: 14px; }
 }
 
-/* =========================
-   Base layout styling
-   ========================= */
+@media (prefers-reduced-motion: reduce) {
+  html, body { scroll-behavior: auto; }
+}
+
 html,
 body {
   max-width: 100vw;
@@ -93,9 +103,13 @@ body {
   overflow-x: clip;
 
   color: var(--text);
-  font-family: var(--font-body);
+
+  /* ✅ main font stack (noto + prompt fallback) */
+  font-family: var(--font-noto), var(--font-prompt), system-ui, sans-serif;
+
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
   scroll-behavior: smooth;
 
   background-color: var(--bg);
@@ -123,20 +137,20 @@ body {
     0 0,
     center top;
 
-  /* optional: keeps texture “anchored” for a premium feel */
   background-attachment:
     scroll,
     scroll,
     scroll,
     scroll;
-
 }
 
 main {
   flex: 1 0 auto;
 }
 
-/* 🧹 Reset box model and spacing */
+/* =========================
+   Reset
+   ========================= */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -154,14 +168,22 @@ select {
   color: inherit;
 }
 
-
-/* 🎯 Utility classes */
+/* =========================
+   Utilities
+   ========================= */
 .text-center { text-align: center !important; }
 .text-left { text-align: left !important; }
 .text-indent { text-indent: 2rem; }
+
 .text-wrap {
   white-space: normal !important;
   word-break: break-word !important;
   overflow-wrap: break-word !important;
 }
+
 .display-none { display: none !important; }
+
+/* Optional helper if you want display font quickly */
+.fontDisplay {
+  font-family: var(--font-display), var(--font-thai), system-ui, sans-serif;
+}

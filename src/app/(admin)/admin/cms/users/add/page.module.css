@@ -32,7 +32,7 @@
 
 .back {
   text-decoration: none;
-  color: rgba(125, 231, 255, 0.9);
+  color: rgba(125, 231, 255, 0.9); /* keep: link accent */
   font-weight: 900;
 }
 
@@ -50,7 +50,6 @@
 
 .h1 {
   margin: 0;
-  font-family: "Playfair Display", "Prompt", "Noto Sans Thai", serif;
   font-weight: 900;
   letter-spacing: 0.2px;
   font-size: 1.45rem;
@@ -59,25 +58,25 @@
 
 .sub {
   margin: 0.45rem 0 0;
-  color: rgba(255, 255, 255, 0.72);
+  color: var(--muted);
   line-height: 1.65;
 }
 
 .kbd {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
-    "Courier New", monospace;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    'Liberation Mono', 'Courier New', monospace;
   font-size: 0.95em;
   padding: 0.12rem 0.38rem;
   border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border);
+  background: var(--soft);
 }
 
 .panel {
-  border-radius: 26px;
-  border: 1px solid rgba(255, 255, 255, 0.11);
-  background: rgba(14, 12, 30, 0.5);
-  box-shadow: 0 14px 44px rgba(0, 0, 0, 0.35);
+  border-radius: var(--r-lg);
+  border: 1px solid var(--border-soft);
+  background: var(--card);
+  box-shadow: var(--shadow-md);
   overflow: hidden;
 }
 
@@ -106,7 +105,7 @@
 }
 
 .label {
-  font-weight: 900;
+  font-weight: 600;
   color: rgba(255, 255, 255, 0.84);
   letter-spacing: 0.15px;
 }
@@ -123,10 +122,11 @@
   border-radius: 16px;
   padding: 0.72rem 0.85rem;
   border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(7, 7, 20, 0.55);
-  color: rgba(255, 255, 255, 0.92);
+  background: rgba(7, 7, 20, 0.55); /* keep: input surface */
+  color: var(--text);
   outline: none;
-  transition: border-color 140ms ease, box-shadow 140ms ease, transform 140ms ease;
+  transition: border-color var(--t-fast), box-shadow var(--t-fast),
+    transform var(--t-fast);
 }
 
 .select {
@@ -140,7 +140,7 @@
 .input:focus,
 .select:focus {
   border-color: rgba(125, 231, 255, 0.35);
-  box-shadow: 0 0 0 4px rgba(125, 231, 255, 0.1);
+  box-shadow: var(--focus);
 }
 
 .switchRow {
@@ -150,17 +150,17 @@
   padding: 0.6rem 0.7rem;
   border-radius: 16px;
   border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(7, 7, 20, 0.35);
+  background: rgba(7, 7, 20, 0.35); /* keep: switch surface */
 }
 
 .check {
   width: 18px;
   height: 18px;
-  accent-color: rgba(125, 231, 255, 0.95);
+  accent-color: var(--accent);
 }
 
 .switchText {
-  font-weight: 800;
+  font-weight: 400;
   color: rgba(255, 255, 255, 0.86);
 }
 
@@ -190,15 +190,16 @@
     rgba(125, 231, 255, 0.18),
     rgba(190, 140, 255, 0.12)
   );
-  color: rgba(255, 255, 255, 0.92);
-  box-shadow: 0 14px 44px rgba(0, 0, 0, 0.35);
-  transition: transform 140ms ease, border-color 140ms ease, box-shadow 140ms ease;
+  color: var(--text);
+  box-shadow: var(--shadow-md);
+  transition: transform var(--t-fast), border-color var(--t-fast),
+    box-shadow var(--t-fast);
 }
 
 .btn:hover {
   transform: translateY(-1px);
   border-color: rgba(125, 231, 255, 0.45);
-  box-shadow: 0 18px 54px rgba(0, 0, 0, 0.45);
+  box-shadow: var(--shadow-lg);
 }
 
 .ghostBtn {
@@ -207,41 +208,24 @@
   font-weight: 900;
   letter-spacing: 0.2px;
   text-decoration: none;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border);
+  background: var(--soft);
   color: rgba(255, 255, 255, 0.86);
-  transition: transform 140ms ease, border-color 140ms ease, box-shadow 140ms ease;
+  transition: transform var(--t-fast), border-color var(--t-fast),
+    box-shadow var(--t-fast);
 }
 
 .ghostBtn:hover {
   transform: translateY(-1px);
   border-color: rgba(255, 255, 255, 0.22);
-  box-shadow: 0 14px 44px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 14px 44px rgba(0, 0, 0, 0.25); /* keep: softer than token */
 }
 
-.note {
-  display: grid;
-  gap: 0.6rem;
-}
-
-.noteCard {
-  border-radius: 22px;
-  border: 1px solid rgba(255, 255, 255, 0.11);
-  background: rgba(14, 12, 30, 0.35);
-  box-shadow: 0 14px 44px rgba(0, 0, 0, 0.25);
-  padding: 0.85rem 0.9rem;
-}
-
-.noteTitle {
-  font-weight: 900;
-  letter-spacing: 0.2px;
-  margin-bottom: 0.25rem;
-  color: rgba(255, 255, 255, 0.9);
-}
-
-.noteText {
-  color: rgba(255, 255, 255, 0.7);
-  line-height: 1.6;
+.fieldError {
+  margin-top: 0.15rem;
+  color: rgba(255, 120, 150, 0.92); /* matches --bad intent */
+  font-weight: 700;
+  font-size: 0.9rem;
 }
 
 @media (max-width: 820px) {

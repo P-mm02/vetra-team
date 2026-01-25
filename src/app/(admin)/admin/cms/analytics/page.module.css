@@ -1,0 +1,245 @@
+/* src/app/(admin)/admin/cms/analytics/page.module.css */
+
+.page {
+  width: min(1200px, 100%);
+  margin: 0 auto;
+  display: grid;
+  gap: 0.9rem;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.h1 {
+  margin: 0;
+  font-weight: 900;
+  letter-spacing: 0.2px;
+  font-size: 1.55rem;
+  line-height: 1.15;
+}
+
+.sub {
+  margin: 0.45rem 0 0;
+  color: rgba(255, 255, 255, 0.72);
+  line-height: 1.6;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.pill {
+  display: inline-flex;
+  border-radius: 999px;
+  padding: 0.22rem 0.6rem;
+  border: 1px solid rgba(125, 231, 255, 0.22);
+  background: rgba(125, 231, 255, 0.10);
+  color: rgba(255, 255, 255, 0.88);
+  font-weight: 900;
+  font-size: 0.9rem;
+}
+
+.mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New",
+    monospace;
+}
+
+.kpiGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+
+.card {
+  border-radius: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(14, 12, 30, 0.45);
+  padding: 0.9rem 0.95rem;
+}
+
+.k {
+  color: rgba(255, 255, 255, 0.70);
+  font-weight: 800;
+  font-size: 0.92rem;
+}
+
+.big {
+  margin-top: 0.35rem;
+  font-weight: 900;
+  letter-spacing: 0.15px;
+  font-size: 1.35rem;
+}
+
+.panel {
+  border-radius: 26px;
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  background: rgba(14, 12, 30, 0.35);
+  padding: 1rem 1.05rem;
+}
+
+.panelHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.h2 {
+  margin: 0;
+  font-weight: 900;
+  letter-spacing: 0.2px;
+  font-size: 1.15rem;
+}
+
+.sub2 {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.tableWrap {
+  margin-top: 0.75rem;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  overflow: hidden;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.table th,
+.table td {
+  padding: 0.75rem 0.85rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  vertical-align: middle;
+}
+
+.table th {
+  text-align: left;
+  font-size: 0.92rem;
+  letter-spacing: 0.2px;
+  color: rgba(255, 255, 255, 0.78);
+  font-weight: 900;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.num {
+  text-align: right;
+}
+
+.path {
+  max-width: 0;
+}
+
+.path > span {
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.empty {
+  padding: 1rem;
+  color: rgba(255, 255, 255, 0.70);
+}
+
+.footNote {
+  margin-top: 0.7rem;
+  color: rgba(255, 255, 255, 0.62);
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+/* Setup helper UI (when env missing) */
+.notice {
+  border-radius: 18px;
+  border: 1px solid rgba(255, 210, 90, 0.22);
+  background: rgba(255, 210, 90, 0.06);
+  padding: 0.85rem 0.95rem;
+}
+
+.noticeTitle {
+  font-weight: 900;
+  letter-spacing: 0.2px;
+}
+
+.noticeText {
+  margin-top: 0.35rem;
+  color: rgba(255, 255, 255, 0.78);
+  line-height: 1.6;
+}
+
+.noticeText code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New",
+    monospace;
+  font-weight: 900;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.helperGrid {
+  margin-top: 0.85rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+
+.helpCard {
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(14, 12, 30, 0.35);
+  padding: 0.85rem 0.95rem;
+}
+
+.v {
+  margin-top: 0.35rem;
+  font-weight: 900;
+}
+
+.small {
+  margin-top: 0.35rem;
+  color: rgba(255, 255, 255, 0.62);
+  line-height: 1.55;
+  font-size: 0.95rem;
+}
+
+.list {
+  margin: 0.5rem 0 0;
+  padding-left: 1.2rem;
+  color: rgba(255, 255, 255, 0.74);
+  line-height: 1.7;
+}
+
+@media (max-width: 1024px) {
+  .kpiGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 920px) {
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .kpiGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .helperGrid {
+    grid-template-columns: 1fr;
+  }
+}

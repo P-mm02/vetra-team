@@ -1,0 +1,108 @@
+/* src/app/(admin)/admin/cms/CmsShell/Topbar/CmsTopbar.module.css */
+/* Topbar */
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.4rem 0.4rem;
+  border-bottom: 1px solid var(--border-soft);
+  background: var(--card);
+  backdrop-filter: blur(4px);
+}
+
+.menuBtn {
+  display: none;
+  border-radius: 1rem;
+  border: 1px solid var(--border-soft);
+  background: var(--soft);
+  color: var(--text);
+  width: 3rem;
+  height: 3rem;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1.5rem;
+}
+
+.userBox {
+  margin: 0 0 0 auto;
+  border-radius: 22px; /* keep: already tuned */
+}
+
+.userTop {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+}
+
+.userName {
+  font-weight: 600;
+
+  /* allow wrapping */
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+
+  /* handle very long names */
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.userRole {
+  display: inline-flex;
+  justify-self: start;
+  border-radius: 0.5rem;
+  padding: 0.2rem 0.5rem;
+
+  /* keep exact visual: token colors are close but this is role-pill */
+  border: 1px solid rgba(190, 140, 255, 0.22);
+  background: rgba(190, 140, 255, 0.10);
+  color: rgba(255, 255, 255, 0.82);
+  font-weight: 600;
+}
+
+.primaryBtn {
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+
+  border: 1px solid rgba(125, 231, 255, 0.28);
+  background: linear-gradient(
+    180deg,
+    rgba(125, 231, 255, 0.18),
+    rgba(190, 140, 255, 0.12)
+  );
+  color: var(--text);
+  box-shadow: var(--shadow-md);
+
+  transition: transform var(--t-fast), border-color var(--t-fast),
+    box-shadow var(--t-fast);
+}
+
+.primaryBtn:hover {
+  transform: translateY(-1px);
+  border-color: rgba(125, 231, 255, 0.42);
+  box-shadow: var(--shadow-lg);
+}
+
+.primaryBtn:disabled {
+  opacity: 0.75;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Responsive (Topbar-only bits) */
+@media (max-width: 980px) {
+  .menuBtn {
+    display: inline-grid;
+    place-items: center;
+  }
+}

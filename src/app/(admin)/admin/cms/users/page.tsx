@@ -76,7 +76,7 @@ export default async function UsersPage() {
         <div className={styles.headerActions}>
           <Link href="/admin/cms/users/add">
             <button className={styles.btn} type="button">
-              + Create user
+              Create user
             </button>
           </Link>
         </div>
