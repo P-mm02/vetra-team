@@ -1,6 +1,7 @@
 // src/app/layout.tsx
 import type { Metadata, Viewport } from 'next'
 import type { ReactNode } from 'react'
+import { GoogleAnalytics } from '@next/third-parties/google'
 
 const SITE_URL = (
   process.env.NEXT_PUBLIC_SITE_URL || 'https://vetra.asia'
@@ -67,6 +68,7 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{ children: ReactNode }>) {
+  const gaId = process.env.NEXT_PUBLIC_GA_ID
   return (
     <html lang="th">
       <head>
@@ -75,9 +77,10 @@ export default function RootLayout({
           rel="preconnect"
           href="https://fonts.gstatic.com"
           crossOrigin="anonymous"
-        />        
+        />
       </head>
       <body>{children}</body>
+      {gaId ? <GoogleAnalytics gaId={gaId} /> : null}
     </html>
   )
 }
