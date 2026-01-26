@@ -53,7 +53,7 @@ function addDaysIso(iso: string, deltaDays: number) {
  */
 export function startEndForRangeDays(rangeDays: number) {
   const todayIso = isoDateInTz(new Date(), GA_TZ)
-  const endDate = addDaysIso(todayIso, 0) // yesterday (in GA_TZ)
+  const endDate = todayIso
   const startDate = addDaysIso(endDate, -(rangeDays - 1))
   return { startDate, endDate }
 }
