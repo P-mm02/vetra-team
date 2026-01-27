@@ -12,7 +12,7 @@ export type AllowedRangeDays = (typeof ALLOWED_RANGES)[number]
 export function parseRangeDays(v: unknown): AllowedRangeDays {
   const raw = Array.isArray(v) ? v[0] : v
   const n = Number(raw)
-  return (ALLOWED_RANGES as readonly number[]).includes(n) ? (n as any) : 28
+  return (ALLOWED_RANGES as readonly number[]).includes(n) ? (n as any) : 7
 }
 
 /**

@@ -1,34 +1,45 @@
+// src/app/(admin)/admin/cms/_components/loading/CircleSpining/CircleSpining.tsx
 import React from 'react'
 import styles from './CircleSpining.module.css'
 
 type Props = {
-  /** Optional: specify size in px/rem/%/em. Default: 100% of container */
+  /** Spinner size (px/rem/em). Default: 3rem */
   size?: string
-  /** Optional: color of the spinner + text */
+  /** Optional label text */
+  label?: string
+  /** Hide label visually but keep for screen readers */
+  hideLabel?: boolean
+  /** Optional ring color (falls back to Vetra accent) */
   color?: string
-  /** Optional: className for more customization */
+  /** Optional className */
   className?: string
 }
 
 export default function CircleSpining({
-  size = '100%',
-  color = '#60a5fa',
+  size = '10rem',
+  label = 'Loading…',
+  hideLabel = false,
+  color,
   className = '',
 }: Props) {
   return (
     <div
-      className={`${styles.wrapper} ${className}`}
+      className={`${styles.wrap} ${className}`}
       style={
         {
-          width: size,
-          height: size,
-          ['--spinner-color' as any]: color,
+          ['--size' as any]: size,
+          ...(color ? ({ ['--ring' as any]: color } as any) : null),
         } as React.CSSProperties
       }
-      aria-label="Loading"
+      role="status"
+      aria-live="polite"
+      aria-label={label}
     >
-      <span className={styles.spinner} />
-      <span className={styles.text}>Loading...</span>
+      <span className={styles.ring} aria-hidden="true" />
+      <span className={styles.glow} aria-hidden="true" />
+      <span className={`${styles.text} ${hideLabel ? styles.srOnly : ''}`}>
+        {label}
+      </span>
     </div>
   )
 }

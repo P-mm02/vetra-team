@@ -58,13 +58,13 @@ export default function AnalyticsView({
     startTransition(() => router.push(href))
   }
 
-  return (
+  return (    
     <main className={styles.page} aria-label="Analytics">
       <header className={styles.header}>
         <h1 className={styles.h1}>Analytics GA4</h1>
 
         <p className={styles.sub}>
-          <span className={styles.mono}>{fmtDMY(startDate)}</span> →{' '}
+          <span className={styles.mono}>{fmtDMY(startDate)}</span> -{' '}
           <span className={styles.mono}>{fmtDMY(endDate)}</span>
           {compare && compareStartDate && compareEndDate ? (
             <>
@@ -72,7 +72,7 @@ export default function AnalyticsView({
               VS <span className={styles.mono}>
                 {fmtDMY(compareStartDate)}
               </span>{' '}
-              → <span className={styles.mono}>{fmtDMY(compareEndDate)}</span>
+              - <span className={styles.mono}>{fmtDMY(compareEndDate)}</span>
             </>
           ) : null}
         </p>
@@ -111,7 +111,6 @@ export default function AnalyticsView({
           </button>
         </div>
       </header>
-
       {isPending ? (
         <div className={styles.loadingCenter} aria-label="Loading analytics">
           <CircleSpining />
@@ -225,5 +224,6 @@ export default function AnalyticsView({
         </>
       )}
     </main>
+
   )
 }

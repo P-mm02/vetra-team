@@ -1,7 +1,9 @@
 // src/app/(admin)/admin/cms/analytics/page.tsx
 
+import { Suspense } from "react";
 import { redirect } from 'next/navigation'
 import { getCurrentUser } from '@/lib/auth/session'
+
 
 import {
   canAccessCms,
@@ -14,6 +16,7 @@ import {
 import AnalyticsEmpty from './AnalyticsEmpty'
 import AnalyticsError from './AnalyticsError'
 import AnalyticsView from './AnalyticsView'
+import Loading from './Loading'
 
 type SP = Record<string, string | string[] | undefined>
 
@@ -60,10 +63,12 @@ export default async function AnalyticsPage(props: {
     (Array.isArray(sp.compare) ? sp.compare[0] : sp.compare) === '1'
 
   return (
-    <AnalyticsStream
-      measurementId={measurementId}
-      rangeDays={rangeDays}
-      compare={compare}
-    />
+    <Suspense fallback={<Loading />}>
+      <AnalyticsStream
+        measurementId={measurementId}
+        rangeDays={rangeDays}
+        compare={compare}
+      />
+    </Suspense>
   )
 }

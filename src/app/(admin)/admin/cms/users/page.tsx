@@ -7,6 +7,7 @@ import { User } from '@/models/User/User'
 import styles from './page.module.css'
 import UsersTableClient from './UsersTableClient'
 
+
 type RowUser = {
   _id: unknown
   username?: string
@@ -35,7 +36,7 @@ export default async function UsersPage() {
   if (!me) redirect('/admin/login?next=/admin/cms/users')
   if (!canManageUsers(String(me.role))) redirect('/admin/cms')
 
-  await connectMongo()
+  await connectMongo();
 
   const users = await User.find({})
     .select({
