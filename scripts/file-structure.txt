@@ -126,7 +126,6 @@
       📁 admin
       📁 auth
     📄 favicon.ico
-    📄 layout.tsx
     📄 not-found.module.css
     📄 not-found.tsx
     📁 robots.txt
