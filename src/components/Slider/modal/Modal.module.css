@@ -16,7 +16,8 @@
 .card {
   position: relative;
   width: 100%;
-  max-width: 60vw;
+  height: fit-content;
+  max-height: 100%;
   border-radius: 18px;
   overflow: hidden;
 
@@ -161,7 +162,6 @@
   }
 
   .card {
-    max-width: 100vw;
     border-radius: 16px;
   }
 

@@ -47,40 +47,6 @@
   --bad: rgba(255, 120, 150, 0.92);
 }
 
-/* 📐 Root font-size for rem scaling */
-html { font-size: 24px !important; }
-@media (max-width: 2559px) {
-  html { font-size: 20px !important; }
-}
-@media (max-width: 1440px) {
-  html { font-size: 19px !important; }
-  .DW1440-display-none { display: none !important; }
-}
-@media (max-width: 1280px) {
-  html { font-size: 18px !important; }
-  .DW1280-display-none { display: none !important; }
-  .display-grid-column { grid-template-columns: repeat(3, 1fr) !important; }
-}
-@media (max-width: 1024px) {
-  html { font-size: 17px !important; }
-  .DW1024-display-none { display: none !important; }
-  .display-grid-column { grid-template-columns: repeat(2, 1fr) !important; }
-}
-@media (max-width: 769px) {
-  html { font-size: 16px !important; }
-  .DW768-display-none { display: none !important; }
-  .display-grid-column { grid-template-columns: 1fr !important; }
-  :root { 
-    --pad-x: 1rem;
-  }
-}
-@media (max-width: 426px) {
-  html { font-size: 15px !important; }
-}
-@media (max-width: 376px) {
-  html { font-size: 14px !important; }
-}
-
 /* =========================
    Base layout styling
    ========================= */
@@ -130,6 +96,38 @@ body {
     scroll,
     scroll;
 
+}
+
+/* 📐 Root font-size for rem scaling */
+html { font-size: 26px}
+@media (max-width: 2559px) {
+  html { font-size: 23px; }
+}
+@media (max-width: 2049px) {
+  html { font-size: 22px; }
+}
+@media (max-width: 1681px) {
+  html { font-size: 21px; }
+}
+@media (max-width: 1441px) {
+  html { font-size: 20px; }
+}
+@media (max-width: 1281px) {
+  html { font-size: 19px; }
+}
+@media (max-width: 1025px) {
+  html { font-size: 18px; }
+}
+@media (max-width: 769px) {
+  html { font-size: 17px; }
+  :root { --pad-x: 1rem; }
+  .DW768-display-none { display: none !important; }
+}
+@media (max-width: 426px) {
+  html { font-size: 16px; }
+}
+@media (max-width: 376px) {
+  html { font-size: 15px; }
 }
 
 main {
