@@ -104,6 +104,12 @@
   opacity: 0.85;
 }
 
+.langLink {
+  min-width: 2.7rem;
+  justify-content: center;
+  font-weight: 900;
+}
+
 /* Burger */
 .burger {
   display: none;

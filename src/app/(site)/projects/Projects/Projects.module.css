@@ -157,6 +157,16 @@
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
+.empty {
+  margin-top: 0.95rem;
+  border: 1px solid var(--border-soft);
+  background: rgba(14, 12, 30, 0.42);
+  border-radius: var(--r-md);
+  padding: 1rem;
+  color: var(--muted);
+  text-align: center;
+}
+
 /* =========================
    Card
    ========================= */

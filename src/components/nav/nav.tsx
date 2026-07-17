@@ -7,26 +7,32 @@ import { usePathname } from 'next/navigation'
 import { useEffect, useMemo, useState } from 'react'
 import styles from './nav.module.css'
 import ContactsBox from '@/app/(site)/contact/ContactsBox/ContactsBox'
-
-type NavItem = { label: string; href: string }
-
-const NAV_ITEMS: NavItem[] = [
-  { label: 'Home', href: '/' },
-  { label: 'About', href: '/about' },
-  { label: 'Services', href: '/services' },
-  { label: 'Projects', href: '/projects' },
-  { label: 'Contact', href: '/contact' },
-]
+import {
+  localizedPath,
+  navItems,
+  switchLocalePath,
+  type Locale,
+} from '@/lib/i18n'
 
 function isActive(pathname: string, href: string) {
-  if (href === '/') return pathname === '/'
+  if (href === '/' || href === '/en') return pathname === href
   return pathname === href || pathname.startsWith(`${href}/`)
 }
 
-export default function Nav() {
+export default function Nav({ locale = 'th' }: { locale?: Locale }) {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
-  const items = useMemo(() => NAV_ITEMS, [])
+  const items = useMemo(() => navItems(locale), [locale])
+  const targetLocale: Locale = locale === 'en' ? 'th' : 'en'
+  const languageHref = switchLocalePath(pathname, targetLocale)
+  const languageLabel = targetLocale.toUpperCase()
+  const homeLabel = locale === 'en' ? 'Home' : 'หน้าแรก'
+  const closeMenuLabel = locale === 'en' ? 'Close menu' : 'ปิดเมนู'
+  const openMenuLabel = locale === 'en' ? 'Open menu' : 'เปิดเมนู'
+  const primaryLabel = locale === 'en' ? 'Primary' : 'เมนูหลัก'
+  const mobileLabel = locale === 'en' ? 'Mobile' : 'เมนูมือถือ'
+  const switchLabel =
+    targetLocale === 'en' ? 'Switch language to English' : 'เปลี่ยนภาษาเป็นไทย'
 
   useEffect(() => {
     setOpen(false)
@@ -37,7 +43,11 @@ export default function Nav() {
     <>
       <header className={styles.wrap}>
         <div className={styles.inner}>
-          <Link className={styles.brand} href="/" aria-label="VETRA — Home">
+          <Link
+            className={styles.brand}
+            href={localizedPath(locale, '/')}
+            aria-label={`VETRA — ${homeLabel}`}
+          >
             <span className={styles.brandMark}>
               <Image
                 src="/logo/vetra-logo-nobg.svg"
@@ -56,7 +66,7 @@ export default function Nav() {
             </span>
           </Link>
 
-          <nav className={styles.desktop} aria-label="Primary">
+          <nav className={styles.desktop} aria-label={primaryLabel}>
             {items.map((item) => (
               <Link
                 key={item.href}
@@ -68,12 +78,20 @@ export default function Nav() {
                 {item.label}
               </Link>
             ))}
+
+            <Link
+              className={`${styles.link} ${styles.langLink}`}
+              href={languageHref}
+              aria-label={switchLabel}
+            >
+              {languageLabel}
+            </Link>
           </nav>
 
           <button
             type="button"
             className={styles.burger}
-            aria-label={open ? 'Close menu' : 'Open menu'}
+            aria-label={open ? closeMenuLabel : openMenuLabel}
             aria-expanded={open}
             aria-controls="mobile-drawer"
             onClick={() => setOpen((v) => !v)}
@@ -91,7 +109,7 @@ export default function Nav() {
       <button
         type="button"
         className={`${styles.backdrop} ${open ? styles.backdropOpen : ''}`}
-        aria-label="Close menu"
+        aria-label={closeMenuLabel}
         onClick={() => setOpen(false)}
       />
 
@@ -101,7 +119,7 @@ export default function Nav() {
         className={`${styles.drawer} ${open ? styles.drawerOpen : ''}`}
         aria-hidden={!open}
       >
-        <nav className={styles.mobileNav} aria-label="Mobile">
+        <nav className={styles.mobileNav} aria-label={mobileLabel}>
           {items.map((item) => (
             <Link
               key={item.href}
@@ -115,11 +133,24 @@ export default function Nav() {
               <span className={styles.mobileText}>{item.label}</span>
             </Link>
           ))}
+
+          <Link
+            href={languageHref}
+            className={styles.mobileLink}
+            onClick={() => setOpen(false)}
+            aria-label={switchLabel}
+          >
+            <span className={styles.mobileBullet} aria-hidden="true" />
+            <span className={styles.mobileText}>{languageLabel}</span>
+          </Link>
         </nav>
 
         {/* Contact box at bottom of drawer */}
         <div className={styles.drawerContact}>
-          <ContactsBox title="Contact" />
+          <ContactsBox
+            title={locale === 'en' ? 'Contact' : 'ติดต่อ'}
+            locale={locale}
+          />
         </div>
       </aside>
     </>

@@ -6,6 +6,15 @@ export async function GET() {
   <url><loc>https://vetra.asia/projects</loc></url>
   <url><loc>https://vetra.asia/services</loc></url>
   <url><loc>https://vetra.asia/contact</loc></url>
+  <url><loc>https://vetra.asia/privacy</loc></url>
+  <url><loc>https://vetra.asia/terms</loc></url>
+  <url><loc>https://vetra.asia/en</loc></url>
+  <url><loc>https://vetra.asia/en/about</loc></url>
+  <url><loc>https://vetra.asia/en/projects</loc></url>
+  <url><loc>https://vetra.asia/en/services</loc></url>
+  <url><loc>https://vetra.asia/en/contact</loc></url>
+  <url><loc>https://vetra.asia/en/privacy</loc></url>
+  <url><loc>https://vetra.asia/en/terms</loc></url>
 </urlset>
 `
 

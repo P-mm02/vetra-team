@@ -1,0 +1,243 @@
+{
+  "baseTypes": [
+    {
+      "id": "onepage_no_cms",
+      "title": "One-page website without CMS",
+      "subtitle": "All key information on one focused page",
+      "price": { "min": 2000, "max": 2000 },
+      "details": [
+        "Best for small websites with limited content and infrequent updates",
+        "No CMS; content updates are handled by the VETRA team",
+        "Basic SEO and good performance foundation"
+      ]
+    },
+    {
+      "id": "multipage_no_cms",
+      "title": "Multi-page website without CMS",
+      "subtitle": "Clear content separated into dedicated pages",
+      "price": { "min": 5000, "max": 5000 },
+      "details": [
+        "Best for businesses with more content but infrequent updates",
+        "No CMS; content updates are handled by the VETRA team",
+        "Full SEO structure and strong performance"
+      ]
+    },
+    {
+      "id": "multipage_with_cms",
+      "title": "Multi-page website with CMS",
+      "subtitle": "Structured pages with content you can update yourself",
+      "price": { "min": 10000, "max": 10000 },
+      "details": [
+        "Best for websites with frequent content or image updates",
+        "Includes an admin system for managing content and media",
+        "Full SEO structure and strong performance",
+        "Higher security posture for protected admin workflows"
+      ]
+    },
+    {
+      "id": "large_platform",
+      "title": "Large online platform",
+      "subtitle": "Custom online service, marketplace, or specialized system",
+      "price": { "min": 50000, "max": 50000 },
+      "details": [
+        "Best for startups or systems that need to support many users",
+        "Supports complex workflows and future scaling",
+        "Full SEO structure and strong performance",
+        "Higher security posture across important workflows"
+      ]
+    }
+  ],
+  "addonsSmall": [
+    {
+      "id": "bilingual_th_en",
+      "title": "Two languages",
+      "desc": "Language switcher with URL and SEO structure",
+      "price": { "min": 2000, "max": 2000 },
+      "tag": "i18n, SEO"
+    },
+    {
+      "id": "multilanguage",
+      "title": "Multi-language support (3+)",
+      "desc": "Support multiple languages with organized translation content",
+      "price": { "min": 2000, "max": 4000 },
+      "tag": "i18n, SEO"
+    },
+    {
+      "id": "dark_mode_toggle",
+      "title": "Light/Dark mode",
+      "desc": "Theme switcher with remembered preference",
+      "price": { "min": 1000, "max": 2000 },
+      "tag": "UI/UX"
+    },
+    {
+      "id": "google_maps_embed",
+      "title": "Google Maps",
+      "desc": "Map embed, pin, and navigation link",
+      "price": { "min": 200, "max": 500 },
+      "tag": "Embed"
+    },
+    {
+      "id": "facebook_page_embed",
+      "title": "Facebook page",
+      "desc": "Embed posts, page feed, or chat button when suitable",
+      "price": { "min": 200, "max": 500 },
+      "tag": "Social"
+    },
+    {
+      "id": "contact_form",
+      "title": "Contact form",
+      "desc": "Contact form with email delivery",
+      "price": { "min": 500, "max": 1000 },
+      "tag": "Form"
+    },
+    {
+      "id": "search_bar_basic",
+      "title": "Basic search",
+      "desc": "Simple page or content search",
+      "price": { "min": 200, "max": 500 },
+      "tag": "UX"
+    },
+    {
+      "id": "analytics",
+      "title": "Analytics tracking",
+      "desc": "Analytics or tracking setup with a control/reporting direction",
+      "price": { "min": 500, "max": 1000 },
+      "tag": "GA4, GTM"
+    },
+    {
+      "id": "chat_widget",
+      "title": "Free chat widget setup",
+      "desc": "Floating chat button or link to LINE/Facebook",
+      "price": { "min": 0, "max": 0 },
+      "tag": "Widget chat"
+    },
+    {
+      "id": "gallery",
+      "title": "Image gallery",
+      "desc": "Grid gallery with large image modal",
+      "price": { "min": 200, "max": 500 },
+      "tag": "UI"
+    },
+    {
+      "id": "faq_accordion",
+      "title": "Free FAQ section",
+      "desc": "SEO-friendly expandable questions and answers",
+      "price": { "min": 0, "max": 0 },
+      "tag": "Content"
+    },
+    {
+      "id": "cookie_consent",
+      "title": "Website policies",
+      "desc": "Cookie consent, privacy policy, or terms page",
+      "price": { "min": 200, "max": 500 },
+      "tag": "Compliance"
+    }
+  ],
+  "addonsLarge": [
+    {
+      "id": "ecommerce",
+      "title": "E-commerce system",
+      "desc": "Products, cart, orders, and stock management depending on scope",
+      "price": { "min": 10000, "max": 20000 },
+      "tag": "Commerce"
+    },
+    {
+      "id": "payments",
+      "title": "Payment system",
+      "desc": "Payment gateway integration and payment flow",
+      "price": { "min": 5000, "max": 10000 },
+      "tag": "Finance"
+    },
+    {
+      "id": "booking",
+      "title": "Booking or appointment system",
+      "desc": "Date/time selection, queue management, and notifications depending on scope",
+      "price": { "min": 5000, "max": 10000 },
+      "tag": "Booking"
+    },
+    {
+      "id": "internal_erp",
+      "title": "Internal ERP / operations system",
+      "desc": "Dashboard, workflows, permissions, and reports",
+      "price": { "min": 30000, "max": 40000 },
+      "tag": "Enterprise"
+    },
+    {
+      "id": "auto_notifications",
+      "title": "Automatic notification system",
+      "desc": "Email, LINE, or push notifications based on timing or status rules",
+      "price": { "min": 3000, "max": 10000 },
+      "tag": "Automation"
+    },
+    {
+      "id": "auth_roles",
+      "title": "Membership and roles",
+      "desc": "Login/signup, role separation, and protected pages",
+      "price": { "min": 5000, "max": 10000 },
+      "tag": "Auth"
+    },
+    {
+      "id": "multi_vendor",
+      "title": "Marketplace",
+      "desc": "Multi-vendor flow, commission logic, and seller dashboard",
+      "price": { "min": 100000, "max": 200000 },
+      "tag": "Marketplace"
+    },
+    {
+      "id": "subscription_membership",
+      "title": "Subscription membership",
+      "desc": "Plans, renewals, and access control for paid content or services",
+      "price": { "min": 50000, "max": 100000 },
+      "tag": "Subscription"
+    },
+    {
+      "id": "lms_courses",
+      "title": "LMS course system",
+      "desc": "Lessons, progress, quizzes, and certificates",
+      "price": { "min": 50000, "max": 150000 },
+      "tag": "LMS"
+    },
+    {
+      "id": "realtime_chat",
+      "title": "Realtime chat",
+      "desc": "Chat, online status, and instant notifications",
+      "price": { "min": 10000, "max": 30000 },
+      "tag": "Realtime"
+    },
+    {
+      "id": "api_integrations",
+      "title": "External API integrations",
+      "desc": "Connect CRM, ERP, logistics, Sheets, or other systems",
+      "price": { "min": 10000, "max": 20000 },
+      "tag": "Integration"
+    },
+    {
+      "id": "blockchain_crypto",
+      "title": "Blockchain / cryptocurrency",
+      "desc": "Wallets, transactions, token logic, or dApp workflows depending on scope",
+      "price": { "min": 100000, "max": 1000000 },
+      "tag": "Web3, dApp"
+    },
+    {
+      "id": "search_advanced",
+      "title": "Advanced search",
+      "desc": "Multi-filter search, ranking, and fast result discovery",
+      "price": { "min": 5000, "max": 10000 },
+      "tag": "Search"
+    },
+    {
+      "id": "reports_export",
+      "title": "Reports and export",
+      "desc": "Summary reports with PDF or Excel export",
+      "price": { "min": 3000, "max": 10000 },
+      "tag": "Reporting"
+    },
+    {
+      "id": "multi_branch",
+      "title": "Multi-branch / multi-store",
+      "desc": "Branch-specific data, permissions, and reporting",
+      "price": { "min": 25000, "max": 50000 },
+      "tag": "Scale"
+    }
+  ]
+}

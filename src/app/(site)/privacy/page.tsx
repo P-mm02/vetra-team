@@ -2,12 +2,13 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import styles from './page.module.css'
+import { pageAlternates } from '@/lib/i18n'
 
 export const metadata: Metadata = {
   title: 'Privacy',
   description:
     'นโยบายความเป็นส่วนตัวของ VETRA — การเก็บข้อมูล การใช้งานคุกกี้ และสิทธิของผู้ใช้งาน',
-  alternates: { canonical: '/privacy' },
+  alternates: pageAlternates('/privacy', 'th'),
   openGraph: {
     title: 'Privacy | VETRA',
     description:

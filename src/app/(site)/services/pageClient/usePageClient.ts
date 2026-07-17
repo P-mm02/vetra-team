@@ -1,7 +1,7 @@
 // src/app/(site)/services/pageClient/usePageClient.ts
 import { useEffect, useMemo, useRef, useState } from 'react'
 import {
-  DATA,
+  DATA_BY_LOCALE,
   LS_KEY,
   buildBreakdownText,
   formatRange,
@@ -9,8 +9,11 @@ import {
   uniq,
   type PriceRange,
 } from './function'
+import type { Locale } from '@/lib/i18n'
 
-export function usePageClient() {
+export function usePageClient(locale: Locale = 'th') {
+  const DATA = DATA_BY_LOCALE[locale]
+  const storageKey = `${LS_KEY}_${locale}`
   const [baseId, setBaseId] = useState<string>(DATA.baseTypes[0]?.id ?? '')
   const [smallIds, setSmallIds] = useState<string[]>([])
   const [largeIds, setLargeIds] = useState<string[]>([])
@@ -64,7 +67,7 @@ export function usePageClient() {
   // restore
   useEffect(() => {
     try {
-      const raw = localStorage.getItem(LS_KEY)
+      const raw = localStorage.getItem(storageKey)
       if (!raw) return
       const parsed = JSON.parse(raw) as {
         baseId?: string
@@ -92,20 +95,19 @@ export function usePageClient() {
     } catch {
       // ignore
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [DATA.addonsLarge, DATA.addonsSmall, DATA.baseTypes, storageKey])
 
   // persist
   useEffect(() => {
     try {
       localStorage.setItem(
-        LS_KEY,
+        storageKey,
         JSON.stringify({ baseId, smallIds, largeIds }),
       )
     } catch {
       // ignore
     }
-  }, [baseId, smallIds, largeIds])
+  }, [baseId, smallIds, largeIds, storageKey])
 
   // cleanup copy timer
   useEffect(() => {
@@ -116,17 +118,17 @@ export function usePageClient() {
 
   const base = useMemo(
     () => DATA.baseTypes.find((b) => b.id === baseId) ?? DATA.baseTypes[0],
-    [baseId],
+    [DATA.baseTypes, baseId],
   )
 
   const selectedSmall = useMemo(
     () => DATA.addonsSmall.filter((a) => smallIds.includes(a.id)),
-    [smallIds],
+    [DATA.addonsSmall, smallIds],
   )
 
   const selectedLarge = useMemo(
     () => DATA.addonsLarge.filter((a) => largeIds.includes(a.id)),
-    [largeIds],
+    [DATA.addonsLarge, largeIds],
   )
 
   const total = useMemo(() => {
@@ -150,8 +152,8 @@ export function usePageClient() {
         price: x.price,
       })),
       total,
-    })
-  }, [base, selectedSmall, selectedLarge, total])
+    }, locale)
+  }, [base, selectedSmall, selectedLarge, total, locale])
 
   async function copyBrief() {
     try {
@@ -190,7 +192,7 @@ export function usePageClient() {
     selectedLarge,
     total,
     breakdownText,
-    formatRange,
+    formatRange: (range: PriceRange) => formatRange(range, locale),
 
     // copied feedback
     copied,

@@ -3,12 +3,13 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import styles from './page.module.css'
 import AboutHero from './AboutHero/AboutHero'
+import { pageAlternates } from '@/lib/i18n'
 
 export const metadata: Metadata = {
   title: 'About',
   description:
     'เกี่ยวกับ Wee | Freelance — รับทำเว็บไซต์/เว็บแอปด้วย Next.js เน้นงานพรีเมียม โค้ดสะอาด SEO ดี และดูแลง่าย',
-  alternates: { canonical: '/about' },
+  alternates: pageAlternates('/about', 'th'),
   openGraph: {
     title: 'About | Wee | Freelance',
     description:
@@ -50,7 +51,7 @@ const principles = [
 export default function AboutPage() {
   return (
     <main id="main" className={styles.page}>
-      <AboutHero />
+      <AboutHero locale="th" />
 
       {/* ...everything else stays the same... */}
       {/* <section className={styles.section}>

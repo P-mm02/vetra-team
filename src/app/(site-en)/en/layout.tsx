@@ -1,4 +1,3 @@
-// src/app/(site)/layout.tsx
 import type { Metadata, Viewport } from 'next'
 import type { ReactNode } from 'react'
 import { GoogleAnalytics } from '@next/third-parties/google'
@@ -6,11 +5,9 @@ import { GoogleAnalytics } from '@next/third-parties/google'
 import '@/styles/globals.css'
 import Nav from '@/components/nav/nav'
 import Footer from '@/components/footer/footer'
-import { pageAlternates } from '@/lib/i18n'
+import { externalSiteUrl, pageAlternates } from '@/lib/i18n'
 
-const SITE_URL = (
-  process.env.NEXT_PUBLIC_SITE_URL || 'https://vetra.asia'
-).replace(/\/+$/, '')
+const SITE_URL = externalSiteUrl()
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -20,7 +17,7 @@ export const viewport: Viewport = {
 }
 
 const BASE_DESC =
-  'สร้างเว็บไซต์ ทันสมัย ระดับพรีเมี่ยม ด้วย Next.js เว็บไซต์เพื่อธุรกิจ ดีไซน์สวยงาม ทำ SEO เต็มระบบ AI และ Google ค้นหาเจอง่าย เพิ่มยอดขายได้มาก'
+  'Premium Next.js websites and web applications for businesses that need modern design, strong SEO, AI-ready content, performance, and scalable custom systems.'
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -41,14 +38,15 @@ export const metadata: Metadata = {
       'max-video-preview': -1,
     },
   },
-  alternates: pageAlternates('/', 'th'),
+  alternates: pageAlternates('/', 'en'),
   openGraph: {
     type: 'website',
-    url: '/',
+    url: '/en',
     siteName: 'VETRA',
     title: 'VETRA',
     description: BASE_DESC,
-    locale: 'th_TH',
+    locale: 'en_US',
+    alternateLocale: ['th_TH'],
   },
   twitter: {
     card: 'summary_large_image',
@@ -66,20 +64,17 @@ export const metadata: Metadata = {
   },
 }
 
-
-export default function SiteLayout({
+export default function EnglishSiteLayout({
   children,
 }: Readonly<{ children: ReactNode }>) {
   const gaId = process.env.NEXT_PUBLIC_GA_ID
 
   return (
-    <html
-      lang="th"      
-    >
+    <html lang="en">
       <body>
-        <Nav locale="th" />
+        <Nav locale="en" />
         {children}
-        <Footer locale="th" />
+        <Footer locale="en" />
       </body>
 
       {gaId ? <GoogleAnalytics gaId={gaId} /> : null}

@@ -7,21 +7,26 @@ import styles from './Projects.module.css'
 import projectsData from './projects.json'
 
 import Modal, { type ProjectItem } from './Modal/Modal'
+import { type Locale } from '@/lib/i18n'
+import { localizeProject, projectUiText } from './projectContent'
 
 type FilterMode = 'example' | 'all'
 
-export default function Projects() {
+export default function Projects({ locale = 'th' }: { locale?: Locale }) {
   const [mode, setMode] = useState<FilterMode>('example')
   const [active, setActive] = useState<ProjectItem | null>(null)
+  const t = projectUiText[locale]
 
   // ✅ search
   const [query, setQuery] = useState('')
 
   const allSorted = useMemo(() => {
-    const list = (projectsData as ProjectItem[]).slice()
+    const list = (projectsData as ProjectItem[])
+      .map((p) => localizeProject(p, locale))
+      .slice()
     list.sort((a, b) => b.year - a.year)
     return list
-  }, [])
+  }, [locale])
 
   const filtered = useMemo(() => {
     if (mode === 'all') return allSorted
@@ -73,7 +78,7 @@ export default function Projects() {
             className={`${styles.tab} ${mode === 'example' ? styles.tabActive : ''}`}
             onClick={() => setMode('example')}
           >
-            ตัวอย่าง
+            {t.example}
           </button>
 
           <button
@@ -83,7 +88,7 @@ export default function Projects() {
             className={`${styles.tab} ${mode === 'all' ? styles.tabActive : ''}`}
             onClick={() => setMode('all')}
           >
-            ทั้งหมด
+            {t.all}
           </button>
         </div>
 
@@ -120,8 +125,8 @@ export default function Projects() {
               // ✅ if user is searching, show all
               if (v.trim()) setMode('all')
             }}
-            placeholder="ค้นหา: ชื่อ / รายละเอียด / ปี / stack ..."
-            aria-label="Search by title, description, year, stack, highlights"
+            placeholder={t.searchPlaceholder}
+            aria-label={t.searchLabel}
           />
 
           {query.trim() ? (
@@ -129,7 +134,7 @@ export default function Projects() {
               type="button"
               className={styles.clearBtn}
               onClick={() => setQuery('')}
-              aria-label="Clear search"
+              aria-label={t.clearSearch}
               title="Clear"
             >
               ✕
@@ -169,7 +174,7 @@ export default function Projects() {
                     className={styles.btn}
                     onClick={() => openModal(p)}
                   >
-                    รายละเอียด
+                    {t.detail}
                   </button>
                 ) : (
                   <div className="empty-div" />
@@ -181,8 +186,12 @@ export default function Projects() {
         ))}
       </div>
 
+      {!searched.length ? <p className={styles.empty}>{t.empty}</p> : null}
+
       {/* ✅ Modal extracted */}
-      {active && <Modal project={active} onClose={closeModal} />}
+      {active && (
+        <Modal project={active} onClose={closeModal} locale={locale} />
+      )}
     </div>
   )
 }

@@ -3,15 +3,22 @@ import Image from 'next/image'
 import Link from 'next/link'
 import styles from './footer.module.css'
 import ContactsBox from '@/app/(site)/contact/ContactsBox/ContactsBox'
+import { localizedPath, type Locale } from '@/lib/i18n'
 
-export default function Footer() {
+export default function Footer({ locale = 'th' }: { locale?: Locale }) {
+  const contactLabel = locale === 'en' ? 'Contact' : 'ติดต่อ'
+
   return (
     <footer className={styles.footer} aria-label="Site footer">
       <div className={styles.fx} aria-hidden="true" />
 
       <div className={styles.inner}>
         {/* Brand */}
-        <Link className={styles.brand} href="/" aria-label="VETRA — Home">
+        <Link
+          className={styles.brand}
+          href={localizedPath(locale, '/')}
+          aria-label="VETRA — Home"
+        >
           <span className={styles.brandMark}>
             <Image
               src="/logo/vetra-logo-nobg.svg"
@@ -32,7 +39,7 @@ export default function Footer() {
 
         {/* Contact */}
         <div className={styles.ContactsBoxWrapper}>
-          <ContactsBox />
+          <ContactsBox locale={locale} />
         </div>
 
         {/* Copyright */}
@@ -60,8 +67,11 @@ export default function Footer() {
           </p>
 
           <div className={styles.metaLinks} aria-label="Footer links">
-            <Link className={styles.metaLink} href="/contact">
-              Contact
+            <Link
+              className={styles.metaLink}
+              href={localizedPath(locale, '/contact')}
+            >
+              {contactLabel}
             </Link>
             {/* <span className={styles.sep} aria-hidden="true">
               •

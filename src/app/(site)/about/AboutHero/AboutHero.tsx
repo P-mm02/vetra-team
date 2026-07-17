@@ -2,18 +2,68 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import styles from './AboutHero.module.css'
+import { localizedPath, type Locale } from '@/lib/i18n'
 
-export default function AboutHero() {
+const copy = {
+  th: {
+    kicker: 'About',
+    ariaKicker: 'Go to About page',
+    titleBefore: 'สวัสดีครับ ผมชื่อ',
+    titleAfter: '(Poomtawee Rompho)',
+    intro:
+      'เป็นผู้นำ ทีมฟรีแลนซ์ ออกแบบ และพัฒนา สร้าง เว็บไซต์ เว็บแอปพลิเคชัน รวมถึงระบบช่วยเหลือการทำงานสำหรับธุรกิจทุกประเภท มีประสบการณ์บริหารองค์กรหลายปี เข้าใจผู้ประกอบการ เข้าใจลูกค้า สร้างผลงานที่ตอบโจทย์ความต้องการได้',
+    focusK: 'โฟกัส',
+    focusV:
+      'เว็บไซต์ธุรกิจ SEO เต็มระบบ เพิ่มโอกาสค้นหาเจอ จาก AI และ Google, ระบบบริหารงานภายในองค์กร, ระบบอัตโนมัติต่างๆ',
+    styleK: 'สไตล์งาน',
+    styleV:
+      'มีประสบการณ์ออกแบบทุกสไตล์ ให้เข้ากับธุรกิจของคุณ ไม่ว่าจะเป็น พรีเมียม ลักซูรี่ ทันสมัย ล้ำสมัย มินิมอล เน้นใช้งานง่าย ดูเข้าใจง่าย',
+    methodK: 'วิธีทำงาน',
+    methodV: [
+      '1.วางโครงสร้างก่อน ให้ระบบทำงานลื่นไหล ประสิทธิภาพสูงสุด กินทรัพยากรน้อยที่สุด',
+      '2.เขียนโค้ดสะอาด เข้าใจง่าย นำไปพัฒนาต่อได้',
+      '3.ทดสอบระบบ แก้ไขละเอียด ไม่ให้มีจุดบกพร่อง',
+    ],
+    primary: 'ติดต่อเพื่อเริ่มโปรเจกต์',
+    secondary: 'ดูผลงาน',
+  },
+  en: {
+    kicker: 'About',
+    ariaKicker: 'Go to About page',
+    titleBefore: "Hi, I'm",
+    titleAfter: '(Poomtawee Rompho)',
+    intro:
+      'I lead a freelance team that designs and builds websites, web applications, and business workflow systems. My background in running businesses helps me understand owners, customers, and the practical details that make a website useful after launch.',
+    focusK: 'Focus',
+    focusV:
+      'Business websites with strong SEO, AI-ready content structure, internal management systems, automation, and custom workflows.',
+    styleK: 'Design style',
+    styleV:
+      'I adapt the visual direction to each business: premium, luxury, modern, futuristic, minimal, or practical and easy to scan.',
+    methodK: 'How we work',
+    methodV: [
+      '1. Plan the structure first so the system stays fast, efficient, and scalable.',
+      '2. Write clean code that is easy to maintain and extend.',
+      '3. Test carefully and refine details before delivery.',
+    ],
+    primary: 'Start a Project',
+    secondary: 'View Projects',
+  },
+} satisfies Record<Locale, Record<string, unknown>>
+
+export default function AboutHero({ locale = 'th' }: { locale?: Locale }) {
+  const t = copy[locale]
+
   return (
     <header className={styles.hero}>
       <div className={styles.container}>
         <div className={styles.heroCard}>
           <Link
-            href="/about"
+            href={localizedPath(locale, '/about')}
             className={styles.kicker}
-            aria-label="Go to About page"
+            aria-label={t.ariaKicker as string}
           >
-            About
+            {t.kicker as string}
           </Link>
 
           {/* Profile image */}
@@ -29,52 +79,55 @@ export default function AboutHero() {
           </div>
 
           <h1 className={styles.h1}>
-            สวัสดีครับ ผมชื่อ <span className={styles.h1Accent}>Wee</span>{' '}
-            (Poomtawee Rompho)
+            {t.titleBefore as string}{' '}
+            <span className={styles.h1Accent}>Wee</span>{' '}
+            {t.titleAfter as string}
           </h1>
 
           <p className={`${styles.subhead} text-indent`}>
-            เป็นผู้นำ ทีมฟรีแลนซ์ ออกแบบ และพัฒนา สร้าง เว็บไซต์ เว็บแอปพลิเคชัน
-            รวมถึงระบบช่วยเหลือการทำงานสำหรับธุรกิจทุกประเภท
-            มีประสบการณ์บริหารองค์กรหลายปี เข้าใจผู้ประกอบการ เข้าใจลูกค้า
-            สร้างผลงานที่ตอบโจทย์ความต้องการได้
+            {t.intro as string}
           </p>
 
           <div className={styles.heroGrid}>
             <div className={styles.heroBox}>
-              <div className={styles.heroK}>โฟกัส</div>
+              <div className={styles.heroK}>{t.focusK as string}</div>
               <div className={`${styles.heroV} text-indent`}>
-                เว็บไซต์ธุรกิจ SEO เต็มระบบ เพิ่มโอกาสค้นหาเจอ จาก AI และ
-                Google, ระบบบริหารงานภายในองค์กร, ระบบอัตโนมัติต่างๆ
+                {t.focusV as string}
               </div>
             </div>
 
             <div className={styles.heroBox}>
-              <div className={styles.heroK}>สไตล์งาน</div>
+              <div className={styles.heroK}>{t.styleK as string}</div>
               <div className={styles.heroV}>
-                มีประสบการณ์ออกแบบทุกสไตล์ ให้เข้ากับธุรกิจของคุณ ไม่ว่าจะเป็น
-                พรีเมียม ลักซูรี่ ทันสมัย ล้ำสมัย มินิมอล เน้นใช้งานง่าย
-                ดูเข้าใจง่าย
+                {t.styleV as string}
               </div>
             </div>
 
             <div className={styles.heroBox}>
-              <div className={styles.heroK}>วิธีทำงาน</div>
+              <div className={styles.heroK}>{t.methodK as string}</div>
               <div className={styles.heroV}>
-                1.วางโครงสร้างก่อน ให้ระบบทำงานลื่นไหล ประสิทธิภาพสูงสุด
-                กินทรัพยากรน้อยที่สุด <br />
-                2.เขียนโค้ดสะอาด เข้าใจง่าย นำไปพัฒนาต่อได้ <br />
-                3.ทดสอบระบบ แก้ไขละเอียด ไม่ให้มีจุดบกพร่อง
+                {(t.methodV as string[]).map((line) => (
+                  <span key={line}>
+                    {line}
+                    <br />
+                  </span>
+                ))}
               </div>
             </div>
           </div>
 
           <div className={styles.actions}>
-            <Link className={styles.btnPrimary} href="/contact">
-              ติดต่อเพื่อเริ่มโปรเจกต์
+            <Link
+              className={styles.btnPrimary}
+              href={localizedPath(locale, '/contact')}
+            >
+              {t.primary as string}
             </Link>
-            <Link className={styles.btnGhost} href="/projects">
-              ดูผลงาน
+            <Link
+              className={styles.btnGhost}
+              href={localizedPath(locale, '/projects')}
+            >
+              {t.secondary as string}
             </Link>
           </div>
         </div>

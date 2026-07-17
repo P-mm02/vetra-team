@@ -3,13 +3,15 @@ import type { Metadata } from 'next'
 import styles from './page.module.css'
 import Projects from './Projects/Projects'
 import Link from 'next/link'
+import { localizedPath, pageAlternates } from '@/lib/i18n'
 
 const TH_DESC =
   'รวมผลงานออกแบบและพัฒนาเว็บไซต์ของ VETRA — เว็บไซต์ Next.js, เว็บแอป, แดชบอร์ด และระบบ UI สำหรับธุรกิจและองค์กร พร้อมระบบค้นหาและคัดเลือกผลงานตัวอย่าง.'
 
 export const metadata: Metadata = {
-  title: 'Projects |',
+  title: 'Projects',
   description: TH_DESC,
+  alternates: pageAlternates('/projects', 'th'),
   openGraph: {
     title: 'Projects | VETRA',
     description: TH_DESC,
@@ -35,7 +37,7 @@ export default function ProjectsPage() {
     <main className={styles.page}>
       <section className={styles.hero} aria-label="Projects hero">
         <div className={styles.heroInner}>
-          <Link href="/contact" className={styles.badge}>
+          <Link href={localizedPath('th', '/projects')} className={styles.badge}>
             Projects
           </Link>
           <h1 className={styles.title}>รวมผลงานของเรา</h1>
@@ -49,7 +51,7 @@ export default function ProjectsPage() {
 
       <section className={styles.section} aria-label="Projects list">
         <div className={styles.sectionInner}>
-          <Projects />
+          <Projects locale="th" />
         </div>
       </section>
     </main>

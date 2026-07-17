@@ -239,6 +239,18 @@
   line-height: 1.55;
 }
 
+.checkList li::before {
+  content: "";
+  position: absolute;
+  left: 0.05rem;
+  top: 0.72em;
+  width: 0.35rem;
+  height: 0.35rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+  box-shadow: 0 0 14px rgba(125, 231, 255, 0.25);
+}
+
 
 .miniCard {
   margin-top: 1rem;

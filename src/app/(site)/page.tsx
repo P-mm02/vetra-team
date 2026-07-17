@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import styles from './page.module.css'
 import AboutHero from '@/app/(site)/about/AboutHero/AboutHero'
 import HomeHero from '@/app/(site)/HomeHero/HomeHero'
+import { pageAlternates } from '@/lib/i18n'
 
 const OG_IMAGE = '/images/preview/vetra-preview.jpg'
 
@@ -10,6 +11,7 @@ export const metadata: Metadata = {
   title: 'VETRA',
   description:
     'สร้างเว็บไซต์ ทันสมัย ระดับพรีเมี่ยม ด้วย Next.js เว็บไซต์เพื่อธุรกิจ ดีไซน์สวยงาม ทำ SEO เต็มระบบ AI และ Google ค้นหาเจอง่าย เพิ่มยอดขายได้มาก',
+  alternates: pageAlternates('/', 'th'),
   openGraph: {
     title: 'VETRA',
     description:
@@ -28,8 +30,8 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <div className={styles.page}>
-      <HomeHero />
-      <AboutHero />
+      <HomeHero locale="th" />
+      <AboutHero locale="th" />
     </div>
   )
 }

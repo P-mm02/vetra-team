@@ -6,6 +6,8 @@ import Image from 'next/image'
 import Slider from '@/components/Slider/Slider'
 import { type Slide } from '@/components/Slider/function'
 import styles from './Modal.module.css'
+import { type Locale } from '@/lib/i18n'
+import { projectModalText } from '../projectContent'
 
 export type ProjectItem = {
   id: string
@@ -23,6 +25,7 @@ export type ProjectItem = {
 type ModalProps = {
   project: ProjectItem
   onClose: () => void
+  locale?: Locale
 }
 
 function clampScrollLock(lock: boolean) {
@@ -37,8 +40,9 @@ function clampScrollLock(lock: boolean) {
   }
 }
 
-export default function Modal({ project, onClose }: ModalProps) {
+export default function Modal({ project, onClose, locale = 'th' }: ModalProps) {
   const closeBtnRef = useRef<HTMLButtonElement | null>(null)
+  const t = projectModalText[locale]
 
   useEffect(() => {
     clampScrollLock(true)
@@ -73,7 +77,7 @@ export default function Modal({ project, onClose }: ModalProps) {
       className={styles.modalOverlay}
       role="dialog"
       aria-modal="true"
-      aria-label={`รายละเอียด ${project.title}`}
+      aria-label={`${t.dialogPrefix} ${project.title}`}
       onMouseDown={(e) => {
         if (e.target === e.currentTarget) onClose()
       }}
@@ -98,7 +102,7 @@ export default function Modal({ project, onClose }: ModalProps) {
 
         <div className={styles.modalHead}>
           <div className={styles.modalTitleWrap}>
-            <p className={styles.modalKicker}>Project details</p>
+            <p className={styles.modalKicker}>{t.details}</p>
             <h3 className={styles.modalTitle}>{project.title}</h3>
             <p className={styles.modalSub}>{project.shortDesc}</p>
           </div>
@@ -115,13 +119,13 @@ export default function Modal({ project, onClose }: ModalProps) {
 
           <div className={styles.modalBody}>
             <div className={styles.infoRow}>
-              <span className={styles.infoLabel}>Year</span>
+              <span className={styles.infoLabel}>{t.year}</span>
               <span className={styles.infoValue}>{project.year}</span>
             </div>
 
             {!!project.stack?.length && (
               <div className={styles.block}>
-                <h4 className={styles.blockTitle}>Stack</h4>
+                <h4 className={styles.blockTitle}>{t.stack}</h4>
                 <div className={styles.pills}>
                   {project.stack.map((s) => (
                     <span key={s} className={styles.pill}>
@@ -134,7 +138,7 @@ export default function Modal({ project, onClose }: ModalProps) {
 
             {!!project.highlights?.length && (
               <div className={styles.block}>
-                <h4 className={styles.blockTitle}>Highlights</h4>
+                <h4 className={styles.blockTitle}>{t.highlights}</h4>
                 <ul className={styles.list}>
                   {project.highlights.map((h, idx) => (
                     <li key={`${idx}-${h}`} className={styles.li}>
@@ -152,11 +156,12 @@ export default function Modal({ project, onClose }: ModalProps) {
                 className={styles.btnGhost}
                 onClick={onClose}
               >
-                Close
+                {t.close}
               </button>
 
               <span className={styles.footNote}>
-                Tip: press <kbd className={styles.kbd}>Esc</kbd> to close.
+                {t.tipPrefix} <kbd className={styles.kbd}>Esc</kbd>{' '}
+                {t.tipSuffix}
               </span>
             </div>
           </div>

@@ -3,8 +3,45 @@
 
 import styles from './pageClient.module.css'
 import { usePageClient } from './usePageClient'
+import type { Locale } from '@/lib/i18n'
 
-export default function PageClient() {
+const copy = {
+  th: {
+    baseTitle: 'ประเภทเว็บไซต์',
+    baseHint: 'เลือกได้ 1 แบบ',
+    smallTitle: 'ฟังก์ชันเพิ่มเติม (เล็ก)',
+    smallHint: 'เลือกได้หลายอัน',
+    largeTitle: 'ฟังก์ชันเพิ่มเติม (ใหญ่)',
+    largeHint: 'ระบบที่ซับซ้อน/มีแบ็กเอนด์/มีฐานข้อมูล',
+    detailsTitle: 'รายละเอียดการคำนวณ',
+    total: 'รวม',
+    empty: 'ยังไม่ได้เลือก',
+    copyIdle: 'คัดลอกสรุป',
+    copied: 'คัดลอก   ✓',
+    reset: 'รีเซ็ต',
+    preview: 'ดูข้อความสรุป (Preview)',
+    fixedBar: 'Total fixed bar',
+  },
+  en: {
+    baseTitle: 'Website type',
+    baseHint: 'Choose one',
+    smallTitle: 'Small add-ons',
+    smallHint: 'Choose multiple options',
+    largeTitle: 'Large add-ons',
+    largeHint: 'Complex systems with backend, database, or workflows',
+    detailsTitle: 'Estimate breakdown',
+    total: 'Total',
+    empty: 'Not selected',
+    copyIdle: 'Copy summary',
+    copied: 'Copied   ✓',
+    reset: 'Reset',
+    preview: 'Preview summary text',
+    fixedBar: 'Total fixed bar',
+  },
+} satisfies Record<Locale, Record<string, string>>
+
+export default function PageClient({ locale = 'th' }: { locale?: Locale }) {
+  const t = copy[locale]
   const {
     DATA,
 
@@ -34,7 +71,7 @@ export default function PageClient() {
 
     copied,
     copyBrief,
-  } = usePageClient()
+  } = usePageClient(locale)
 
   return (
     <div className={styles.wrap}>
@@ -45,8 +82,8 @@ export default function PageClient() {
           aria-label="Base Website Type"
         >
           <header className={styles.panelHead}>
-            <h2 className={styles.h2}>ประเภทเว็บไซต์</h2>
-            <p className={styles.hint}>เลือกได้ 1 แบบ</p>
+            <h2 className={styles.h2}>{t.baseTitle}</h2>
+            <p className={styles.hint}>{t.baseHint}</p>
           </header>
 
           <div
@@ -126,8 +163,8 @@ export default function PageClient() {
         {/* Small addons */}
         <section className={`glass ${styles.panel}`} aria-label="Small Add-ons">
           <header className={styles.panelHead}>
-            <h2 className={styles.h2}>ฟังก์ชันเพิ่มเติม (เล็ก)</h2>
-            <p className={styles.hint}>เลือกได้หลายอัน</p>
+            <h2 className={styles.h2}>{t.smallTitle}</h2>
+            <p className={styles.hint}>{t.smallHint}</p>
           </header>
 
           <div className={styles.pillList}>
@@ -210,10 +247,8 @@ export default function PageClient() {
         {/* Large addons */}
         <section className={`glass ${styles.panel}`} aria-label="Large Add-ons">
           <header className={styles.panelHead}>
-            <h2 className={styles.h2}>ฟังก์ชันเพิ่มเติม (ใหญ่)</h2>
-            <p className={styles.hint}>
-              ระบบที่ซับซ้อน/มีแบ็กเอนด์/มีฐานข้อมูล
-            </p>
+            <h2 className={styles.h2}>{t.largeTitle}</h2>
+            <p className={styles.hint}>{t.largeHint}</p>
           </header>
 
           <div className={styles.pillList}>
@@ -288,16 +323,16 @@ export default function PageClient() {
           aria-label="Calculation Details"
         >
           <header className={styles.detailsHead}>
-            <h2 className={styles.h2}>รายละเอียดการคำนวณ</h2>
+            <h2 className={styles.h2}>{t.detailsTitle}</h2>
             <div className={styles.detailsTotalLine}>
-              <span className={styles.detailsMuted}>รวม</span>
+              <span className={styles.detailsMuted}>{t.total}</span>
               <span className={styles.detailsPrice}>{formatRange(total)}</span>
             </div>
           </header>
 
           <div className={styles.detailsBody}>
             <div className={styles.block}>
-              <div className={styles.blockTitle}>ประเภทเว็บไซต์</div>
+              <div className={styles.blockTitle}>{t.baseTitle}</div>
               <div className={styles.line}>
                 <span className={styles.name}>{base?.title ?? '-'}</span>
                 <span className={styles.price}>
@@ -307,7 +342,7 @@ export default function PageClient() {
             </div>
 
             <div className={styles.block}>
-              <div className={styles.blockTitle}>ฟังก์ชันเพิ่มเติม (เล็ก)</div>
+              <div className={styles.blockTitle}>{t.smallTitle}</div>
               {selectedSmall.length ? (
                 selectedSmall.map((a) => (
                   <div key={a.id} className={styles.line}>
@@ -316,12 +351,12 @@ export default function PageClient() {
                   </div>
                 ))
               ) : (
-                <div className={styles.empty}>ยังไม่ได้เลือก</div>
+                <div className={styles.empty}>{t.empty}</div>
               )}
             </div>
 
             <div className={styles.block}>
-              <div className={styles.blockTitle}>ฟังก์ชันเพิ่มเติม (ใหญ่)</div>
+              <div className={styles.blockTitle}>{t.largeTitle}</div>
               {selectedLarge.length ? (
                 selectedLarge.map((a) => (
                   <div key={a.id} className={styles.line}>
@@ -330,7 +365,7 @@ export default function PageClient() {
                   </div>
                 ))
               ) : (
-                <div className={styles.empty}>ยังไม่ได้เลือก</div>
+                <div className={styles.empty}>{t.empty}</div>
               )}
             </div>
           </div>
@@ -343,7 +378,7 @@ export default function PageClient() {
               data-state={copied ? 'copied' : 'idle'}
               aria-live="polite"
             >
-              {copied ? 'คัดลอก \u00A0 ✓' : 'คัดลอกสรุป'}
+              {copied ? t.copied : t.copyIdle}
             </button>
 
             <button
@@ -351,12 +386,12 @@ export default function PageClient() {
               className={styles.btnGhost}
               onClick={resetAll}
             >
-              รีเซ็ต
+              {t.reset}
             </button>
           </div>
 
           <details className={styles.debug}>
-            <summary>ดูข้อความสรุป (Preview)</summary>
+            <summary>{t.preview}</summary>
             <pre className={styles.pre}>{breakdownText}</pre>
           </details>
         </section>
@@ -369,10 +404,10 @@ export default function PageClient() {
       <div
         className={styles.totalDock}
         role="status"
-        aria-label="Total fixed bar"
+        aria-label={t.fixedBar}
       >
         <div className={styles.totalDockInner}>
-          <div className={styles.totalDockLabel}>รวม</div>
+          <div className={styles.totalDockLabel}>{t.total}</div>
           <div className={styles.totalDockValue}>{formatRange(total)}</div>
         </div>
 
@@ -382,14 +417,14 @@ export default function PageClient() {
             className={styles.btnPrimary}
             onClick={copyBrief}
             data-state={copied ? 'copied' : 'idle'}
-            aria-live="polite"
-          >
-            {copied ? 'คัดลอก \u00A0 ✓' : 'คัดลอกสรุป'}
-          </button>
+          aria-live="polite"
+        >
+          {copied ? t.copied : t.copyIdle}
+        </button>
 
-          <button type="button" className={styles.btnGhost} onClick={resetAll}>
-            รีเซ็ต
-          </button>
+        <button type="button" className={styles.btnGhost} onClick={resetAll}>
+          {t.reset}
+        </button>
         </div>
       </div>
     </div>

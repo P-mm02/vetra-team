@@ -2,12 +2,13 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import styles from './page.module.css'
+import { pageAlternates } from '@/lib/i18n'
 
 export const metadata: Metadata = {
   title: 'Terms',
   description:
     'ข้อกำหนดและเงื่อนไขการให้บริการของ VETRA — ขอบเขตงาน การชำระเงิน การแก้ไขงาน และการส่งมอบ',
-  alternates: { canonical: '/terms' },
+  alternates: pageAlternates('/terms', 'th'),
   openGraph: {
     title: 'Terms | VETRA',
     description:

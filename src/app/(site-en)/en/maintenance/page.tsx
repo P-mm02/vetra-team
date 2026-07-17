@@ -1,25 +1,21 @@
-// src/app/maintenance/page.tsx
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import styles from './page.module.css'
-import { localizedPath, pageAlternates } from '@/lib/i18n'
-
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://vetra.asia/'
+import styles from '@/app/(site)/maintenance/page.module.css'
+import { pageAlternates } from '@/lib/i18n'
 
 export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
   title: 'Maintenance',
   description:
-    'We are currently improving this page. กรุณากลับมาใหม่อีกครั้ง - อยู่ระหว่างปรับปรุงและพัฒนา',
+    'This page is currently under maintenance while VETRA improves the experience.',
   robots: {
     index: false,
     follow: false,
     googleBot: { index: false, follow: false },
   },
-  alternates: pageAlternates('/maintenance', 'th'),
+  alternates: pageAlternates('/maintenance', 'en'),
 }
 
-export default function MaintenancePage() {
+export default function EnglishMaintenancePage() {
   return (
     <main className={styles.main} aria-label="Maintenance page">
       <div className={styles.wrap}>
@@ -30,13 +26,12 @@ export default function MaintenancePage() {
           </div>
 
           <h1 className={styles.h1}>
-            อยู่ระหว่าง <span className={styles.accent}>ปรับปรุง</span> /{' '}
-            <span className={styles.accent2}>พัฒนา</span>
+            Page under <span className={styles.accent}>maintenance</span>
           </h1>
 
           <p className={styles.sub}>
-            Under maintenance - we're upgrading this page for a smoother,
-            faster, more premium experience.
+            We are upgrading this page for a smoother, faster, more premium
+            experience.
           </p>
 
           <div className={styles.hr} />
@@ -44,25 +39,19 @@ export default function MaintenancePage() {
           <div className={styles.infoGrid}>
             <div className={styles.infoItem}>
               <div className={styles.k}>What's happening</div>
-              <div className={styles.v}>System improvements & UI polish</div>
+              <div className={styles.v}>System improvements and UI polish</div>
             </div>
             <div className={styles.infoItem}>
               <div className={styles.k}>When</div>
-              <div className={styles.v}>
-                Please check back soon <span className={styles.muted}>/</span>{' '}
-                ขอบคุณที่รอครับ
-              </div>
+              <div className={styles.v}>Please check back soon</div>
             </div>
           </div>
 
           <div className={styles.actions}>
-            <Link href={localizedPath('th', '/')} className={styles.btnPrimary}>
+            <Link href="/en" className={styles.btnPrimary}>
               Back to Home
             </Link>
-            <Link
-              href={localizedPath('th', '/contact')}
-              className={styles.btnGhost}
-            >
+            <Link href="/en/contact" className={styles.btnGhost}>
               Contact
             </Link>
           </div>

@@ -1,6 +1,7 @@
 // src/app/contact/ContactsBox/ContactsBox.tsx
 import Image from 'next/image'
 import styles from './ContactsBox.module.css'
+import type { Locale } from '@/lib/i18n'
 
 type ContactsBoxProps = {
   title?: string
@@ -9,6 +10,7 @@ type ContactsBoxProps = {
   fastworkUrl?: string
   phone?: string
   className?: string
+  locale?: Locale
 }
 
 export default function ContactsBox({
@@ -18,9 +20,15 @@ export default function ContactsBox({
   fastworkUrl = 'https://fastwork.co/user/poomtawee',
   phone = '0936661370',
   className = '',
+  locale = 'th',
 }: ContactsBoxProps) {
+  const ariaLabel = locale === 'en' ? 'Quick contact' : 'ช่องทางติดต่อด่วน'
+
   return (
-    <div className={styles.contactBar} aria-label="Quick contact">
+    <div
+      className={`${styles.contactBar} ${className}`.trim()}
+      aria-label={ariaLabel}
+    >
       <a
         className={styles.contactIcon}
         href={lineUrl}
