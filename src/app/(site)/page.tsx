@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import styles from './page.module.css'
 import AboutHero from '@/app/(site)/about/AboutHero/AboutHero'
 import HomeHero from '@/app/(site)/HomeHero/HomeHero'
+import RecentProjects from '@/app/(site)/RecentProjects/RecentProjects'
 import { pageAlternates } from '@/lib/i18n'
 
 const OG_IMAGE = '/images/preview/vetra-preview.jpg'
@@ -31,6 +32,7 @@ export default function Page() {
   return (
     <div className={styles.page}>
       <HomeHero locale="th" />
+      <RecentProjects locale="th" />
       <AboutHero locale="th" />
     </div>
   )
