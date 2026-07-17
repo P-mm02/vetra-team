@@ -19,8 +19,8 @@
     "isExample": true,
     "hasDetail": true,
     "cover": {
-      "src": "/images/projects/Aree-fruit-1.jpg",
-      "alt": "Aree-fruit-1 project cover"
+      "src": "/images/projects/Aree-fruit-cover.png",
+      "alt": "Aree-fruit fresh fruit farm website cover"
     },
     "slides": [
       {
@@ -618,5 +618,149 @@
     "isExample": false,
     "hasDetail": false,
     "cover": { "src": "/images/projects/Zoo.png", "alt": "Zoo project cover" }
+  },
+  {
+    "id": "p-032-go-wallet",
+    "title": "Go Wallet",
+    "shortDesc": "เว็บแอปกระเป๋าเงินสำหรับ THB และคริปโต มีหน้า Wallet, Assets, Activity และ Connect ในดีไซน์ fintech ที่เรียบหรู.",
+    "year": 2026,
+    "isExample": true,
+    "hasDetail": true,
+    "cover": {
+      "src": "/images/projects/Go-Wallet.png",
+      "alt": "Go Wallet fintech web app project cover"
+    },
+    "stack": [
+      "Next.js",
+      "TypeScript",
+      "Wallet UI",
+      "Responsive Design",
+      "Fintech UX"
+    ],
+    "highlights": [
+      "ออกแบบหน้ากระเป๋าเงินและยอดสินทรัพย์ให้ดูเข้าใจง่าย",
+      "รองรับมุมมองธุรกรรมล่าสุดและรายการเหรียญดิจิทัล",
+      "จัดวางระบบ Connect และเมนูสำหรับเว็บแอปบนมือถือ"
+    ]
+  },
+  {
+    "id": "p-033-unix-peak-travel",
+    "title": "Unix Peak Travel",
+    "shortDesc": "เว็บไซต์ทัวร์และทริปส่วนตัวสำหรับ Unix Peak Travel มีหน้าโปรแกรมทัวร์ วิดีโอไฮไลต์ โซเชียล และระบบติดต่อจองทริป.",
+    "year": 2026,
+    "isExample": true,
+    "hasDetail": true,
+    "cover": {
+      "src": "/images/projects/Unix-Peak-Travel.png",
+      "alt": "Unix Peak Travel website project cover"
+    },
+    "stack": [
+      "Next.js",
+      "TypeScript",
+      "Tour Program UI",
+      "Video Embed",
+      "Social Integration"
+    ],
+    "highlights": [
+      "โชว์แพ็กเกจทัวร์พร้อมราคา ระยะเวลา และรายละเอียดสำคัญ",
+      "มีส่วนวิดีโอไฮไลต์และฟีดโซเชียลสำหรับสร้างความน่าเชื่อถือ",
+      "ออกแบบ mobile-first พร้อมปุ่มโทร/ติดต่อที่เข้าถึงง่าย"
+    ]
+  },
+  {
+    "id": "p-034-x-tribe",
+    "title": "X TRIBE",
+    "shortDesc": "เว็บไซต์ E-commerce สำหรับแบรนด์แฟชั่นชาติพันธุ์ มีหน้าสินค้า ตะกร้า ระบบหลายสกุลเงิน และเรื่องราวแบรนด์.",
+    "year": 2026,
+    "isExample": true,
+    "hasDetail": true,
+    "cover": {
+      "src": "/images/projects/X-Tribe.png",
+      "alt": "X TRIBE e-commerce website project cover"
+    },
+    "stack": [
+      "Next.js",
+      "TypeScript",
+      "E-commerce UI",
+      "Cart Flow",
+      "Multi-currency"
+    ],
+    "highlights": [
+      "ออกแบบหน้าร้านออนไลน์สำหรับสินค้าแฟชั่นและคอลเลกชัน",
+      "มีตะกร้าสินค้าและการเลือกสกุลเงินเพื่อรองรับลูกค้าต่างประเทศ",
+      "เล่าแบรนด์ผ่านส่วน About และเชื่อมต่อ Instagram"
+    ]
+  },
+  {
+    "id": "p-035-phataree-thailand",
+    "title": "Phataree Thailand",
+    "shortDesc": "เว็บไซต์ B2B สำหรับสินค้าใช้สิ้นเปลือง โรงงาน โรงแรม และร้านอาหาร พร้อมแคตตาล็อกสินค้า ลูกค้า ใบรับรอง และช่องทางติดต่อ.",
+    "year": 2026,
+    "isExample": true,
+    "hasDetail": true,
+    "cover": {
+      "src": "/images/projects/Phataree-Thailand.png",
+      "alt": "Phataree Thailand B2B consumable products website cover"
+    },
+    "stack": [
+      "Next.js",
+      "TypeScript",
+      "Product Catalog",
+      "B2B Website",
+      "Contact UX"
+    ],
+    "highlights": [
+      "จัดหมวดสินค้าและรายละเอียดสำหรับลูกค้าองค์กร",
+      "เพิ่มความน่าเชื่อถือด้วยส่วนลูกค้าและใบรับรองมาตรฐาน",
+      "รวมช่องทาง LINE, Facebook, อีเมล และแผนที่ในหน้าเดียว"
+    ]
+  },
+  {
+    "id": "p-036-english-with-amol",
+    "title": "English With Amol",
+    "shortDesc": "เว็บไซต์ติวเตอร์ภาษาอังกฤษแบบ responsive มีคอร์สเรียน แผนการสอน FAQ และช่องทางติดต่อสำหรับนักเรียน.",
+    "year": 2026,
+    "isExample": true,
+    "hasDetail": true,
+    "cover": {
+      "src": "/images/projects/English-With-Amol.png",
+      "alt": "English With Amol responsive website project cover"
+    },
+    "stack": [
+      "Next.js",
+      "TypeScript",
+      "Course UI",
+      "FAQ",
+      "Responsive Design"
+    ],
+    "highlights": [
+      "นำเสนอคอร์สเรียนและรายละเอียดการสอนให้เลือกง่าย",
+      "มี FAQ และข้อมูลติดต่อครบสำหรับผู้สนใจสมัครเรียน",
+      "ดีไซน์สดใส เหมาะกับแบรนด์การศึกษาและการใช้งานบนมือถือ"
+    ]
+  },
+  {
+    "id": "p-037-toilet-by-nakin",
+    "title": "Toilet by Nakin",
+    "shortDesc": "เว็บไซต์บริการรถสุขาเคลื่อนที่ มีบริการ แกลเลอรี FAQ และช่องทางติดต่อเพื่อขอใบเสนอราคา.",
+    "year": 2026,
+    "isExample": true,
+    "hasDetail": true,
+    "cover": {
+      "src": "/images/projects/Toilet-by-Nakin.png",
+      "alt": "Toilet by Nakin responsive service website cover"
+    },
+    "stack": [
+      "Next.js",
+      "TypeScript",
+      "Service Website",
+      "Gallery",
+      "Lead Generation"
+    ],
+    "highlights": [
+      "อธิบายบริการสุขาเคลื่อนที่และจุดเด่นให้เข้าใจเร็ว",
+      "มีแกลเลอรีผลงานและ FAQ ช่วยตอบคำถามก่อนติดต่อ",
+      "วางปุ่มโทรและขอใบเสนอราคาให้เด่นสำหรับการปิดงาน"
+    ]
   }
 ]
