@@ -6,6 +6,10 @@ import styles from './page.module.css'
 import AddUserForm from './AddUserForm'
 import Notice from '@/app/(admin)/admin/Notice/Notice'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+export const fetchCache = 'force-no-store'
+
 type SearchParams = Record<string, string | string[] | undefined>
 
 function canManageUsers(role: string) {

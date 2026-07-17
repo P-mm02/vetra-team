@@ -7,6 +7,9 @@ import { User } from '@/models/User/User'
 import styles from './page.module.css'
 import UsersTableClient from './UsersTableClient'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+export const fetchCache = 'force-no-store'
 
 type RowUser = {
   _id: unknown

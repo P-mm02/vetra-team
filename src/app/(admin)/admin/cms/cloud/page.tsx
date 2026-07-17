@@ -2,6 +2,10 @@
 import styles from './page.module.css'
 import { connectMongo } from '@/lib/db/mongoose'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+export const fetchCache = 'force-no-store'
+
 type Usage = {
   usedBytes: number
   quotaBytes: number
