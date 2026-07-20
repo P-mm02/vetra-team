@@ -9,6 +9,7 @@ import projectsData from './projects.json'
 import Modal, { type ProjectItem } from './Modal/Modal'
 import { type Locale } from '@/lib/i18n'
 import { localizeProject, projectUiText } from './projectContent'
+import { compareProjectsNewestFirst } from './projectChronology'
 
 type FilterMode = 'example' | 'all'
 type ProjectCategory = 'all' | 'business' | 'commerce' | 'webapp' | 'internal'
@@ -60,7 +61,7 @@ export default function Projects({ locale = 'th' }: { locale?: Locale }) {
     const list = (projectsData as ProjectItem[])
       .map((p) => localizeProject(p, locale))
       .slice()
-    list.sort((a, b) => b.year - a.year)
+    list.sort(compareProjectsNewestFirst)
     return list
   }, [locale])
 

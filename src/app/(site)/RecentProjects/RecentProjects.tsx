@@ -4,6 +4,7 @@ import projectsData from '@/app/(site)/projects/Projects/projects.json'
 import type { ProjectItem } from '@/app/(site)/projects/Projects/Modal/Modal'
 import { localizedPath, type Locale } from '@/lib/i18n'
 import { localizeProject } from '@/app/(site)/projects/Projects/projectContent'
+import { compareProjectsNewestFirst } from '@/app/(site)/projects/Projects/projectChronology'
 import styles from './RecentProjects.module.css'
 
 const copy = {
@@ -27,15 +28,10 @@ const copy = {
   },
 } satisfies Record<Locale, Record<string, string>>
 
-function projectNumber(id: string) {
-  const match = id.match(/^p-(\d+)/)
-  return match ? Number(match[1]) : 0
-}
-
 function getRecentProjects(locale: Locale) {
   return (projectsData as ProjectItem[])
     .map((project) => localizeProject(project, locale))
-    .sort((a, b) => projectNumber(b.id) - projectNumber(a.id))
+    .sort(compareProjectsNewestFirst)
     .slice(0, 6)
 }
 
