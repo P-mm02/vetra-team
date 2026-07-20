@@ -5,12 +5,12 @@ import styles from './page.module.css'
 import { pageAlternates } from '@/lib/i18n'
 
 export const metadata: Metadata = {
-  title: 'Privacy',
+  title: 'นโยบายความเป็นส่วนตัว',
   description:
     'นโยบายความเป็นส่วนตัวของ VETRA — การเก็บข้อมูล การใช้งานคุกกี้ และสิทธิของผู้ใช้งาน',
   alternates: pageAlternates('/privacy', 'th'),
   openGraph: {
-    title: 'Privacy | VETRA',
+    title: 'นโยบายความเป็นส่วนตัว | VETRA',
     description:
       'นโยบายความเป็นส่วนตัว — ข้อมูลที่เก็บ วิธีใช้งานคุกกี้ และสิทธิของผู้ใช้งาน',
     url: '/privacy',
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   },
 }
 
-const updatedAt = 'January 4, 2026'
+const updatedAt = '4 มกราคม 2569'
 
 type Section = {
   id: string
@@ -93,7 +93,7 @@ const sections: Section[] = [
     title: 'สิทธิของคุณ',
     body: [
       'คุณสามารถขอให้เราแก้ไข/ลบข้อมูลส่วนบุคคลที่คุณเคยส่งมาได้ (ภายในขอบเขตที่กฎหมายอนุญาต).',
-      'คุณสามารถติดต่อผ่านหน้า Contact เพื่อขอข้อมูลเพิ่มเติมหรือดำเนินการตามสิทธิ.',
+      'คุณสามารถติดต่อผ่านหน้าติดต่อเพื่อขอข้อมูลเพิ่มเติมหรือดำเนินการตามสิทธิ.',
     ],
   },
   {
@@ -108,7 +108,7 @@ const sections: Section[] = [
     id: 'contact',
     title: 'ติดต่อเรา',
     body: [
-      'หากมีคำถามเกี่ยวกับนโยบายความเป็นส่วนตัว สามารถติดต่อผ่านหน้า Contact.',
+      'หากมีคำถามเกี่ยวกับนโยบายความเป็นส่วนตัว สามารถติดต่อผ่านหน้าติดต่อ.',
     ],
   },
 ]
@@ -119,12 +119,9 @@ export default function PrivacyPage() {
       <header className={styles.hero}>
         <div className={styles.container}>
           <div className={styles.heroCard}>
-            <div className={styles.kicker}>Privacy</div>
+            <div className={styles.kicker}>ความเป็นส่วนตัว</div>
 
-            <h1 className={styles.h1}>
-              นโยบายความเป็นส่วนตัว
-              <span className={styles.h1Accent}> (Privacy)</span>
-            </h1>
+            <h1 className={styles.h1}>นโยบายความเป็นส่วนตัว</h1>
 
             <p className={styles.subhead}>
               เราเก็บข้อมูลเท่าที่จำเป็นเพื่อการติดต่อและการให้บริการเท่านั้น
@@ -140,7 +137,7 @@ export default function PrivacyPage() {
                 <div className={styles.metaK}>เอกสารที่เกี่ยวข้อง</div>
                 <div className={styles.metaV}>
                   <Link className={styles.metaLink} href="/terms">
-                    Terms
+                    ข้อกำหนดและเงื่อนไข
                   </Link>
                 </div>
               </div>
@@ -159,10 +156,10 @@ export default function PrivacyPage() {
                 ดูสารบัญ
               </a>
               <Link className={styles.btnPrimary} href="/contact">
-                ไปหน้า Contact
+                ไปหน้าติดต่อ
               </Link>
               <Link className={styles.btnGhost} href="/services">
-                ดู Services
+                ดูบริการ
               </Link>
             </div>
           </div>
@@ -176,7 +173,7 @@ export default function PrivacyPage() {
             <aside
               className={styles.toc}
               id="toc"
-              aria-label="Table of contents"
+              aria-label="สารบัญ"
             >
               <div className={styles.tocTitle}>สารบัญ</div>
               <nav className={styles.tocNav}>
@@ -188,14 +185,17 @@ export default function PrivacyPage() {
               </nav>
 
               <div className={styles.tocNote}>
-                *นโยบายนี้เป็น template สำหรับเว็บไซต์พอร์ต/ฟรีแลนซ์ทั่วไป
+                *นโยบายนี้เป็นแม่แบบสำหรับเว็บไซต์พอร์ต/ฟรีแลนซ์ทั่วไป
                 หากคุณมีการเก็บข้อมูลเชิงลึก (เช่น ระบบสมาชิก/ชำระเงิน)
                 ควรปรับรายละเอียดให้เหมาะสม
               </div>
             </aside>
 
             {/* Content */}
-            <article className={styles.content} aria-label="Privacy content">
+            <article
+              className={styles.content}
+              aria-label="เนื้อหานโยบายความเป็นส่วนตัว"
+            >
               {sections.map((s) => (
                 <section key={s.id} id={s.id} className={styles.block}>
                   <h2 className={styles.h2}>{s.title}</h2>
@@ -213,7 +213,7 @@ export default function PrivacyPage() {
                     อยากทำเว็บที่ปลอดภัยและน่าเชื่อถือ?
                   </div>
                   <div className={styles.bottomText}>
-                    ผมช่วยวางโครงสร้าง SEO + performance + content flow
+                    ผมช่วยวางโครงสร้าง SEO ประสิทธิภาพ และลำดับเนื้อหา
                     ให้ดูมืออาชีพ และทำระบบติดต่อที่ใช้งานจริงได้ (เหมาะกับ QR
                     marketing)
                   </div>
@@ -223,11 +223,11 @@ export default function PrivacyPage() {
                   <Link className={styles.btnPrimary} href="/contact">
                     คุยโปรเจกต์
                   </Link>
-                  <Link className={styles.btnGhost} href="/pricing">
+                  <Link className={styles.btnGhost} href="/services">
                     ดูราคา
                   </Link>
-                  <Link className={styles.btnSoft} href="/process">
-                    ดู Process
+                  <Link className={styles.btnSoft} href="/projects">
+                    ดูผลงาน
                   </Link>
                 </div>
               </div>

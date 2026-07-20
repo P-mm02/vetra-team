@@ -3,6 +3,7 @@ import Link from 'next/link'
 import PageClient from '@/app/(site)/services/pageClient/pageClient'
 import styles from '@/app/(site)/services/page.module.css'
 import { localizedPath, pageAlternates } from '@/lib/i18n'
+import OngoingServices from '@/app/(site)/services/OngoingServices/OngoingServices'
 
 const DESC =
   'Estimate website and web app pricing by choosing a base website type and optional features. Prices are approximate and adjusted by project complexity.'
@@ -67,6 +68,8 @@ export default function EnglishServicesPage() {
           <PageClient locale="en" />
         </div>
       </section>
+
+      <OngoingServices locale="en" />
     </main>
   )
 }

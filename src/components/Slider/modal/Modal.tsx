@@ -5,6 +5,28 @@ import { useEffect, useRef } from 'react'
 import Image from 'next/image'
 import styles from './Modal.module.css'
 import type { Slide } from '../function'
+import type { Locale } from '@/lib/i18n'
+
+const copy = {
+  th: {
+    preview: 'ดูรูปภาพขนาดใหญ่',
+    close: 'ปิด',
+    previous: 'รูปก่อนหน้า',
+    next: 'รูปถัดไป',
+    tipStart: 'กด',
+    tipClose: 'เพื่อปิด และ',
+    tipNavigate: 'เพื่อเปลี่ยนรูป',
+  },
+  en: {
+    preview: 'Image preview',
+    close: 'Close',
+    previous: 'Previous image',
+    next: 'Next image',
+    tipStart: 'Tip: Press',
+    tipClose: 'to close,',
+    tipNavigate: 'to navigate.',
+  },
+} satisfies Record<Locale, Record<string, string>>
 
 type ModalProps = {
   isOpen: boolean
@@ -14,6 +36,7 @@ type ModalProps = {
   onClose: () => void
   onPrev: () => void
   onNext: () => void
+  locale?: Locale
 }
 
 export default function Modal({
@@ -24,8 +47,10 @@ export default function Modal({
   onClose,
   onPrev,
   onNext,
+  locale = 'en',
 }: ModalProps) {
   const closeBtnRef = useRef<HTMLButtonElement | null>(null)
+  const t = copy[locale]
 
   // lock scroll + focus close
   useEffect(() => {
@@ -71,7 +96,7 @@ export default function Modal({
       className={styles.overlay}
       role="dialog"
       aria-modal="true"
-      aria-label="Image preview"
+      aria-label={t.preview}
       onMouseDown={(e) => {
         if (e.target === e.currentTarget) onClose()
       }}
@@ -82,7 +107,7 @@ export default function Modal({
           type="button"
           className={styles.close}
           onClick={onClose}
-          aria-label="Close"
+          aria-label={t.close}
         >
           <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
             <path
@@ -121,7 +146,7 @@ export default function Modal({
               type="button"
               className={styles.nav}
               onClick={onPrev}
-              aria-label="Previous image"
+              aria-label={t.previous}
               disabled={total <= 1}
             >
               <svg
@@ -145,7 +170,7 @@ export default function Modal({
               type="button"
               className={styles.nav}
               onClick={onNext}
-              aria-label="Next image"
+              aria-label={t.next}
               disabled={total <= 1}
             >
               <svg
@@ -168,8 +193,8 @@ export default function Modal({
         </div>
 
         <div className={styles.hint}>
-          Tip: Press <kbd>Esc</kbd> to close, <kbd>←</kbd>/<kbd>→</kbd> to
-          navigate.
+          {t.tipStart} <kbd>Esc</kbd> {t.tipClose} <kbd>←</kbd>/<kbd>→</kbd>{' '}
+          {t.tipNavigate}
         </div>
       </div>
     </div>

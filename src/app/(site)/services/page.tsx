@@ -4,16 +4,17 @@ import PageClient from './pageClient/pageClient'
 import styles from './page.module.css'
 import Link from 'next/link'
 import { localizedPath, pageAlternates } from '@/lib/i18n'
+import OngoingServices from './OngoingServices/OngoingServices'
 
 const TH_DESC =
   'ประเมินราคาเว็บไซต์และเว็บแอป เลือกประเภทบริการและฟังก์ชันเสริม ระบบจะคำนวณราคารวมให้โดยอัตโนมัติ (ราคาโดยประมาณ)'
 
 export const metadata: Metadata = {
-  title: 'Services',
+  title: 'บริการ',
   description: TH_DESC,
   alternates: pageAlternates('/services', 'th'),
   openGraph: {
-    title: 'Services | VETRA',
+    title: 'บริการ | VETRA',
     description: TH_DESC,
     images: [
       {
@@ -26,7 +27,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Services | Vetra',
+    title: 'บริการ | VETRA',
     description: TH_DESC,
     images: ['/images/preview/services-og.png'],
   },
@@ -35,11 +36,11 @@ export const metadata: Metadata = {
 export default function ServicesPage() {
   return (
     <main className={styles.page}>
-      <section className={`section ${styles.hero}`} aria-label="Services Hero">
+      <section className={`section ${styles.hero}`} aria-label="ส่วนแนะนำบริการ">
         <div className="container">
           <div className={styles.heroflex}>
             <Link href={localizedPath('th', '/services')} className={styles.badge}>
-              Services
+              บริการ
             </Link>
             <h1 className={styles.h1}>ประเมินราคาเว็บไซต์</h1>
             <p className={styles.sub}>
@@ -59,12 +60,14 @@ export default function ServicesPage() {
 
       <section
         className={`section ${styles.calSection}`}
-        aria-label="Services Calculator"
+        aria-label="เครื่องมือประเมินราคาเว็บไซต์"
       >
         <div className="container">
           <PageClient locale="th" />
         </div>
       </section>
+
+      <OngoingServices locale="th" />
     </main>
   )
 }

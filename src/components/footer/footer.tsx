@@ -5,11 +5,32 @@ import styles from './footer.module.css'
 import ContactsBox from '@/app/(site)/contact/ContactsBox/ContactsBox'
 import { localizedPath, type Locale } from '@/lib/i18n'
 
+const copy = {
+  th: {
+    footerLabel: 'ส่วนท้ายเว็บไซต์',
+    homeLabel: 'VETRA — หน้าแรก',
+    linksLabel: 'ลิงก์ส่วนท้ายเว็บไซต์',
+    contact: 'ติดต่อ',
+    privacy: 'นโยบายความเป็นส่วนตัว',
+    terms: 'ข้อกำหนดและเงื่อนไข',
+    rights: 'สงวนลิขสิทธิ์',
+  },
+  en: {
+    footerLabel: 'Site footer',
+    homeLabel: 'VETRA — Home',
+    linksLabel: 'Footer links',
+    contact: 'Contact',
+    privacy: 'Privacy',
+    terms: 'Terms',
+    rights: 'All rights reserved',
+  },
+} satisfies Record<Locale, Record<string, string>>
+
 export default function Footer({ locale = 'th' }: { locale?: Locale }) {
-  const contactLabel = locale === 'en' ? 'Contact' : 'ติดต่อ'
+  const t = copy[locale]
 
   return (
-    <footer className={styles.footer} aria-label="Site footer">
+    <footer className={styles.footer} aria-label={t.footerLabel}>
       <div className={styles.fx} aria-hidden="true" />
 
       <div className={styles.inner}>
@@ -17,7 +38,7 @@ export default function Footer({ locale = 'th' }: { locale?: Locale }) {
         <Link
           className={styles.brand}
           href={localizedPath(locale, '/')}
-          aria-label="VETRA — Home"
+          aria-label={t.homeLabel}
         >
           <span className={styles.brandMark}>
             <Image
@@ -63,22 +84,34 @@ export default function Footer({ locale = 'th' }: { locale?: Locale }) {
             >
               <b>VETRA</b>
             </a>
-            . All rights reserved.
+            . {t.rights}.
           </p>
 
-          <div className={styles.metaLinks} aria-label="Footer links">
+          <div className={styles.metaLinks} aria-label={t.linksLabel}>
             <Link
               className={styles.metaLink}
               href={localizedPath(locale, '/contact')}
             >
-              {contactLabel}
+              {t.contact}
             </Link>
-            {/* <span className={styles.sep} aria-hidden="true">
+            <span className={styles.sep} aria-hidden="true">
               •
             </span>
-            <Link className={styles.metaLink} href="/privacy">
-              Privacy
-            </Link> */}
+            <Link
+              className={styles.metaLink}
+              href={localizedPath(locale, '/privacy')}
+            >
+              {t.privacy}
+            </Link>
+            <span className={styles.sep} aria-hidden="true">
+              •
+            </span>
+            <Link
+              className={styles.metaLink}
+              href={localizedPath(locale, '/terms')}
+            >
+              {t.terms}
+            </Link>
           </div>
         </div>
       </div>

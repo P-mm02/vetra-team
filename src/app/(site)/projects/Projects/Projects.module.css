@@ -22,6 +22,14 @@
   box-shadow: var(--shadow-md);
 }
 
+.filterControls {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.7rem;
+}
+
 .tabs {
   display: inline-flex;
   gap: 0.5rem;
@@ -29,6 +37,51 @@
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid var(--border-soft);
+}
+
+.categoryFilters {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.categoryButton {
+  min-height: 38px;
+  padding: 0.45rem 0.72rem;
+  border: 1px solid var(--border-soft);
+  border-radius: 999px;
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.025);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.92rem;
+  transition: border-color var(--t-fast), background var(--t-fast),
+    color var(--t-fast), transform var(--t-fast);
+}
+
+.categoryButton:hover {
+  transform: translateY(-1px);
+  color: var(--text);
+  border-color: rgba(125, 231, 255, 0.22);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.categoryButtonActive {
+  color: var(--text);
+  border-color: rgba(125, 231, 255, 0.38);
+  background: rgba(125, 231, 255, 0.09);
+  box-shadow: 0 0 0 2px rgba(125, 231, 255, 0.08);
+}
+
+.tab:focus-visible,
+.categoryButton:focus-visible,
+.searchBtn:focus-visible,
+.clearBtn:focus-visible,
+.btn:focus-visible {
+  outline: 2px solid rgba(125, 231, 255, 0.62);
+  outline-offset: 2px;
 }
 
 .tab {
@@ -208,6 +261,20 @@
   gap: 0.35rem;
 }
 
+.categoryBadge {
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0.2rem 0.5rem;
+  border: 1px solid rgba(125, 231, 255, 0.16);
+  border-radius: 999px;
+  color: var(--muted);
+  background: rgba(125, 231, 255, 0.05);
+  font-size: 0.88rem;
+  line-height: 1.35;
+  text-align: center;
+}
+
 .cardTitle {
   font-family: var(--font-display);
   font-weight: 900;
@@ -286,6 +353,22 @@
 }
 
 @media (max-width: 480px) {
+  .topBar {
+    padding: 0.8rem 0.65rem;
+  }
+  .categoryFilters {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+  }
+  .categoryButton:first-child {
+    grid-column: 1 / -1;
+  }
+  .categoryButton {
+    width: 100%;
+    min-width: 0;
+    font-size: 0.9rem;
+  }
   .grid {
     grid-template-columns: 1fr;
   }

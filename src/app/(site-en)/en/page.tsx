@@ -34,7 +34,7 @@ export default function EnglishHomePage() {
     <div className={styles.page}>
       <HomeHero locale="en" />
       <RecentProjects locale="en" />
-      <AboutHero locale="en" />
+      <AboutHero locale="en" headingLevel="h2" />
     </div>
   )
 }

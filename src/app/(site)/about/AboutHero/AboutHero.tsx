@@ -6,8 +6,9 @@ import { localizedPath, type Locale } from '@/lib/i18n'
 
 const copy = {
   th: {
-    kicker: 'About',
-    ariaKicker: 'Go to About page',
+    kicker: 'เกี่ยวกับเรา',
+    ariaKicker: 'ไปยังหน้าเกี่ยวกับเรา',
+    profileAlt: 'รูปโปรไฟล์ของ Wee (ภูมิทวี ร่มโพธิ์)',
     titleBefore: 'สวัสดีครับ ผมชื่อ',
     titleAfter: '(Poomtawee Rompho)',
     intro:
@@ -30,6 +31,7 @@ const copy = {
   en: {
     kicker: 'About',
     ariaKicker: 'Go to About page',
+    profileAlt: 'Profile photo of Wee (Poomtawee Rompho)',
     titleBefore: "Hi, I'm",
     titleAfter: '(Poomtawee Rompho)',
     intro:
@@ -51,8 +53,17 @@ const copy = {
   },
 } satisfies Record<Locale, Record<string, unknown>>
 
-export default function AboutHero({ locale = 'th' }: { locale?: Locale }) {
+type AboutHeroProps = {
+  locale?: Locale
+  headingLevel?: 'h1' | 'h2'
+}
+
+export default function AboutHero({
+  locale = 'th',
+  headingLevel = 'h1',
+}: AboutHeroProps) {
   const t = copy[locale]
+  const Heading = headingLevel
 
   return (
     <header className={styles.hero}>
@@ -67,22 +78,22 @@ export default function AboutHero({ locale = 'th' }: { locale?: Locale }) {
           </Link>
 
           {/* Profile image */}
-          <div className={styles.profileWrap} aria-label="Wee profile photo">
+          <div className={styles.profileWrap}>
             <Image
               src="/about/Wee-Profile-2025.jpg"
-              alt="Wee (Poomtawee Rompho) profile photo"
+              alt={t.profileAlt as string}
               width={768}
               height={768}
-              priority
+              priority={headingLevel === 'h1'}
               className={styles.profileImg}
             />
           </div>
 
-          <h1 className={styles.h1}>
+          <Heading className={styles.h1}>
             {t.titleBefore as string}{' '}
             <span className={styles.h1Accent}>Wee</span>{' '}
             {t.titleAfter as string}
-          </h1>
+          </Heading>
 
           <p className={`${styles.subhead} text-indent`}>
             {t.intro as string}

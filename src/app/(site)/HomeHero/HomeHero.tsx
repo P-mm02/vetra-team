@@ -41,20 +41,6 @@ const copy = {
 
 export default function HomeHero({ locale = 'th' }: { locale?: Locale }) {
   const t = copy[locale]
-  const heroImage =
-    locale === 'en'
-      ? {
-          src: '/images/preview/vetra-preview.jpg',
-          alt: 'VETRA website design and development',
-          width: 1200,
-          height: 630,
-        }
-      : {
-          src: '/home/hero.png',
-          alt: 'Vetra',
-          width: 1200,
-          height: 450,
-        }
 
   return (
     <header className={styles.hero}>
@@ -73,17 +59,74 @@ export default function HomeHero({ locale = 'th' }: { locale?: Locale }) {
             {t.subSuffix as string}
           </p>
 
-          {/* Logo image */}
-          <div className={styles.heroImageWrap} aria-hidden="true">
-            <Image
-              src={heroImage.src}
-              alt={heroImage.alt}
-              width={heroImage.width}
-              height={heroImage.height}
-              priority
-              className={styles.heroImage}
-            />
-          </div>
+          {locale === 'en' ? (
+            <section
+              className={styles.englishVisual}
+              aria-label="Selected VETRA website and web application work"
+            >
+              <div className={styles.visualIntro}>
+                <span>Designed around your business</span>
+                <span>Built for launch and long-term growth</span>
+              </div>
+
+              <div className={styles.visualGrid}>
+                <div className={`${styles.projectPreview} ${styles.previewMain}`}>
+                  <Image
+                    src="/images/projects/Toilet-by-Nakin.webp"
+                    alt="Responsive service website by VETRA"
+                    fill
+                    priority
+                    sizes="(max-width: 768px) 100vw, 55vw"
+                    className={styles.previewImage}
+                  />
+                  <span className={styles.previewLabel}>Business websites</span>
+                </div>
+
+                <div className={styles.previewSide}>
+                  <div className={styles.projectPreview}>
+                    <Image
+                      src="/images/projects/X-Tribe.webp"
+                      alt="E-commerce website by VETRA"
+                      fill
+                      priority
+                      sizes="(max-width: 768px) 50vw, 24vw"
+                      className={styles.previewImage}
+                    />
+                    <span className={styles.previewLabel}>E-commerce</span>
+                  </div>
+
+                  <div className={styles.projectPreview}>
+                    <Image
+                      src="/images/projects/Go-Wallet.webp"
+                      alt="Fintech web application by VETRA"
+                      fill
+                      priority
+                      sizes="(max-width: 768px) 50vw, 24vw"
+                      className={styles.previewImage}
+                    />
+                    <span className={styles.previewLabel}>Web applications</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className={styles.visualCapabilities}>
+                <span>SEO-ready structure</span>
+                <span>Responsive by default</span>
+                <span>Scalable Next.js builds</span>
+              </div>
+            </section>
+          ) : (
+            <div className={styles.heroImageWrap} aria-hidden="true">
+              <Image
+                src="/home/hero.webp"
+                alt=""
+                width={1200}
+                height={450}
+                priority
+                className={styles.heroImage}
+              />
+            </div>
+          )}
 
           <div className={styles.actions}>
             <Link

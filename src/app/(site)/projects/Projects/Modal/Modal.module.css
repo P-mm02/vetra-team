@@ -4,7 +4,7 @@
 .modalOverlay {
   position: fixed;
   inset: 0;
-  z-index: 200;
+  z-index: 1200;
   display: grid;
   place-items: center;
   padding: 1rem;
@@ -264,6 +264,18 @@
 
 /* Responsive */
 @media (max-width: 768px) {
+  .modalKicker,
+  .infoLabel,
+  .infoValue,
+  .pill,
+  .liText,
+  .footNote,
+  .kbd {
+    font-size: 0.88rem;
+  }
+  .modalSub {
+    font-size: 0.95rem;
+  }
   .modalGrid {
     grid-template-columns: 1fr;
   }

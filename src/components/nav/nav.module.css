@@ -169,10 +169,14 @@
   display: flex;
   flex-direction: column;
   border-bottom-left-radius: 1rem;
+  pointer-events: none;
+  visibility: hidden;
 }
 
 .drawerOpen {
   transform: translateX(0);
+  pointer-events: auto;
+  visibility: visible;
 }
 
 .mobileNav {
@@ -231,5 +235,9 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
+  }
+
+  .brandDim {
+    font-size: 0.68rem;
   }
 }

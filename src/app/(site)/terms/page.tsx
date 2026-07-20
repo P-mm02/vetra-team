@@ -5,12 +5,12 @@ import styles from './page.module.css'
 import { pageAlternates } from '@/lib/i18n'
 
 export const metadata: Metadata = {
-  title: 'Terms',
+  title: 'ข้อกำหนดและเงื่อนไข',
   description:
     'ข้อกำหนดและเงื่อนไขการให้บริการของ VETRA — ขอบเขตงาน การชำระเงิน การแก้ไขงาน และการส่งมอบ',
   alternates: pageAlternates('/terms', 'th'),
   openGraph: {
-    title: 'Terms | VETRA',
+    title: 'ข้อกำหนดและเงื่อนไข | VETRA',
     description:
       'ข้อกำหนดและเงื่อนไขการให้บริการ — ขอบเขตงาน การชำระเงิน การแก้ไขงาน และการส่งมอบ',
     url: '/terms',
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   },
 }
 
-const updatedAt = 'January 4, 2026'
+const updatedAt = '4 มกราคม 2569'
 
 type Section = {
   id: string
@@ -126,7 +126,7 @@ const sections: Section[] = [
     id: 'contact',
     title: 'ติดต่อ',
     body: [
-      'หากมีคำถามเกี่ยวกับข้อกำหนดและเงื่อนไข สามารถติดต่อผ่านหน้า Contact.',
+      'หากมีคำถามเกี่ยวกับข้อกำหนดและเงื่อนไข สามารถติดต่อผ่านหน้าติดต่อ.',
     ],
   },
 ]
@@ -137,7 +137,7 @@ export default function TermsPage() {
       <header className={styles.hero}>
         <div className={styles.container}>
           <div className={styles.heroCard}>
-            <div className={styles.kicker}>Terms</div>
+            <div className={styles.kicker}>ข้อกำหนด</div>
 
             <h1 className={styles.h1}>
               ข้อกำหนดและเงื่อนไข
@@ -145,7 +145,7 @@ export default function TermsPage() {
             </h1>
 
             <p className={styles.subhead}>
-              เอกสารนี้ใช้เป็นแนวทางการทำงานร่วมกัน เพื่อให้ scope ชัด
+              เอกสารนี้ใช้เป็นแนวทางการทำงานร่วมกัน เพื่อให้ขอบเขตงานชัดเจน
               ลดความสับสน และทำงานได้ราบรื่น
               (สามารถปรับตามใบเสนอราคา/ข้อตกลงเฉพาะโปรเจกต์ได้)
             </p>
@@ -159,7 +159,7 @@ export default function TermsPage() {
                 <div className={styles.metaK}>เอกสารที่เกี่ยวข้อง</div>
                 <div className={styles.metaV}>
                   <Link className={styles.metaLink} href="/privacy">
-                    Privacy
+                    นโยบายความเป็นส่วนตัว
                   </Link>
                 </div>
               </div>
@@ -180,7 +180,7 @@ export default function TermsPage() {
               <Link className={styles.btnPrimary} href="/contact">
                 คุยโปรเจกต์
               </Link>
-              <Link className={styles.btnGhost} href="/pricing">
+              <Link className={styles.btnGhost} href="/services">
                 ดูราคา
               </Link>
             </div>
@@ -195,7 +195,7 @@ export default function TermsPage() {
             <aside
               className={styles.toc}
               id="toc"
-              aria-label="Table of contents"
+              aria-label="สารบัญ"
             >
               <div className={styles.tocTitle}>สารบัญ</div>
               <nav className={styles.tocNav}>
@@ -207,13 +207,16 @@ export default function TermsPage() {
               </nav>
 
               <div className={styles.tocNote}>
-                *เนื้อหาเป็น template สำหรับงานฟรีแลนซ์ทั่วไป คุณสามารถปรับ
-                wording ให้เหมาะกับรูปแบบงานของคุณได้
+                *เนื้อหาเป็นแม่แบบสำหรับงานฟรีแลนซ์ทั่วไป
+                คุณสามารถปรับถ้อยคำให้เหมาะกับรูปแบบงานของคุณได้
               </div>
             </aside>
 
             {/* Content */}
-            <article className={styles.content} aria-label="Terms content">
+            <article
+              className={styles.content}
+              aria-label="เนื้อหาข้อกำหนดและเงื่อนไข"
+            >
               {sections.map((s) => (
                 <section key={s.id} id={s.id} className={styles.block}>
                   <h2 className={styles.h2}>{s.title}</h2>
@@ -231,20 +234,20 @@ export default function TermsPage() {
                     ต้องการเริ่มงานแบบชัดเจน?
                   </div>
                   <div className={styles.bottomText}>
-                    ส่งเป้าหมาย + reference + deadline + งบคร่าว ๆ มาได้เลย
-                    แล้วผมจะสรุป scope และแนวทางทำงานให้เป็นแผนที่ใช้งานได้จริง
+                    ส่งเป้าหมาย ตัวอย่างอ้างอิง กำหนดส่ง และงบคร่าว ๆ มาได้เลย
+                    แล้วผมจะสรุปขอบเขตและแนวทางทำงานให้เป็นแผนที่ใช้งานได้จริง
                   </div>
                 </div>
 
                 <div className={styles.bottomActions}>
                   <Link className={styles.btnPrimary} href="/contact">
-                    ไปหน้า Contact
+                    ไปหน้าติดต่อ
                   </Link>
-                  <Link className={styles.btnGhost} href="/process">
-                    ดู Process
+                  <Link className={styles.btnGhost} href="/projects">
+                    ดูผลงาน
                   </Link>
-                  <Link className={styles.btnSoft} href="/pricing">
-                    Pricing
+                  <Link className={styles.btnSoft} href="/services">
+                    ดูราคา
                   </Link>
                 </div>
               </div>

@@ -4,7 +4,6 @@ import styles from './ContactsBox.module.css'
 import type { Locale } from '@/lib/i18n'
 
 type ContactsBoxProps = {
-  title?: string
   lineUrl?: string
   facebookUrl?: string
   fastworkUrl?: string
@@ -14,7 +13,6 @@ type ContactsBoxProps = {
 }
 
 export default function ContactsBox({
-  title = 'Quick contact',
   lineUrl = 'https://lin.ee/hgKZAHm',
   facebookUrl = 'https://www.facebook.com/profile.php?id=61580630981781',
   fastworkUrl = 'https://fastwork.co/user/poomtawee',
@@ -76,12 +74,12 @@ export default function ContactsBox({
       <a
         className={styles.contactIcon}
         href={`tel:${phone}`}
-        aria-label="Phone"
-        title="Call"
+        aria-label={locale === 'en' ? 'Phone' : 'โทรศัพท์'}
+        title={locale === 'en' ? 'Call' : 'โทร'}
       >
         <Image
           src="/icons/Phone.png"
-          alt="Phone"
+          alt=""
           width={96}
           height={96}
           className={styles.iconPhone}

@@ -66,11 +66,14 @@ export default function RecentProjects({
         </div>
 
         <div className={styles.grid}>
-          {projects.map((project, index) => (
-            <article key={project.id} className={styles.card}>
+          {projects.map((project) => {
+            const projectHref = `${projectsHref}?project=${encodeURIComponent(project.id)}`
+
+            return (
+              <article key={project.id} className={styles.card}>
               <Link
                 className={styles.mediaLink}
-                href={projectsHref}
+                href={projectHref}
                 aria-label={`${t.viewProject}: ${project.title}`}
               >
                 <Image
@@ -79,7 +82,6 @@ export default function RecentProjects({
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
                   className={styles.image}
-                  priority={index < 2}
                 />
               </Link>
 
@@ -97,7 +99,7 @@ export default function RecentProjects({
                 <p className={styles.desc}>{project.shortDesc}</p>
 
                 <div className={styles.footer}>
-                  <Link className={styles.detailLink} href={projectsHref}>
+                  <Link className={styles.detailLink} href={projectHref}>
                     {t.viewProject}
                   </Link>
 
@@ -107,7 +109,8 @@ export default function RecentProjects({
                 </div>
               </div>
             </article>
-          ))}
+            )
+          })}
         </div>
       </div>
     </section>

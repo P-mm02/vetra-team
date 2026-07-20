@@ -8,9 +8,9 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://vetra.asia/'
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: 'Maintenance',
+  title: 'อยู่ระหว่างปรับปรุง',
   description:
-    'We are currently improving this page. กรุณากลับมาใหม่อีกครั้ง - อยู่ระหว่างปรับปรุงและพัฒนา',
+    'ขณะนี้เรากำลังปรับปรุงหน้านี้ กรุณากลับมาใหม่อีกครั้ง',
   robots: {
     index: false,
     follow: false,
@@ -21,12 +21,12 @@ export const metadata: Metadata = {
 
 export default function MaintenancePage() {
   return (
-    <main className={styles.main} aria-label="Maintenance page">
+    <main className={styles.main} aria-label="หน้าอยู่ระหว่างปรับปรุง">
       <div className={styles.wrap}>
         <div className={styles.card}>
           <div className={styles.badge} aria-hidden="true">
             <span className={styles.dot} />
-            <span className={styles.badgeText}>STATUS</span>
+            <span className={styles.badgeText}>สถานะ</span>
           </div>
 
           <h1 className={styles.h1}>
@@ -35,40 +35,40 @@ export default function MaintenancePage() {
           </h1>
 
           <p className={styles.sub}>
-            Under maintenance - we're upgrading this page for a smoother,
-            faster, more premium experience.
+            เรากำลังปรับปรุงหน้านี้ให้ใช้งานได้ลื่นไหล รวดเร็ว
+            และสมบูรณ์ยิ่งขึ้น
           </p>
 
           <div className={styles.hr} />
 
           <div className={styles.infoGrid}>
             <div className={styles.infoItem}>
-              <div className={styles.k}>What's happening</div>
-              <div className={styles.v}>System improvements & UI polish</div>
+              <div className={styles.k}>กำลังดำเนินการ</div>
+              <div className={styles.v}>ปรับปรุงระบบและรายละเอียดหน้าจอ</div>
             </div>
             <div className={styles.infoItem}>
-              <div className={styles.k}>When</div>
+              <div className={styles.k}>กลับมาเมื่อไร</div>
               <div className={styles.v}>
-                Please check back soon <span className={styles.muted}>/</span>{' '}
-                ขอบคุณที่รอครับ
+                กรุณากลับมาตรวจสอบอีกครั้งเร็ว ๆ นี้{' '}
+                <span className={styles.muted}>/</span> ขอบคุณที่รอครับ
               </div>
             </div>
           </div>
 
           <div className={styles.actions}>
             <Link href={localizedPath('th', '/')} className={styles.btnPrimary}>
-              Back to Home
+              กลับหน้าแรก
             </Link>
             <Link
               href={localizedPath('th', '/contact')}
               className={styles.btnGhost}
             >
-              Contact
+              ติดต่อ
             </Link>
           </div>
 
           <p className={styles.foot}>
-            If you need anything urgent, reach us via the Contact page.
+            หากมีเรื่องเร่งด่วน สามารถติดต่อเราได้ผ่านหน้าติดต่อ
           </p>
         </div>
 

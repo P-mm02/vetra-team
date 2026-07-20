@@ -33,7 +33,7 @@ export default function Page() {
     <div className={styles.page}>
       <HomeHero locale="th" />
       <RecentProjects locale="th" />
-      <AboutHero locale="th" />
+      <AboutHero locale="th" headingLevel="h2" />
     </div>
   )
 }

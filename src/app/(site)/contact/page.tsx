@@ -18,7 +18,6 @@ const CONTACT = {
   // Put real values here
   phone: '0936661370',
   email: 'poomtawee@outlook.com',
-  lineLink: 'https://lin.ee/hgKZAHm',
   lineId: '@078wpjlo',
 
   // optional
@@ -28,12 +27,12 @@ const CONTACT = {
 }
 
 export const metadata: Metadata = {
-  title: 'Contact',
+  title: 'ติดต่อ',
   description:
     'ติดต่อ Wee | VETRA — รับทำเว็บไซต์และเว็บแอปด้วย Next.js. ติดต่อได้ทันที (LINE / โทร / อีเมล).',
   alternates: pageAlternates('/contact', 'th'),
   openGraph: {
-    title: 'VETRA | Contact',
+    title: 'ติดต่อ | VETRA',
     description:
       'ติดต่อ เริ่มโปรเจกต์เว็บไซต์ เว็บแอป (Next.js) — LINE / โทร / อีเมล',
     url: '/contact',
@@ -42,33 +41,7 @@ export const metadata: Metadata = {
   },
 }
 
-function toVCardDataUrl() {
-  // Keep it simple + widely supported (vCard 3.0)
-  const vcard = [
-    'BEGIN:VCARD',
-    'VERSION:3.0',
-    `FN:${CONTACT.name}`,
-    `ORG:${CONTACT.brand}`,
-    `TITLE:${CONTACT.roleEn}`,
-    `TEL;TYPE=CELL:${CONTACT.phone}`,
-    `EMAIL:${CONTACT.email}`,
-    `URL:${CONTACT.websiteUrl}`,
-    `NOTE:Contact via QR landing page: ${CONTACT.websiteUrl}/contact`,
-    'END:VCARD',
-  ].join('\n')
-
-  return `data:text/vcard;charset=utf-8,${encodeURIComponent(vcard)}`
-}
-
 export default function ContactPage() {
-  const lineLink = `${CONTACT.lineLink}`
-  const telLink = `tel:${CONTACT.phone.replace(/\s+/g, '')}`
-  const mailLink = `mailto:${CONTACT.email}?subject=${encodeURIComponent(
-    'Project inquiry (Wee | Freelance)'
-  )}`
-
-  const vcardUrl = toVCardDataUrl()
-
   return (
     <main id="main" className={styles.page}>
       {/* Hero */}
@@ -77,7 +50,7 @@ export default function ContactPage() {
           <div className={styles.card}>
             <div className={styles.top}>
               <Link href="/contact" className={styles.badge}>
-                Contact
+                ติดต่อ
               </Link>
 
               <h1 className={styles.h1}>
@@ -91,13 +64,13 @@ export default function ContactPage() {
             </div>
 
             {/* Quick Actions */}
-            <div className={styles.actions} aria-label="Quick actions">
+            <div className={styles.actions} aria-label="ช่องทางติดต่อด่วน">
               <ContactsBox />
             </div>
 
             {/* Contact Grid */}
             <div className={styles.grid}>
-              <section className={styles.info} aria-label="Contact details">
+              <section className={styles.info} aria-label="รายละเอียดการติดต่อ">
                 <h2 className={styles.h2}>ข้อมูลติดต่อ</h2>
 
                 <div className={styles.rows}>
@@ -151,10 +124,10 @@ export default function ContactPage() {
 
                 <div className={styles.metaActions}>
                   <a className={styles.btnSoft} href={CONTACT.workUrl}>
-                    ผลงาน (Projects)
+                    ผลงาน
                   </a>
                   <a className={styles.btnSoft} href={CONTACT.serviceUrl}>
-                    บริการ (Services)
+                    บริการ
                   </a>
                 </div>
 
@@ -165,7 +138,10 @@ export default function ContactPage() {
               </section>
 
               {/* What to send (helps real use) */}
-              <aside className={styles.checklist} aria-label="What to send">
+              <aside
+                className={styles.checklist}
+                aria-label="ข้อมูลที่ควรส่งเพื่อประเมินราคา"
+              >
                 <div className={styles.checkTitle}>ข้อมูล เพื่อประเมินราคา</div>
                 <ul className={styles.checkList}>
                   <li>ต้องการให้เว็บไซต์แสดงข้อมูลอะไรบ้าง</li>
@@ -182,7 +158,7 @@ export default function ContactPage() {
                 </ul>
 
                 <div className={styles.miniCard}>
-                  <div className={styles.miniTitle}>Response time</div>
+                  <div className={styles.miniTitle}>ระยะเวลาตอบกลับ</div>
                   <div className={styles.miniText}>
                     ตอบกลับภายใน <span className={styles.accent}>12 ชม.</span>{' '}
                     (ถ้าเร่งด่วนให้โทรได้เลย)

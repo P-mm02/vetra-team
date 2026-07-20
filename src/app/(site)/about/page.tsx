@@ -1,17 +1,16 @@
 // src/app/about/page.tsx
 import type { Metadata } from 'next'
-import Link from 'next/link'
 import styles from './page.module.css'
 import AboutHero from './AboutHero/AboutHero'
 import { pageAlternates } from '@/lib/i18n'
 
 export const metadata: Metadata = {
-  title: 'About',
+  title: 'เกี่ยวกับเรา',
   description:
     'เกี่ยวกับ Wee | Freelance — รับทำเว็บไซต์/เว็บแอปด้วย Next.js เน้นงานพรีเมียม โค้ดสะอาด SEO ดี และดูแลง่าย',
   alternates: pageAlternates('/about', 'th'),
   openGraph: {
-    title: 'About | Wee | Freelance',
+    title: 'เกี่ยวกับเรา | VETRA',
     description:
       'เกี่ยวกับ Wee | Freelance — รับทำเว็บไซต์/เว็บแอปด้วย Next.js เน้นงานพรีเมียม โค้ดสะอาด SEO ดี',
     url: '/about',
@@ -19,34 +18,6 @@ export const metadata: Metadata = {
     locale: 'th_TH',
   },
 }
-
-const skills = [
-  { label: 'Next.js (App Router)', level: 'Advanced' },
-  { label: 'TypeScript', level: 'Advanced' },
-  { label: 'UI/UX (Dark Futuristic)', level: 'Strong' },
-  { label: 'Performance & SEO', level: 'Strong' },
-  { label: 'MongoDB / Mongoose', level: 'Good' },
-  { label: 'Deployment (Vercel/Netlify)', level: 'Good' },
-]
-
-const principles = [
-  {
-    title: 'คิดแบบระบบ (System thinking)',
-    desc: 'วางโครงสร้างให้โตได้: routing, content, data, component, และ naming ที่ชัด',
-  },
-  {
-    title: 'UI ต้อง “ดูแพง” แต่ใช้ง่าย',
-    desc: 'ชัดเจน อ่านง่าย ลำดับความสำคัญดี และรู้สึกพรีเมียมโดยไม่รก',
-  },
-  {
-    title: 'SEO + Performance คือของจริง',
-    desc: 'semantic HTML, metadata, image optimization, accessibility และ Core Web Vitals-friendly',
-  },
-  {
-    title: 'โค้ดต้องดูแลง่าย',
-    desc: 'clean structure, ยืดหยุ่น, แก้ไขง่าย, ทีมต่อรับงานต่อได้จริง',
-  },
-]
 
 export default function AboutPage() {
   return (

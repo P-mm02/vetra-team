@@ -4,6 +4,7 @@
 import styles from './pageClient.module.css'
 import { usePageClient } from './usePageClient'
 import type { Locale } from '@/lib/i18n'
+import { useEffect, useRef, useState } from 'react'
 
 const copy = {
   th: {
@@ -20,7 +21,13 @@ const copy = {
     copied: 'คัดลอก   ✓',
     reset: 'รีเซ็ต',
     preview: 'ดูข้อความสรุป (Preview)',
-    fixedBar: 'Total fixed bar',
+    fixedBar: 'แถบแสดงราคารวม',
+    baseSection: 'เลือกประเภทเว็บไซต์',
+    baseOptions: 'ตัวเลือกประเภทเว็บไซต์',
+    smallSection: 'ฟังก์ชันเพิ่มเติมขนาดเล็ก',
+    largeSection: 'ฟังก์ชันเพิ่มเติมขนาดใหญ่',
+    toggleDetails: 'แสดงหรือซ่อนรายละเอียด',
+    calculationDetails: 'รายละเอียดการคำนวณราคา',
   },
   en: {
     baseTitle: 'Website type',
@@ -37,11 +44,19 @@ const copy = {
     reset: 'Reset',
     preview: 'Preview summary text',
     fixedBar: 'Total fixed bar',
+    baseSection: 'Base website type',
+    baseOptions: 'Website type options',
+    smallSection: 'Small add-ons',
+    largeSection: 'Large add-ons',
+    toggleDetails: 'Show or hide details',
+    calculationDetails: 'Calculation details',
   },
 } satisfies Record<Locale, Record<string, string>>
 
 export default function PageClient({ locale = 'th' }: { locale?: Locale }) {
   const t = copy[locale]
+  const wrapRef = useRef<HTMLDivElement>(null)
+  const [dockVisible, setDockVisible] = useState(false)
   const {
     DATA,
 
@@ -73,13 +88,26 @@ export default function PageClient({ locale = 'th' }: { locale?: Locale }) {
     copyBrief,
   } = usePageClient(locale)
 
+  useEffect(() => {
+    const element = wrapRef.current
+    if (!element) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setDockVisible(entry.isIntersecting),
+      { threshold: 0 },
+    )
+
+    observer.observe(element)
+    return () => observer.disconnect()
+  }, [])
+
   return (
-    <div className={styles.wrap}>
+    <div ref={wrapRef} className={styles.wrap}>
       <div className={styles.stack}>
         {/* Base type */}
         <section
           className={`glass ${styles.panel}`}
-          aria-label="Base Website Type"
+          aria-label={t.baseSection}
         >
           <header className={styles.panelHead}>
             <h2 className={styles.h2}>{t.baseTitle}</h2>
@@ -89,7 +117,7 @@ export default function PageClient({ locale = 'th' }: { locale?: Locale }) {
           <div
             className={styles.pillList}
             role="radiogroup"
-            aria-label="Website type options"
+            aria-label={t.baseOptions}
           >
             {DATA.baseTypes.map((b) => {
               const active = b.id === baseId
@@ -128,7 +156,7 @@ export default function PageClient({ locale = 'th' }: { locale?: Locale }) {
                   <button
                     type="button"
                     className={`${styles.moreBtn} ${isOpen ? styles.moreBtnOpen : ''}`}
-                    aria-label="Toggle details"
+                    aria-label={`${t.toggleDetails}: ${b.title}`}
                     aria-expanded={isOpen}
                     onClick={(e) => {
                       e.stopPropagation()
@@ -161,7 +189,10 @@ export default function PageClient({ locale = 'th' }: { locale?: Locale }) {
         </section>
 
         {/* Small addons */}
-        <section className={`glass ${styles.panel}`} aria-label="Small Add-ons">
+        <section
+          className={`glass ${styles.panel}`}
+          aria-label={t.smallSection}
+        >
           <header className={styles.panelHead}>
             <h2 className={styles.h2}>{t.smallTitle}</h2>
             <p className={styles.hint}>{t.smallHint}</p>
@@ -212,7 +243,7 @@ export default function PageClient({ locale = 'th' }: { locale?: Locale }) {
                   <button
                     type="button"
                     className={`${styles.moreBtn} ${isOpen ? styles.moreBtnOpen : ''}`}
-                    aria-label="Toggle details"
+                    aria-label={`${t.toggleDetails}: ${a.title}`}
                     aria-expanded={isOpen}
                     onClick={(e) => {
                       e.stopPropagation()
@@ -245,7 +276,10 @@ export default function PageClient({ locale = 'th' }: { locale?: Locale }) {
         </section>
 
         {/* Large addons */}
-        <section className={`glass ${styles.panel}`} aria-label="Large Add-ons">
+        <section
+          className={`glass ${styles.panel}`}
+          aria-label={t.largeSection}
+        >
           <header className={styles.panelHead}>
             <h2 className={styles.h2}>{t.largeTitle}</h2>
             <p className={styles.hint}>{t.largeHint}</p>
@@ -285,7 +319,7 @@ export default function PageClient({ locale = 'th' }: { locale?: Locale }) {
                   <button
                     type="button"
                     className={`${styles.moreBtn} ${isOpen ? styles.moreBtnOpen : ''}`}
-                    aria-label="Toggle details"
+                    aria-label={`${t.toggleDetails}: ${a.title}`}
                     aria-expanded={isOpen}
                     onClick={(e) => {
                       e.stopPropagation()
@@ -320,7 +354,7 @@ export default function PageClient({ locale = 'th' }: { locale?: Locale }) {
         {/* Details */}
         <section
           className={`glass ${styles.details}`}
-          aria-label="Calculation Details"
+          aria-label={t.calculationDetails}
         >
           <header className={styles.detailsHead}>
             <h2 className={styles.h2}>{t.detailsTitle}</h2>
@@ -402,9 +436,13 @@ export default function PageClient({ locale = 'th' }: { locale?: Locale }) {
 
       {/* FIXED TOTAL DOCK */}
       <div
-        className={styles.totalDock}
+        className={`${styles.totalDock} ${
+          dockVisible ? styles.totalDockVisible : ''
+        }`}
         role="status"
         aria-label={t.fixedBar}
+        aria-hidden={!dockVisible}
+        inert={!dockVisible}
       >
         <div className={styles.totalDockInner}>
           <div className={styles.totalDockLabel}>{t.total}</div>

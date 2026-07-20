@@ -71,13 +71,13 @@ export default function EnglishContactPage() {
               </Link>
 
               <h1 className={styles.h1}>
-                Let's talk about your
+                Let&apos;s talk about your
                 <span className={styles.h1Accent}> website</span>
               </h1>
 
               <p className={styles.subhead}>
                 Free first consultation. Send your goal, reference, rough budget,
-                and timeline, and we'll help shape the scope clearly.
+                and timeline, and we&apos;ll help shape the scope clearly.
               </p>
             </div>
 

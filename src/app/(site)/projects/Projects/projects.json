@@ -19,7 +19,7 @@
     "isExample": true,
     "hasDetail": true,
     "cover": {
-      "src": "/images/projects/Aree-fruit-cover.png",
+      "src": "/images/projects/Aree-fruit-cover.webp",
       "alt": "Aree-fruit fresh fruit farm website cover"
     },
     "slides": [
@@ -627,7 +627,7 @@
     "isExample": true,
     "hasDetail": true,
     "cover": {
-      "src": "/images/projects/Go-Wallet.png",
+      "src": "/images/projects/Go-Wallet.webp",
       "alt": "Go Wallet fintech web app project cover"
     },
     "stack": [
@@ -651,7 +651,7 @@
     "isExample": true,
     "hasDetail": true,
     "cover": {
-      "src": "/images/projects/Unix-Peak-Travel.png",
+      "src": "/images/projects/Unix-Peak-Travel.webp",
       "alt": "Unix Peak Travel website project cover"
     },
     "stack": [
@@ -675,7 +675,7 @@
     "isExample": true,
     "hasDetail": true,
     "cover": {
-      "src": "/images/projects/X-Tribe.png",
+      "src": "/images/projects/X-Tribe.webp",
       "alt": "X TRIBE e-commerce website project cover"
     },
     "stack": [
@@ -699,7 +699,7 @@
     "isExample": true,
     "hasDetail": true,
     "cover": {
-      "src": "/images/projects/Phataree-Thailand.png",
+      "src": "/images/projects/Phataree-Thailand.webp",
       "alt": "Phataree Thailand B2B consumable products website cover"
     },
     "stack": [
@@ -723,7 +723,7 @@
     "isExample": true,
     "hasDetail": true,
     "cover": {
-      "src": "/images/projects/English-With-Amol.png",
+      "src": "/images/projects/English-With-Amol.webp",
       "alt": "English With Amol responsive website project cover"
     },
     "stack": [
@@ -747,7 +747,7 @@
     "isExample": true,
     "hasDetail": true,
     "cover": {
-      "src": "/images/projects/Toilet-by-Nakin.png",
+      "src": "/images/projects/Toilet-by-Nakin.webp",
       "alt": "Toilet by Nakin responsive service website cover"
     },
     "stack": [

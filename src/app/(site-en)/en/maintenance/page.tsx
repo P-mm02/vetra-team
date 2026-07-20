@@ -38,7 +38,7 @@ export default function EnglishMaintenancePage() {
 
           <div className={styles.infoGrid}>
             <div className={styles.infoItem}>
-              <div className={styles.k}>What's happening</div>
+              <div className={styles.k}>What&apos;s happening</div>
               <div className={styles.v}>System improvements and UI polish</div>
             </div>
             <div className={styles.infoItem}>

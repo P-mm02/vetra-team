@@ -4,7 +4,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import styles from './nav.module.css'
 import ContactsBox from '@/app/(site)/contact/ContactsBox/ContactsBox'
 import {
@@ -22,6 +22,8 @@ function isActive(pathname: string, href: string) {
 export default function Nav({ locale = 'th' }: { locale?: Locale }) {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
+  const triggerRef = useRef<HTMLButtonElement>(null)
+  const drawerRef = useRef<HTMLElement>(null)
   const items = useMemo(() => navItems(locale), [locale])
   const targetLocale: Locale = locale === 'en' ? 'th' : 'en'
   const languageHref = switchLocalePath(pathname, targetLocale)
@@ -38,6 +40,67 @@ export default function Nav({ locale = 'th' }: { locale?: Locale }) {
     setOpen(false)
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
   }, [pathname])
+
+  useEffect(() => {
+    if (!open) return
+
+    const drawer = drawerRef.current
+    const html = document.documentElement
+    const body = document.body
+    const previousHtmlOverflow = html.style.overflow
+    const previousBodyOverflow = body.style.overflow
+
+    html.style.overflow = 'hidden'
+    body.style.overflow = 'hidden'
+
+    const focusableSelector =
+      'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    const drawerFocusables = () =>
+      drawer
+        ? Array.from(
+            drawer.querySelectorAll<HTMLElement>(focusableSelector),
+          )
+        : []
+
+    drawerFocusables()[0]?.focus()
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        event.preventDefault()
+        setOpen(false)
+        window.requestAnimationFrame(() => triggerRef.current?.focus())
+        return
+      }
+
+      if (event.key !== 'Tab') return
+
+      const focusables = [
+        triggerRef.current,
+        ...drawerFocusables(),
+      ].filter((element): element is HTMLElement => Boolean(element))
+
+      if (!focusables.length) return
+
+      const first = focusables[0]
+      const last = focusables[focusables.length - 1]
+
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault()
+        last.focus()
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault()
+        first.focus()
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+      html.style.overflow = previousHtmlOverflow
+      body.style.overflow = previousBodyOverflow
+    }
+  }, [open])
 
   return (
     <>
@@ -89,6 +152,7 @@ export default function Nav({ locale = 'th' }: { locale?: Locale }) {
           </nav>
 
           <button
+            ref={triggerRef}
             type="button"
             className={styles.burger}
             aria-label={open ? closeMenuLabel : openMenuLabel}
@@ -109,15 +173,21 @@ export default function Nav({ locale = 'th' }: { locale?: Locale }) {
       <button
         type="button"
         className={`${styles.backdrop} ${open ? styles.backdropOpen : ''}`}
-        aria-label={closeMenuLabel}
-        onClick={() => setOpen(false)}
+        aria-hidden="true"
+        tabIndex={-1}
+        onClick={() => {
+          setOpen(false)
+          window.requestAnimationFrame(() => triggerRef.current?.focus())
+        }}
       />
 
       {/* Right drawer */}
       <aside
+        ref={drawerRef}
         id="mobile-drawer"
         className={`${styles.drawer} ${open ? styles.drawerOpen : ''}`}
         aria-hidden={!open}
+        inert={!open}
       >
         <nav className={styles.mobileNav} aria-label={mobileLabel}>
           {items.map((item) => (
@@ -148,7 +218,6 @@ export default function Nav({ locale = 'th' }: { locale?: Locale }) {
         {/* Contact box at bottom of drawer */}
         <div className={styles.drawerContact}>
           <ContactsBox
-            title={locale === 'en' ? 'Contact' : 'ติดต่อ'}
             locale={locale}
           />
         </div>

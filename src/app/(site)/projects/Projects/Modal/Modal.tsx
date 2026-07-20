@@ -41,14 +41,39 @@ function clampScrollLock(lock: boolean) {
 }
 
 export default function Modal({ project, onClose, locale = 'th' }: ModalProps) {
+  const modalRef = useRef<HTMLDivElement | null>(null)
   const closeBtnRef = useRef<HTMLButtonElement | null>(null)
   const t = projectModalText[locale]
+  const titleId = `project-title-${project.id}`
+  const descriptionId = `project-description-${project.id}`
 
   useEffect(() => {
+    const previouslyFocused = document.activeElement as HTMLElement | null
     clampScrollLock(true)
 
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose()
+      if (e.key === 'Escape') {
+        onClose()
+        return
+      }
+
+      if (e.key !== 'Tab') return
+
+      const focusable = modalRef.current?.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
+      )
+      if (!focusable?.length) return
+
+      const first = focusable[0]
+      const last = focusable[focusable.length - 1]
+
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault()
+        last.focus()
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault()
+        first.focus()
+      }
     }
     window.addEventListener('keydown', onKeyDown)
 
@@ -58,6 +83,7 @@ export default function Modal({ project, onClose, locale = 'th' }: ModalProps) {
       window.clearTimeout(t)
       window.removeEventListener('keydown', onKeyDown)
       clampScrollLock(false)
+      previouslyFocused?.focus()
     }
   }, [onClose])
 
@@ -77,23 +103,24 @@ export default function Modal({ project, onClose, locale = 'th' }: ModalProps) {
       className={styles.modalOverlay}
       role="dialog"
       aria-modal="true"
-      aria-label={`${t.dialogPrefix} ${project.title}`}
+      aria-labelledby={titleId}
+      aria-describedby={descriptionId}
       onMouseDown={(e) => {
         if (e.target === e.currentTarget) onClose()
       }}
     >
-      <div className={styles.modal}>
+      <div ref={modalRef} className={styles.modal}>
         <div className={styles.modalCloseWrap}>
           <button
             ref={closeBtnRef}
             type="button"
             className={styles.modalClose}
             onClick={onClose}
-            aria-label="Close modal"
+            aria-label={t.closeModal}
           >
             <Image
               src="/icons/Utils/close-x.svg"
-              alt="Close"
+              alt=""
               width={40}
               height={40}
             />
@@ -103,17 +130,22 @@ export default function Modal({ project, onClose, locale = 'th' }: ModalProps) {
         <div className={styles.modalHead}>
           <div className={styles.modalTitleWrap}>
             <p className={styles.modalKicker}>{t.details}</p>
-            <h3 className={styles.modalTitle}>{project.title}</h3>
-            <p className={styles.modalSub}>{project.shortDesc}</p>
+            <h2 id={titleId} className={styles.modalTitle}>
+              {project.title}
+            </h2>
+            <p id={descriptionId} className={styles.modalSub}>
+              {project.shortDesc}
+            </p>
           </div>
         </div>
 
         <div className={styles.modalGrid}>
           <div className={styles.modalMedia}>
             <Slider
-              ariaLabel={`Project images: ${project.title}`}
+              ariaLabel={`${t.imagesPrefix} ${project.title}`}
               intervalMs={4200}
               slides={slides}
+              locale={locale}
             />
           </div>
 

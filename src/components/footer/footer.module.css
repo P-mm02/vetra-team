@@ -129,7 +129,16 @@
   }
 
   .brandTag {
-    font-size: 0.82rem;
+    font-size: 0.9rem;
+  }
+
+  .brandDim {
+    font-size: 0.68rem;
+  }
+
+  .copy,
+  .metaLink {
+    font-size: 0.9rem;
   }
 
   .contactBar {

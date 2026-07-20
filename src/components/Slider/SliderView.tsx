@@ -4,11 +4,36 @@
 import Image from 'next/image'
 import Modal from './modal/Modal'
 import type { Slide } from './function'
+import type { Locale } from '@/lib/i18n'
 
 type Styles = Record<string, string>
 
+const copy = {
+  th: {
+    carousel: 'ภาพสไลด์',
+    previous: 'สไลด์ก่อนหน้า',
+    next: 'สไลด์ถัดไป',
+    zoom: 'ขยายรูปภาพ',
+    navigation: 'ปุ่มเลือกสไลด์',
+    goTo: 'ไปยังสไลด์',
+    showing: 'กำลังแสดงสไลด์',
+    of: 'จาก',
+  },
+  en: {
+    carousel: 'carousel',
+    previous: 'Previous slide',
+    next: 'Next slide',
+    zoom: 'Zoom image',
+    navigation: 'Slide navigation',
+    goTo: 'Go to slide',
+    showing: 'Showing slide',
+    of: 'of',
+  },
+} satisfies Record<Locale, Record<string, string>>
+
 type Props = {
   styles: Styles
+  locale: Locale
 
   slides: Slide[]
   loopSlides: Slide[]
@@ -49,6 +74,7 @@ type Props = {
 
 export default function SliderView({
   styles,
+  locale,
   slides,
   loopSlides,
   total,
@@ -86,6 +112,7 @@ export default function SliderView({
   lastDragAtRef,
 }: Props) {
   const modalSlide = slides[modalIndex]
+  const t = copy[locale]
 
   return (
     <>
@@ -94,7 +121,7 @@ export default function SliderView({
         className={styles.root}
         tabIndex={0}
         role="region"
-        aria-roledescription="carousel"
+        aria-roledescription={t.carousel}
         aria-label={ariaLabel}
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}
@@ -144,7 +171,7 @@ export default function SliderView({
               e.stopPropagation()
               prev()
             }}
-            aria-label="Previous slide"
+            aria-label={t.previous}
           >
             <svg viewBox="0 0 24 24" width="44" height="44" aria-hidden="true">
               <path
@@ -166,7 +193,7 @@ export default function SliderView({
               e.stopPropagation()
               next()
             }}
-            aria-label="Next slide"
+            aria-label={t.next}
           >
             <svg viewBox="0 0 24 24" width="44" height="44" aria-hidden="true">
               <path
@@ -189,7 +216,7 @@ export default function SliderView({
               if (performance.now() - lastDragAtRef.current < 250) return
               openModal(realIndex)
             }}
-            aria-label="Zoom image"
+            aria-label={t.zoom}
           >
             <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
               <path
@@ -223,7 +250,7 @@ export default function SliderView({
         <div
           className={styles.dots}
           role="tablist"
-          aria-label="Slide navigation"
+          aria-label={t.navigation}
         >
           {slides.map((s, i) => {
             const active = i === realIndex
@@ -234,7 +261,7 @@ export default function SliderView({
                 className={`${styles.dot} ${active ? styles.dotActive : ''}`}
                 onPointerDown={(e) => e.stopPropagation()}
                 onClick={() => goTo(i)}
-                aria-label={`Go to slide ${i + 1}: ${s.caption}`}
+                aria-label={`${t.goTo} ${i + 1}: ${s.caption}`}
                 aria-current={active ? 'true' : undefined}
                 role="tab"
               />
@@ -243,7 +270,7 @@ export default function SliderView({
         </div>
 
         <p className={styles.sr} aria-live="polite">
-          Showing slide {realIndex + 1} of {total}
+          {t.showing} {realIndex + 1} {t.of} {total}
         </p>
       </div>
 
@@ -255,6 +282,7 @@ export default function SliderView({
         onClose={closeModal}
         onPrev={prevModal}
         onNext={nextModal}
+        locale={locale}
       />
     </>
   )

@@ -9,24 +9,24 @@ const TH_DESC =
   'รวมผลงานออกแบบและพัฒนาเว็บไซต์ของ VETRA — เว็บไซต์ Next.js, เว็บแอป, แดชบอร์ด และระบบ UI สำหรับธุรกิจและองค์กร พร้อมระบบค้นหาและคัดเลือกผลงานตัวอย่าง.'
 
 export const metadata: Metadata = {
-  title: 'Projects',
+  title: 'ผลงาน',
   description: TH_DESC,
   alternates: pageAlternates('/projects', 'th'),
   openGraph: {
-    title: 'Projects | VETRA',
+    title: 'ผลงาน | VETRA',
     description: TH_DESC,
     images: [
       {
         url: '/images/preview/projects-og.png',
         width: 1200,
         height: 630,
-        alt: 'Projects | Vetra',
+        alt: 'ผลงานของ VETRA',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Projects',
+    title: 'ผลงาน',
     description: TH_DESC,
     images: ['/images/preview/projects-og.png'],
   },
@@ -35,10 +35,10 @@ export const metadata: Metadata = {
 export default function ProjectsPage() {
   return (
     <main className={styles.page}>
-      <section className={styles.hero} aria-label="Projects hero">
+      <section className={styles.hero} aria-label="ส่วนแนะนำผลงาน">
         <div className={styles.heroInner}>
           <Link href={localizedPath('th', '/projects')} className={styles.badge}>
-            Projects
+            ผลงาน
           </Link>
           <h1 className={styles.title}>รวมผลงานของเรา</h1>
 
@@ -49,7 +49,7 @@ export default function ProjectsPage() {
         </div>
       </section>
 
-      <section className={styles.section} aria-label="Projects list">
+      <section className={styles.section} aria-label="รายการผลงาน">
         <div className={styles.sectionInner}>
           <Projects locale="th" />
         </div>
