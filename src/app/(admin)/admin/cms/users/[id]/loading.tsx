@@ -36,11 +36,6 @@ export default function Loading() {
           </p>
         </div>
 
-        <div className={styles.headerRight}>
-          <button className={styles.ghostBtn} type="button" disabled>
-            Reset password (soon)
-          </button>
-        </div>
       </header>
 
       {/* Meta grid */}

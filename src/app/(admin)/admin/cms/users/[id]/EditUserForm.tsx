@@ -3,6 +3,7 @@
 
 import { useMemo, useState } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { updateUserAction } from './function'
 import styles from './EditUserForm.module.css'
 
@@ -58,6 +59,7 @@ type Props = {
   meRole: string
   isSelf: boolean
   targetRoleNow: string // ✅ DB truth for locks
+  version: number
 }
 
 function asRole(v: string): Role {
@@ -75,6 +77,7 @@ export default function EditUserForm({
   meRole,
   isSelf,
   targetRoleNow,
+  version,
 }: Props) {
   const router = useRouter()
   const pathname = usePathname()
@@ -83,7 +86,11 @@ export default function EditUserForm({
   const [values, setValues] = useState({
     username: defaultUsername,
     email: defaultEmail,
-    role: asRole(defaultRole),
+    role: asRole(
+      meRole !== 'dev' && targetRoleNow !== 'dev' && defaultRole === 'dev'
+        ? targetRoleNow
+        : defaultRole,
+    ),
     isActive: defaultIsActive,
   })
 
@@ -92,7 +99,7 @@ export default function EditUserForm({
     [values.username, values.email],
   )
 
-  const canSubmit = !hasErrors(errors as any)
+  const canSubmit = !hasErrors(errors)
 
   function mark(name: string) {
     setTouched((p) => ({ ...p, [name]: true }))
@@ -109,6 +116,10 @@ export default function EditUserForm({
   const isDevMe = meRole === 'dev'
   const isDevTarget = targetRoleNow === 'dev'
   const lockDevTarget = isDevTarget && !isDevMe
+  const roleOptions =
+    isDevMe || isDevTarget
+      ? ROLE_OPTIONS
+      : ROLE_OPTIONS.filter((option) => option.value !== 'dev')
 
   // Self safety: allow username/email, but lock role/status so you can't lock yourself out
   const lockRoleAndStatus = isSelf
@@ -146,6 +157,7 @@ export default function EditUserForm({
         }))
       }}
     >
+      <input type="hidden" name="version" value={version} />
       <div className={styles.grid}>
         <label className={styles.field}>
           <span className={styles.label}>Username *</span>
@@ -189,7 +201,7 @@ export default function EditUserForm({
           <span className={styles.hint}>
             {lockIdentity
               ? 'Only a dev can edit a dev user.'
-              : 'Used for recovery/reference.'}
+              : 'Used for contact and account reference.'}
           </span>
           {touched.email && errors.email ? (
             <div className={styles.fieldError}>{errors.email}</div>
@@ -203,7 +215,7 @@ export default function EditUserForm({
             label="Role *"
             value={values.role}
             onChange={(v) => set('role', v)}
-            options={ROLE_OPTIONS}
+            options={roleOptions}
             disabled={roleDisabled}
           />
           <span className={styles.hint}>
@@ -221,12 +233,14 @@ export default function EditUserForm({
             <input
               className={styles.check}
               id="isActive"
-              name="isActive"
               type="checkbox"
               checked={values.isActive}
               disabled={statusDisabled}
               onChange={(e) => set('isActive', e.target.checked)}
             />
+            {!statusDisabled ? (
+              <input type="hidden" name="isActive" value={values.isActive ? '1' : '0'} />
+            ) : null}
             <span className={styles.switchText}>
               Active (can login and access CMS)
             </span>
@@ -242,9 +256,9 @@ export default function EditUserForm({
       </div>
 
       <footer className={styles.actions}>
-        <a className={styles.ghostBtn} href="/admin/cms/users">
+        <Link className={styles.ghostBtn} href="/admin/cms/users">
           Cancel
-        </a>
+        </Link>
 
         <button
           className={styles.btn}

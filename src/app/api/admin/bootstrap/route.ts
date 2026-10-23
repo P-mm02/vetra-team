@@ -2,8 +2,10 @@
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 import crypto from 'crypto'
+import mongoose from 'mongoose'
 import { connectMongo } from '@/lib/db/mongoose'
 import { User } from '@/models/User/User'
+import { ensureUserIdentityIndexes } from '@/models/User/ensureIdentityIndexes'
 import { hashPassword } from '@/lib/auth/password'
 import { assertSameOrigin } from '@/lib/auth/session'
 
@@ -15,6 +17,10 @@ const BodySchema = z.object({
   email: z.string().email().max(254),
   password: z.string().min(10).max(200),
 })
+
+// A fixed first-owner ID makes two concurrent bootstrap requests unable to
+// create two owners even before database indexes on email/username are ready.
+const FIRST_OWNER_ID = new mongoose.Types.ObjectId('000000000000000000000001')
 
 function timingSafeEqualStr(a: string, b: string) {
   const aa = Buffer.from(a)
@@ -91,18 +97,32 @@ export async function POST(req: Request) {
     )
   }
 
+  await ensureUserIdentityIndexes()
+
   // 8) Create Dev
   const passwordHash = await hashPassword(password)
-  const dev = await User.create({
-    username,
-    email,
-    passwordHash,
-    role: 'dev',
-    isActive: true,
-    lastLoginAt: null,
-    loginAttempts: 0,
-    lockUntil: null,
-  })
+  let dev
+  try {
+    dev = await User.create({
+      _id: FIRST_OWNER_ID,
+      username,
+      email,
+      passwordHash,
+      role: 'dev',
+      isActive: true,
+      lastLoginAt: null,
+      loginAttempts: 0,
+      lockUntil: null,
+    })
+  } catch (error) {
+    if ((error as { code?: number })?.code === 11000) {
+      return NextResponse.json(
+        { ok: false, message: 'Bootstrap already completed' },
+        { status: 409 },
+      )
+    }
+    throw error
+  }
 
   // 9) Return minimal info
   return NextResponse.json({

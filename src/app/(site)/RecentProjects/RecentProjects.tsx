@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import projectsData from '@/app/(site)/projects/Projects/projects.json'
+import { getPublicProjects } from '@/lib/cms/projects'
 import type { ProjectItem } from '@/app/(site)/projects/Projects/Modal/Modal'
 import { localizedPath, type Locale } from '@/lib/i18n'
 import { localizeProject } from '@/app/(site)/projects/Projects/projectContent'
@@ -14,6 +14,7 @@ const copy = {
     intro:
       'ตัวอย่างเว็บไซต์และเว็บแอปที่ออกแบบให้พร้อมใช้งานจริง ทั้งหน้าขายสินค้า ธุรกิจบริการ แพลตฟอร์มทัวร์ และระบบเฉพาะทาง',
     viewProject: 'ดูรายละเอียด',
+    viewPortfolio: 'ดูผลงานทั้งหมด',
     viewAll: 'ดูผลงานทั้งหมด',
     yearLabel: 'ปี',
   },
@@ -23,25 +24,26 @@ const copy = {
     intro:
       'A quick look at recent websites and web apps built for sales, services, travel, education, e-commerce, and custom business use.',
     viewProject: 'View details',
+    viewPortfolio: 'View portfolio',
     viewAll: 'View all projects',
     yearLabel: 'Year',
   },
 } satisfies Record<Locale, Record<string, string>>
 
-function getRecentProjects(locale: Locale) {
-  return (projectsData as ProjectItem[])
+async function getRecentProjects(locale: Locale) {
+  return ((await getPublicProjects()) as ProjectItem[])
     .map((project) => localizeProject(project, locale))
-    .sort(compareProjectsNewestFirst)
+    .sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0) || compareProjectsNewestFirst(a, b))
     .slice(0, 6)
 }
 
-export default function RecentProjects({
+export default async function RecentProjects({
   locale = 'th',
 }: {
   locale?: Locale
 }) {
   const t = copy[locale]
-  const projects = getRecentProjects(locale)
+  const projects = await getRecentProjects(locale)
   const projectsHref = localizedPath(locale, '/projects')
 
   return (
@@ -63,14 +65,17 @@ export default function RecentProjects({
 
         <div className={styles.grid}>
           {projects.map((project) => {
-            const projectHref = `${projectsHref}?project=${encodeURIComponent(project.id)}`
+            const projectHref = project.hasDetail
+              ? `${projectsHref}?project=${encodeURIComponent(project.id)}`
+              : project.isExample ? projectsHref : `${projectsHref}?view=all`
+            const actionLabel = project.hasDetail ? t.viewProject : t.viewPortfolio
 
             return (
               <article key={project.id} className={styles.card}>
               <Link
                 className={styles.mediaLink}
                 href={projectHref}
-                aria-label={`${t.viewProject}: ${project.title}`}
+                aria-label={`${actionLabel}: ${project.title}`}
               >
                 <Image
                   src={project.cover.src}
@@ -96,7 +101,7 @@ export default function RecentProjects({
 
                 <div className={styles.footer}>
                   <Link className={styles.detailLink} href={projectHref}>
-                    {t.viewProject}
+                    {actionLabel}
                   </Link>
 
                   {project.stack?.[0] ? (

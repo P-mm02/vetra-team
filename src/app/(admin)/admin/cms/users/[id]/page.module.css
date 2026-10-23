@@ -51,12 +51,6 @@
   align-items: center;
 }
 
-.headerRight {
-  display: flex;
-  gap: 0.6rem;
-  flex: 0 0 auto;
-}
-
 .rolePill {
   display: inline-flex;
   border-radius: 999px;
@@ -65,7 +59,7 @@
   background: rgba(190, 140, 255, 0.1);
   color: var(--text);
   font-weight: 900;
-  font-size: 0.9rem;
+  font-size: 1rem;
 }
 
 .statusPill {
@@ -73,7 +67,7 @@
   border-radius: 999px;
   padding: 0.22rem 0.6rem;
   font-weight: 900;
-  font-size: 0.9rem;
+  font-size: 1rem;
   border: 1px solid var(--border);
   background: var(--soft);
   color: var(--text);
@@ -87,27 +81,6 @@
 .statusOff {
   border-color: rgba(255, 120, 150, 0.25);
   background: rgba(255, 120, 150, 0.08);
-}
-
-.ghostBtn {
-  border-radius: 999px;
-  padding: 0.62rem 0.9rem;
-  font-weight: 900;
-  cursor: pointer;
-  text-align: center;
-  text-decoration: none;
-  letter-spacing: 0.2px;
-  transition: transform 140ms ease, border-color 140ms ease, box-shadow 140ms ease;
-  border: 1px solid var(--border);
-  background: var(--soft);
-  color: var(--text);
-}
-
-.ghostBtn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
 }
 
 .grid {
@@ -126,7 +99,7 @@
 .k {
   color: var(--muted);
   font-weight: 800;
-  font-size: 0.92rem;
+  font-size: 1rem;
 }
 
 .v {
@@ -163,7 +136,4 @@
     align-items: stretch;
   }
 
-  .headerRight {
-    justify-content: flex-start;
-  }
 }

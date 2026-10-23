@@ -12,7 +12,7 @@ export type AllowedRangeDays = (typeof ALLOWED_RANGES)[number]
 export function parseRangeDays(v: unknown): AllowedRangeDays {
   const raw = Array.isArray(v) ? v[0] : v
   const n = Number(raw)
-  return (ALLOWED_RANGES as readonly number[]).includes(n) ? (n as any) : 7
+  return ALLOWED_RANGES.find((allowed) => allowed === n) ?? 7
 }
 
 /**
@@ -78,12 +78,12 @@ export function prevPeriodFrom(startDate: string, endDate: string) {
   }
 }
 
-export function safeNumber(v: any) {
+export function safeNumber(v: unknown) {
   const n = Number(v ?? 0)
   return Number.isFinite(n) ? n : 0
 }
 
-export function safePercent01(v: any) {
+export function safePercent01(v: unknown) {
   const n = safeNumber(v) // 0..1
   return `${(n * 100).toFixed(1)}%`
 }
@@ -105,12 +105,13 @@ function fmtSignedPts(v: number | null) {
   return `${sign}${v.toFixed(1)} pts`
 }
 
-export function errMessage(err: any) {
-  return (
-    err?.message ||
-    err?.details ||
-    'Unknown GA4 Data API error. Check service account + property access.'
-  )
+export function errMessage(err: unknown) {
+  if (err instanceof Error && err.message) return err.message
+  if (typeof err === 'object' && err !== null) {
+    const details = 'details' in err ? err.details : null
+    if (typeof details === 'string' && details) return details
+  }
+  return 'Unknown GA4 Data API error. Check service account + property access.'
 }
 
 export function gaClientFromEnv() {

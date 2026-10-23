@@ -42,7 +42,7 @@ const hasExpiresTtl = SessionSchema.indexes().some(
   (entry: [Record<string, unknown>, Record<string, unknown>]) => {
     const [keys, opts] = entry
     return (
-      (keys as any).expiresAt === 1 && (opts as any).expireAfterSeconds === 0
+      keys.expiresAt === 1 && opts.expireAfterSeconds === 0
     )
   },
 )
@@ -183,7 +183,7 @@ export async function getCurrentUser(): Promise<CurrentUser | null> {
 
   if (!session) return null
 
-  const user = await User.findById(session.userId)
+  const user = await User.findOne({ _id: session.userId, deletedAt: null })
     .select({ username: 1, email: 1, role: 1, isActive: 1 })
     .lean<LeanUser | null>()
 

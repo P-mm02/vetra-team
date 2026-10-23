@@ -5,6 +5,7 @@ import { redirect } from 'next/navigation'
 import { connectMongo } from '@/lib/db/mongoose'
 import { assertSameOriginStrict, getCurrentUser } from '@/lib/auth/session'
 import { User } from '@/models/User/User'
+import { ensureUserIdentityIndexes } from '@/models/User/ensureIdentityIndexes'
 import { hashPassword, isSafePasswordLength } from '@/lib/auth/password'
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -125,6 +126,7 @@ export async function createUserAction(formData: FormData) {
   }
 
   await connectMongo()
+  await ensureUserIdentityIndexes()
 
   let createdId = ''
 

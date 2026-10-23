@@ -2,36 +2,47 @@
   "name": "vetra-team",
   "version": "0.1.0",
   "private": true,
-  "overrides": {
-    "postcss": "8.5.10"
-  },
+  "overrides": {},
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "check": "npm run lint && npm run typecheck && npm run build"
+    "check": "npm run lint && npm run typecheck && npm run build",
+    "test:cms": "node scripts/cms-test-server.mjs",
+    "test:users": "tsx scripts/test-user-safety.mjs",
+    "test:payments": "tsx scripts/test-payments.mjs",
+    "test:payment-routes": "node scripts/payments-test-server.mjs",
+    "dev:payments-test": "node scripts/payments-test-server.mjs --serve",
+    "dev:cms-test": "node scripts/cms-test-server.mjs --serve"
   },
   "dependencies": {
     "@google-analytics/data": "^5.2.1",
-    "@next/third-parties": "^16.2.10",
+    "@next/third-parties": "^16.4.3",
     "argon2": "^0.44.0",
     "bcryptjs": "^3.0.3",
+    "lucide-react": "^1.61.0",
     "mongoose": "^9.1.3",
-    "next": "16.2.10",
+    "next": "^16.4.3",
+    "qrcode": "^1.5.4",
     "react": "19.2.3",
     "react-dom": "19.2.3",
+    "sharp": "^0.35.5",
+    "stripe": "^23.0.1",
     "zod": "^4.3.5"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20",
+    "@types/qrcode": "^1.5.6",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "babel-plugin-react-compiler": "1.0.0",
     "eslint": "^9.39.5",
-    "eslint-config-next": "^16.2.10",
+    "eslint-config-next": "^16.4.3",
+    "mongodb-memory-server": "^11.3.0",
+    "tsx": "^4.23.15",
     "typescript": "^5"
   }
 }

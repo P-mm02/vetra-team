@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic'
 import type { Metadata } from 'next'
 import styles from '@/app/(site)/page.module.css'
 import AboutHero from '@/app/(site)/about/AboutHero/AboutHero'

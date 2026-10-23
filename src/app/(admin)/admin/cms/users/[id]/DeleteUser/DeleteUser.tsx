@@ -11,6 +11,7 @@ type Props = {
   targetRole: string
   meId: string
   meRole: string
+  version: number
   // optional: pass from page.tsx if you want to show page-level errors
   errCode?: string
 }
@@ -23,6 +24,12 @@ function errText(code: string) {
       return 'Only a dev can delete a dev user.'
     case 'bad_id':
       return 'Invalid user id.'
+    case 'last_privileged':
+      return 'Keep at least one active account with this privileged role.'
+    case 'conflict':
+      return 'This account changed. Refresh the page and try again.'
+    case 'csrf':
+      return 'Your session could not be verified. Refresh and try again.'
     default:
       return 'Delete failed. Please try again.'
   }
@@ -34,6 +41,7 @@ export default function DeleteUser({
   targetRole,
   meId,
   meRole,
+  version,
   errCode = '',
 }: Props) {
   const [confirming, setConfirming] = useState(false)
@@ -52,7 +60,7 @@ export default function DeleteUser({
         <div>
           <h2 className={styles.h2}>Danger zone</h2>
           <p className={styles.sub}>
-            Permanently delete this user and revoke all active sessions.
+            Move this user to Trash for 30 days and revoke active sessions.
           </p>
         </div>
 
@@ -70,7 +78,7 @@ export default function DeleteUser({
                 : ''
           }
         >
-          Delete user
+          Move to Trash
         </button>
       </div>
 
@@ -100,12 +108,15 @@ export default function DeleteUser({
           aria-label="Confirm delete"
         >
           <div className={styles.confirmTitle}>
-            Delete <b>{username}</b>?
+            Move <b>{username}</b> to Trash?
           </div>
-          <div className={styles.confirmText}>This action can’t be undone.</div>
+          <div className={styles.confirmText}>
+            Login stops immediately. You can restore this account from Trash for 30 days.
+          </div>
 
           <form action={deleteUserAction} className={styles.confirmActions}>
             <input type="hidden" name="id" value={userId} />
+            <input type="hidden" name="version" value={version} />
 
             <button
               type="button"
@@ -120,7 +131,7 @@ export default function DeleteUser({
               className={styles.dangerBtn}
               disabled={!canDeleteTarget}
             >
-              Yes, delete
+              Move to Trash
             </button>
           </form>
         </div>

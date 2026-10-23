@@ -41,11 +41,6 @@ export default function VetraSelect<T extends string>({
   const [open, setOpen] = useState(false)
   const [activeIndex, setActiveIndex] = useState(0)
 
-  const enabledOptions = useMemo(
-    () => options.filter((o) => !o.disabled),
-    [options],
-  )
-
   const selected = useMemo(
     () => options.find((o) => o.value === value) || null,
     [options, value],

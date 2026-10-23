@@ -18,9 +18,5 @@ export default defineConfig([
     'next-env.d.ts',
     'public/**',
     'scripts/**',
-    'src/app/(admin)/**',
-    'src/lib/auth/**',
-    'src/lib/db/**',
-    'src/models/**',
   ]),
 ])

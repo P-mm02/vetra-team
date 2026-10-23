@@ -39,6 +39,10 @@ function errText(code: string) {
       return 'This username is already used.'
     case 'forbidden':
       return 'You don’t have permission to manage users.'
+    case 'bad_role':
+      return 'Choose a valid role for this account.'
+    case 'csrf':
+      return 'Your session could not be verified. Refresh and try again.'
     default:
       return 'Something went wrong. Please try again.'
   }
@@ -57,11 +61,17 @@ export default async function AddUserPage({
   const sp = await searchParams
 
   const err = pickOne(sp.err)
-  const ok = pickOne(sp.ok)
 
   const username = pickOne(sp.username)
   const email = pickOne(sp.email)
-  const role = pickOne(sp.role) || 'viewer'
+  const requestedRole = pickOne(sp.role)
+  const role =
+    (requestedRole === 'dev' && me.role === 'dev') ||
+    requestedRole === 'admin' ||
+    requestedRole === 'editor' ||
+    requestedRole === 'viewer'
+      ? requestedRole
+      : 'viewer'
   const isActiveParam = pickOne(sp.isActive)
   const isActive = isActiveParam ? isActiveParam !== '0' : true
 
@@ -82,14 +92,13 @@ export default async function AddUserPage({
           <h1 className={styles.h1}>Create user</h1>
           <p className={styles.sub}>
             Login uses <span className={styles.kbd}>username</span> +{' '}
-            <span className={styles.kbd}>password</span>. Email is for recovery
-            and reference.
+            <span className={styles.kbd}>password</span>. Email is kept for
+            contact and account reference.
           </p>
         </div>
       </header>
 
       <section className={styles.panel} aria-label="Create user form">
-        {/* ✅ show Notice only when err/ok exists */}
         {err ? (
           <Notice
             tone="danger"
@@ -99,15 +108,6 @@ export default async function AddUserPage({
             dismissible
             clearQueryKey="err"
           />
-        ) : ok ? (
-          <Notice
-            tone="success"
-            title="Looks good (test mode)"
-            message={ok}
-            code={200}
-            dismissible
-            clearQueryKey="ok"
-          />
         ) : null}
 
         <AddUserForm
@@ -115,7 +115,7 @@ export default async function AddUserPage({
           defaultEmail={email}
           defaultRole={role}
           defaultIsActive={isActive}
-          testMode={false} // ✅ Option A enabled
+          currentRole={String(me.role)}
         />
       </section>
     </main>

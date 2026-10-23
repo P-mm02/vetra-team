@@ -64,7 +64,7 @@ export async function POST(req: Request) {
     )
 
   // Select sensitive fields explicitly (passwordHash/loginAttempts/lockUntil are select:false)
-  const user = await User.findOne({ username })
+  const user = await User.findOne({ username, deletedAt: null })
     .select({
       username: 1,
       email: 1,

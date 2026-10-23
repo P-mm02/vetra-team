@@ -1,3 +1,5 @@
+import { getPublicProjects } from '@/lib/cms/projects'
+export const dynamic = 'force-dynamic'
 // src/app/projects/page.tsx
 import type { Metadata } from 'next'
 import styles from './page.module.css'
@@ -32,7 +34,7 @@ export const metadata: Metadata = {
   },
 }
 
-export default function ProjectsPage() {
+export default async function ProjectsPage() {
   return (
     <main className={styles.page}>
       <section className={styles.hero} aria-label="ส่วนแนะนำผลงาน">
@@ -51,7 +53,7 @@ export default function ProjectsPage() {
 
       <section className={styles.section} aria-label="รายการผลงาน">
         <div className={styles.sectionInner}>
-          <Projects locale="th" />
+          <Projects locale="th" projectsData={await getPublicProjects()} />
         </div>
       </section>
     </main>

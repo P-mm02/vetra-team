@@ -1,84 +1,75 @@
-/* src/app/(admin)/admin/cms/CmsShell/CmsShell.module.css */
-/* Shell layout + background only */
-
 .shell {
+  color-scheme: light;
+  --bg: #f6f7fb;
+  --bg-2: #f0f2f9;
+  --text: #1e2540;
+  --muted: #626b80;
+  --accent: #128da4;
+  --accent-strong: #6746bf;
+  --border: #d9deea;
+  --border-soft: #e3e7f0;
+  --glass: #ffffff;
+  --card: #ffffff;
+  --soft: #f5f6fb;
+  --shadow-lg: 0 1.35rem 3.5rem rgba(38, 35, 76, 0.12);
+  --shadow-md: 0 0.5rem 1.8rem rgba(38, 35, 76, 0.07);
+  --focus: 0 0 0 3px rgba(103, 70, 191, 0.28);
+  --cms-text: var(--text);
+  --cms-muted: var(--muted);
+  --cms-accent: var(--accent-strong);
+  --cms-border: var(--border-soft);
+  --cms-surface: var(--card);
+  --cms-surface-raised: var(--card);
+  --cms-field: #f8f9fc;
+  --cms-accent-soft: #f0eafb;
+  --cms-shadow: var(--shadow-md);
   min-height: 100vh;
-  display: grid;
-  grid-template-columns: 16rem 1fr;
+  width: 100%;
+  color: var(--text);
+  background:
+    radial-gradient(circle at 8% -12%, rgba(113, 83, 207, 0.10), transparent 32rem),
+    radial-gradient(circle at 95% 8%, rgba(18, 141, 164, 0.07), transparent 25rem),
+    var(--bg);
 }
 
-/* Sidebar layout container only */
 .sidebar {
-  position: sticky;
-  top: 0;
+  position: fixed;
+  inset: 0 auto 0 0;
+  z-index: 61;
+  display: flex;
+  flex-direction: column;
+  width: min(19rem, 89vw);
   height: 100vh;
+  height: 100dvh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
   border-right: 1px solid var(--border-soft);
-  background: var(--glass);
+  background: var(--card);
   box-shadow: var(--shadow-lg);
-  overflow: hidden;
-  backdrop-filter: blur(2px);
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-  z-index: 50;
+  transform: translateX(-104%);
+  visibility: hidden;
+  pointer-events: none;
+  transition: transform 220ms ease, visibility 0s linear 220ms;
 }
+.sidebarOpen { transform: translateX(0); visibility: visible; pointer-events: auto; transition: transform 220ms ease; }
 
-/* Main area layout only */
-.main {
-  min-width: 0;
-  display: grid;
-  grid-template-rows: auto 1fr;
-}
-
-.content {
-  min-width: 0;
-  padding: 1.2rem;
-}
-
-/* Backdrop (mobile) */
 .backdrop {
-  display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.55); /* keep: not a design token */
+  z-index: 60;
   border: 0;
   padding: 0;
+  background: rgba(16, 19, 42, 0.42);
   opacity: 0;
+  visibility: hidden;
   pointer-events: none;
-  transition: opacity var(--t-fast);
-  z-index: 20;
+  transition: opacity 220ms ease, visibility 0s linear 220ms;
 }
+.backdropShow { opacity: 1; visibility: visible; pointer-events: auto; transition: opacity 220ms ease; }
+.main { min-width: 0; min-height: 100vh; }
+.content { width: 100%; min-width: 0; padding: 1.6rem max(1rem, env(safe-area-inset-right)) 3rem max(1rem, env(safe-area-inset-left)); }
 
-/* Responsive */
-@media (max-width: 980px) {
-  .shell {
-    grid-template-columns: 1fr;
-  }
-
-  .sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100vh;
-    width: min(20rem, 100vw);
-    transform: translateX(-105%);
-    transition: transform 180ms ease; /* keep: different from tokens */
-    z-index: 30;
-  }
-
-  .sidebarOpen {
-    transform: translateX(0);
-  }
-
-  .backdrop {
-    display: block;
-  }
-
-  .backdropShow {
-    opacity: 1;
-    pointer-events: auto;
-  }
-
-  .content {
-    padding: 1rem;
-  }
+@media (max-width: 640px) { .content { padding-top: 1.1rem; } }
+@media (prefers-reduced-motion: reduce) {
+  .sidebar, .sidebarOpen, .backdrop, .backdropShow { transition-duration: 0.01ms; }
 }

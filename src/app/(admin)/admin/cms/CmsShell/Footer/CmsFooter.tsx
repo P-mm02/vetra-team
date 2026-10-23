@@ -1,21 +1,13 @@
+import { ArrowUpRight } from 'lucide-react'
 import styles from './CmsFooter.module.css'
 
 export default function CmsFooter() {
-
   return (
     <div className={styles.sideFoot}>
-
-      <div className={styles.sideActions}>
-        <a
-          className={styles.ghostBtn}
-          href="/"
-          target="_blank"
-          rel="noreferrer"
-        >
-          Open site ↗
-        </a>
-
-      </div>
+      <a className={styles.siteLink} href="/" target="_blank" rel="noopener noreferrer">
+        <span>View website</span>
+        <ArrowUpRight size={18} aria-hidden="true" />
+      </a>
     </div>
   )
 }

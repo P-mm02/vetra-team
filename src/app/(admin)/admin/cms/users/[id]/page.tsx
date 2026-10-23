@@ -25,6 +25,7 @@ type UserView = {
   createdAt?: Date
   updatedAt?: Date
   lastLoginAt?: Date | null
+  __v?: number
 }
 
 type SearchParams = Record<string, string | string[] | undefined>
@@ -68,6 +69,12 @@ function errText(code: string) {
       return 'You cannot change your own role or disable your own account here.'
     case 'bad_id':
       return 'Invalid user id.'
+    case 'last_privileged':
+      return 'Keep at least one active account with this privileged role.'
+    case 'conflict':
+      return 'This account changed. Refresh the page and try again.'
+    case 'csrf':
+      return 'Your session could not be verified. Refresh and try again.'
     default:
       return 'Something went wrong. Please try again.'
   }
@@ -85,6 +92,10 @@ function cpErrText(code: string) {
       return 'You don’t have permission to change this password.'
     case 'bad_id':
       return 'Invalid user id.'
+    case 'conflict':
+      return 'This account changed. Refresh the page and try again.'
+    case 'csrf':
+      return 'Your session could not be verified. Refresh and try again.'
     default:
       return 'Something went wrong. Please try again.'
   }
@@ -109,7 +120,7 @@ export default async function UserEditPage({
 
   await connectMongo()
 
-  const user = await User.findById(id)
+  const user = await User.findOne({ _id: id, deletedAt: null })
     .select({
       username: 1,
       email: 1,
@@ -118,6 +129,7 @@ export default async function UserEditPage({
       createdAt: 1,
       updatedAt: 1,
       lastLoginAt: 1,
+      __v: 1,
     })
     .lean<UserView | null>()
 
@@ -170,11 +182,6 @@ export default async function UserEditPage({
           </p>
         </div>
 
-        <div className={styles.headerRight}>
-          <button className={styles.ghostBtn} type="button" disabled>
-            Reset password (soon)
-          </button>
-        </div>
       </header>
 
       <section className={styles.grid} aria-label="User meta">
@@ -229,6 +236,7 @@ export default async function UserEditPage({
           meRole={String(me.role)}
           isSelf={isSelf}
           targetRoleNow={targetRoleNow}
+          version={Number(user.__v ?? 0)}
         />
       </section>
 
@@ -262,6 +270,7 @@ export default async function UserEditPage({
         targetRole={role}
         meId={String(me.id)}
         meRole={String(me.role)}
+        version={Number(user.__v ?? 0)}
         errCode={err ? err : undefined}
       />
     </main>

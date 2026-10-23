@@ -1,0 +1,26 @@
+:root {
+  --pay-font-body: 1rem;
+  --pay-font-heading: 1.45rem;
+  --pay-font-title: 2rem;
+  --pay-font-amount: 2.6rem;
+  --pay-ink: #25223d;
+  --pay-muted: #686478;
+  --pay-accent: #6742c0;
+  --pay-border: #e5e1ed;
+  color-scheme: light;
+}
+html { font-size: 100%; }
+@media (min-width:1920px) { html { font-size:112.5%; } }
+@media (min-width:2560px) { html { font-size:150%; } }
+@media (min-width:3200px) { html { font-size:175%; } }
+@media (min-width:3840px) { html { font-size:212.5%; } }
+@media (min-width:4800px) { html { font-size:250%; } }
+* { box-sizing:border-box; }
+body { margin:0; min-height:100vh; color:var(--pay-ink); font:400 var(--pay-font-body)/1.7 var(--payment-font),system-ui,sans-serif; background:radial-gradient(ellipse at 50% 0%,#e9e2fa 0%,transparent 60%),#f5f4fa; }
+button,input,a { -webkit-tap-highlight-color:transparent; }
+button { font:inherit; }
+a { color:inherit; }
+button:disabled { cursor:wait; opacity:.6; }
+:focus-visible { outline:3px solid #9a75ea; outline-offset:4px; }
+::selection { background:#dfd0ff; }
+@media (prefers-reduced-motion:reduce) { *,*::before,*::after { scroll-behavior:auto !important; animation-duration:.01ms !important; transition-duration:.01ms !important; } }

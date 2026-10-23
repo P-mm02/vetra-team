@@ -67,7 +67,7 @@ async function getMongoUsage(): Promise<Usage> {
       note: 'Live MongoDB stats fetched from db.stats(). Quota is configurable via MONGO_QUOTA_MB.',
       isMock: false,
     }
-  } catch (err) {
+  } catch {
     // Fallback mock (keeps UI usable even without admin privileges)
     const usedBytes = 184 * 1024 * 1024 // 184 MB mock
     return {

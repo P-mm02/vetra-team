@@ -52,7 +52,7 @@ export async function changePasswordAction(userId: string, formData: FormData) {
 
   await connectMongo()
 
-  const target = await User.findById(userId)
+  const target = await User.findOne({ _id: userId, deletedAt: null })
     .select({ role: 1 })
     .lean<{ _id: unknown; role?: string } | null>()
 
@@ -71,29 +71,32 @@ export async function changePasswordAction(userId: string, formData: FormData) {
   if (targetRole === 'dev' && meRole !== 'dev')
     redirect(`/admin/cms/users/${encodeURIComponent(userId)}?cp_err=forbidden`)
 
+  let changed = false
   try {
     const passwordHash = await hashPassword(password)
 
-    await User.updateOne(
-      { _id: userId },
+    const result = await User.updateOne(
+      { _id: userId, deletedAt: null },
       {
         $set: {
           passwordHash,
           passwordChangedAt: new Date(),
         },
+        $inc: { __v: 1 },
       },
     )
-
-    // ✅ revoke all sessions for that user after password change
-    await revokeAllSessionsForUser(userId)
-
-    // ✅ keep the user logged in if they changed their own password
-    if (isSelf) {
-      await createSession(userId)
+    changed = result.matchedCount === 1
+    if (changed) {
+      // Revoke old sessions. Self changes receive a fresh session.
+      await revokeAllSessionsForUser(userId)
+      if (isSelf) await createSession(userId)
     }
   } catch {
     redirect(`/admin/cms/users/${encodeURIComponent(userId)}?cp_err=unknown`)
   }
+
+  if (!changed)
+    redirect(`/admin/cms/users/${encodeURIComponent(userId)}?cp_err=bad_id`)
 
   redirect(`/admin/cms/users/${encodeURIComponent(userId)}?cp_ok=1`)
 }

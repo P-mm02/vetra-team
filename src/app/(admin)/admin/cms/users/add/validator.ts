@@ -52,6 +52,6 @@ export function validateAddUser(v: AddUserValues): FieldErrors {
   return e
 }
 
-export function hasErrors(e: FieldErrors) {
+export function hasErrors<K extends string>(e: Partial<Record<K, string>>) {
   return Object.keys(e).length > 0
 }

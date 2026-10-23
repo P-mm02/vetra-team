@@ -10,6 +10,9 @@ import { type Locale } from '@/lib/i18n'
 import { projectModalText } from '../projectContent'
 
 export type ProjectItem = {
+  category?: 'business' | 'commerce' | 'webapp' | 'internal'
+  sortOrder?: number
+  english?: {title:string;shortDesc:string;coverAlt:string;highlights:string[];slideCaptions:string[];stack?:string[]}
   id: string
   title: string
   shortDesc: string

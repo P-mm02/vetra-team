@@ -4,8 +4,10 @@
 import { redirect } from 'next/navigation'
 import mongoose from 'mongoose'
 import { connectMongo } from '@/lib/db/mongoose'
-import { assertSameOriginStrict, getCurrentUser } from '@/lib/auth/session'
+import { assertSameOriginStrict, getCurrentUser, revokeAllSessionsForUser } from '@/lib/auth/session'
 import { User } from '@/models/User/User'
+import { ensureUserIdentityIndexes } from '@/models/User/ensureIdentityIndexes'
+import { UserSafetyBusyError, withUserSafetyLock } from '@/lib/cms/user-safety'
 import {
   EMAIL_REGEX,
   USERNAME_REGEX,
@@ -50,6 +52,11 @@ export async function updateUserAction(userId: string, formData: FormData) {
   if (!mongoose.Types.ObjectId.isValid(userId))
     redirect(`/admin/cms/users/${encodeURIComponent(userId)}?err=bad_id`)
 
+  const rawVersion = formData.get('version')
+  const expectedVersion = rawVersion === null ? NaN : Number(rawVersion)
+  if (!Number.isSafeInteger(expectedVersion) || expectedVersion < 0)
+    redirect(`/admin/cms/users/${encodeURIComponent(userId)}?err=conflict`)
+
   const usernameRaw = normalizeLower(String(formData.get('username') ?? ''))
   const emailRaw = normalizeLower(String(formData.get('email') ?? ''))
 
@@ -83,16 +90,21 @@ export async function updateUserAction(userId: string, formData: FormData) {
   }
 
   await connectMongo()
+  await ensureUserIdentityIndexes()
 
-  const target = await User.findById(userId)
-    .select({ role: 1, isActive: 1 })
-    .lean<{ _id: unknown; role?: string; isActive?: boolean } | null>()
+  const target = await User.findOne({ _id: userId, deletedAt: null })
+    .select({ role: 1, isActive: 1, __v: 1 })
+    .lean<{ _id: unknown; role?: string; isActive?: boolean; __v?: number } | null>()
 
   if (!target) {
     backQs.set('err', 'bad_id')
     redirect(
       `/admin/cms/users/${encodeURIComponent(userId)}?${backQs.toString()}`,
     )
+  }
+  if (Number(target.__v ?? 0) !== expectedVersion) {
+    backQs.set('err', 'conflict')
+    redirect(`/admin/cms/users/${encodeURIComponent(userId)}?${backQs.toString()}`)
   }
 
   const meRole = String(me.role)
@@ -161,34 +173,65 @@ export async function updateUserAction(userId: string, formData: FormData) {
     }
   }
 
+  let matched = 0
   try {
-    await User.updateOne(
-      { _id: userId },
-      {
-        $set: {
-          username: normalizeLower(usernameRaw),
-          email: normalizeLower(emailRaw),
-          role: roleRaw,
-          isActive: Boolean(isActiveRaw),
+    await withUserSafetyLock(async () => {
+      const acting = await User.findOne({ _id: me.id, isActive: true, deletedAt: null })
+        .select({ role: 1 })
+        .lean<{ role?: string } | null>()
+      if (!acting || !canManageUsers(String(acting.role))) throw new Error('actor_forbidden')
+      if ((targetRoleNow === 'dev' || roleRaw === 'dev') && acting.role !== 'dev') {
+        throw new Error('actor_forbidden')
+      }
+      if (
+        targetIsActiveNow &&
+        (targetRoleNow === 'dev' || targetRoleNow === 'admin') &&
+        (roleRaw !== targetRoleNow || !isActiveRaw)
+      ) {
+        const sameRoleActive = await User.countDocuments({
+          role: targetRoleNow,
+          isActive: true,
+          deletedAt: null,
+        })
+        if (sameRoleActive <= 1) throw new Error('last_privileged')
+      }
+
+      const result = await User.updateOne(
+        { _id: userId, deletedAt: null, __v: expectedVersion },
+        {
+          $set: {
+            username: normalizeLower(usernameRaw),
+            email: normalizeLower(emailRaw),
+            role: roleRaw,
+            isActive: Boolean(isActiveRaw),
+          },
+          $inc: { __v: 1 },
         },
-      },
-    )
+      )
+      matched = result.matchedCount
+    })
   } catch (e: unknown) {
     const msg = e instanceof Error ? e.message : ''
 
-    const code =
-      msg.includes('E11000') &&
-      (msg.includes('uniq_email') || msg.includes('email'))
-        ? 'dup_email'
-        : msg.includes('E11000') &&
-            (msg.includes('uniq_username') || msg.includes('username'))
-          ? 'dup_username'
-          : 'unknown'
+    let code = 'unknown'
+    if (e instanceof UserSafetyBusyError) code = 'conflict'
+    else if (msg === 'actor_forbidden') code = 'forbidden'
+    else if (msg === 'last_privileged') code = 'last_privileged'
+    else if (msg.includes('E11000') && (msg.includes('uniq_email') || msg.includes('email'))) code = 'dup_email'
+    else if (msg.includes('E11000') && (msg.includes('uniq_username') || msg.includes('username'))) code = 'dup_username'
 
     backQs.set('err', code)
     redirect(
       `/admin/cms/users/${encodeURIComponent(userId)}?${backQs.toString()}`,
     )
+  }
+
+  if (matched !== 1) {
+    backQs.set('err', 'conflict')
+    redirect(`/admin/cms/users/${encodeURIComponent(userId)}?${backQs.toString()}`)
+  }
+  if (targetIsActiveNow && !isActiveRaw) {
+    await revokeAllSessionsForUser(userId)
   }
 
   const okQs = new URLSearchParams()

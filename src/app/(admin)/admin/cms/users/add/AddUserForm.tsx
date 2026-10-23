@@ -2,13 +2,13 @@
 'use client'
 
 import { useMemo, useState } from 'react'
-import { usePathname, useRouter } from 'next/navigation'
+import { useFormStatus } from 'react-dom'
+import Link from 'next/link'
 import styles from './page.module.css'
 import { createUserAction } from './function'
 import {
   validateAddUser,
   hasErrors,
-  normalizeLower,
   type FieldErrors,
 } from './validator'
 
@@ -17,7 +17,17 @@ type Props = {
   defaultEmail: string
   defaultRole: string
   defaultIsActive: boolean
-  testMode?: boolean
+  currentRole: string
+}
+
+function SubmitButton() {
+  const { pending } = useFormStatus()
+
+  return (
+    <button className={styles.btn} type="submit" disabled={pending} aria-busy={pending}>
+      <span aria-live="polite">{pending ? 'Creating user…' : 'Create user'}</span>
+    </button>
+  )
 }
 
 export default function AddUserForm({
@@ -25,11 +35,8 @@ export default function AddUserForm({
   defaultEmail,
   defaultRole,
   defaultIsActive,
-  testMode = false,
+  currentRole,
 }: Props) {
-  const router = useRouter()
-  const pathname = usePathname()
-
   const [touched, setTouched] = useState<Record<string, boolean>>({})
   const [values, setValues] = useState({
     username: defaultUsername,
@@ -73,48 +80,13 @@ export default function AddUserForm({
   return (
     <form
       className={styles.form}
-      action={testMode ? undefined : createUserAction}
+      action={createUserAction}
       onSubmit={(e) => {
-        // ✅ Invalid: block submit + show field errors (and you can also navigate to ?err=missing if you want)
         if (!canSubmit) {
           e.preventDefault()
           touchAll()
-
-          // Optional: simulate error via URL
-          // const qs = new URLSearchParams()
-          // qs.set('err', 'missing')
-          // router.replace(`${pathname}?${qs.toString()}`)
-          // router.refresh()
-
           return
         }
-
-        const normalizedUsername = normalizeLower(values.username)
-        const normalizedEmail = normalizeLower(values.email)
-
-        // keep UI normalized either way
-        setValues((p) => ({
-          ...p,
-          username: normalizedUsername,
-          email: normalizedEmail,
-        }))
-
-        // ✅ Test mode: do NOT submit — instead navigate to show Notice via ?ok=
-        if (testMode) {
-          e.preventDefault()
-
-          const qs = new URLSearchParams()
-          qs.set(
-            'ok',
-            `Passed validation. Would create user "${normalizedUsername}" (${normalizedEmail}).`,
-          )
-
-          router.replace(`${pathname}?${qs.toString()}`)
-          router.refresh()
-          return
-        }
-
-        // ✅ Real mode: allow submit (server action runs)
       }}
     >
       <div className={styles.grid}>
@@ -154,7 +126,7 @@ export default function AddUserForm({
             onBlur={() => mark('email')}
           />
           <span className={styles.hint}>
-            Used for recovery/reference (not for login).
+            Used for contact and account reference, not login.
           </span>
           {touched.email && errors.email ? (
             <div className={styles.fieldError}>{errors.email}</div>
@@ -169,7 +141,7 @@ export default function AddUserForm({
             value={values.role}
             onChange={(e) => set('role', e.target.value)}
           >
-            <option value="dev">dev</option>
+            {currentRole === 'dev' ? <option value="dev">dev</option> : null}
             <option value="admin">admin</option>
             <option value="editor">editor</option>
             <option value="viewer">viewer</option>
@@ -245,14 +217,11 @@ export default function AddUserForm({
       </div>
 
       <footer className={styles.actions}>
-        <a className={styles.ghostBtn} href="/admin/cms/users">
+        <Link className={styles.ghostBtn} href="/admin/cms/users">
           Cancel
-        </a>
+        </Link>
 
-        {/* ✅ DO NOT disable. Let user click to see the UX */}
-        <button className={styles.btn} type="submit">
-          Create user
-        </button>
+        <SubmitButton />
       </footer>
     </form>
   )

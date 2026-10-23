@@ -61,6 +61,10 @@ const UserSchema = new Schema(
       default: true,
       index: true,
     },
+    // Accounts remain restorable for 30 days. Authentication and active lists
+    // require deletedAt to be null (which also matches pre-existing users).
+    deletedAt: { type: Date, default: null },
+    purgeAt: { type: Date, default: null },
 
     // Auditing
     lastLoginAt: {
@@ -95,26 +99,22 @@ const UserSchema = new Schema(
     toJSON: {
       versionKey: false,
       transform(_doc, ret) {
-        const {
-          passwordHash,
-          passwordChangedAt,
-          loginAttempts,
-          lockUntil,
-          ...safe
-        } = ret as Record<string, unknown>
+        const safe = { ...(ret as Record<string, unknown>) }
+        delete safe.passwordHash
+        delete safe.passwordChangedAt
+        delete safe.loginAttempts
+        delete safe.lockUntil
         return safe
       },
     },
     toObject: {
       versionKey: false,
       transform(_doc, ret) {
-        const {
-          passwordHash,
-          passwordChangedAt,
-          loginAttempts,
-          lockUntil,
-          ...safe
-        } = ret as Record<string, unknown>
+        const safe = { ...(ret as Record<string, unknown>) }
+        delete safe.passwordHash
+        delete safe.passwordChangedAt
+        delete safe.loginAttempts
+        delete safe.lockUntil
         return safe
       },
     },
@@ -135,6 +135,7 @@ UserSchema.index(
 )
 
 UserSchema.index({ role: 1, isActive: 1 }, { name: 'role_active' })
+UserSchema.index({ deletedAt: 1, purgeAt: 1 }, { name: 'user_trash_retention' })
 
 export type UserDoc = InferSchemaType<typeof UserSchema> & {
   _id: mongoose.Types.ObjectId

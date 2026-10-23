@@ -1,6 +1,3 @@
-/* src/app/(admin)/admin/cms/CmsShell/Topbar/CmsTopbar.module.css */
-/* Topbar */
-
 .topbar {
   position: sticky;
   top: 0;
@@ -8,101 +5,45 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0.75rem;
-  padding: 0.4rem 0.4rem;
+  gap: 1rem;
+  min-height: 5.25rem;
+  padding: 0.75rem max(1rem, env(safe-area-inset-right)) 0.75rem max(1rem, env(safe-area-inset-left));
   border-bottom: 1px solid var(--border-soft);
-  background: var(--card);
-  backdrop-filter: blur(4px);
+  background: rgba(255, 255, 255, 0.91);
+  backdrop-filter: blur(16px);
 }
-
-.menuBtn {
-  display: none;
-  border-radius: 1rem;
+.left, .userBox { display: flex; align-items: center; min-width: 0; }
+.left { gap: 0.85rem; }
+.menuBtn, .logoutBtn {
+  display: grid;
+  flex: none;
+  width: 2.8rem;
+  height: 2.8rem;
+  place-items: center;
   border: 1px solid var(--border-soft);
-  background: var(--soft);
+  border-radius: 0.85rem;
+  background: var(--card);
   color: var(--text);
-  width: 3rem;
-  height: 3rem;
   cursor: pointer;
-  font-weight: 600;
-  font-size: 1.5rem;
+  transition: background-color var(--t-fast), border-color var(--t-fast);
 }
-
-.userBox {
-  margin: 0 0 0 auto;
-  border-radius: 22px; /* keep: already tuned */
+.divider { width: 1px; height: 2rem; background: var(--border-soft); }
+.workspace { display: grid; line-height: 1.25; }
+.eyebrow { color: var(--accent-strong); font-size: var(--font-xs); font-weight: 800; letter-spacing: 0.12em; }
+.workspaceName { font-size: var(--font-lg); font-weight: 800; }
+.userBox { gap: 0.65rem; }
+.avatar { display: grid; flex: none; width: 2.4rem; height: 2.4rem; place-items: center; border-radius: 50%; background: #e9e0fb; color: #6544bd; font-weight: 900; }
+.userMeta { display: grid; min-width: 0; line-height: 1.2; }
+.userName { max-width: 12rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 750; }
+.userRole { color: var(--muted); font-size: var(--font-sm); text-transform: capitalize; }
+.logoutBtn { margin-left: 0.25rem; }
+.logoutBtn:disabled { cursor: wait; opacity: 0.55; }
+@media (hover: hover) and (pointer: fine) {
+  .menuBtn:hover, .logoutBtn:hover { border-color: #c5b6ea; background: #f5f1fd; }
 }
-
-.userTop {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.4rem;
-}
-
-.userName {
-  font-weight: 600;
-
-  /* allow wrapping */
-  white-space: normal;
-  overflow: visible;
-  text-overflow: clip;
-
-  /* handle very long names */
-  overflow-wrap: anywhere;
-  word-break: break-word;
-}
-
-.userRole {
-  display: inline-flex;
-  justify-self: start;
-  border-radius: 0.5rem;
-  padding: 0.2rem 0.5rem;
-
-  /* keep exact visual: token colors are close but this is role-pill */
-  border: 1px solid rgba(190, 140, 255, 0.22);
-  background: rgba(190, 140, 255, 0.10);
-  color: rgba(255, 255, 255, 0.82);
-  font-weight: 600;
-}
-
-.primaryBtn {
-  padding: 0.2rem 0.5rem;
-  border-radius: 0.5rem;
-  font-weight: 600;
-  cursor: pointer;
-  text-align: center;
-  text-decoration: none;
-
-  border: 1px solid rgba(125, 231, 255, 0.28);
-  background: linear-gradient(
-    180deg,
-    rgba(125, 231, 255, 0.18),
-    rgba(190, 140, 255, 0.12)
-  );
-  color: var(--text);
-  box-shadow: var(--shadow-md);
-
-  transition: transform var(--t-fast), border-color var(--t-fast),
-    box-shadow var(--t-fast);
-}
-
-.primaryBtn:hover {
-  transform: translateY(-1px);
-  border-color: rgba(125, 231, 255, 0.42);
-  box-shadow: var(--shadow-lg);
-}
-
-.primaryBtn:disabled {
-  opacity: 0.75;
-  cursor: not-allowed;
-  transform: none;
-}
-
-/* Responsive (Topbar-only bits) */
-@media (max-width: 980px) {
-  .menuBtn {
-    display: inline-grid;
-    place-items: center;
-  }
+@media (max-width: 640px) {
+  .topbar { min-height: 4.5rem; }
+  .divider, .eyebrow, .userMeta { display: none; }
+  .workspaceName { font-size: var(--font-md); }
+  .userBox { gap: 0.35rem; }
 }

@@ -13,7 +13,7 @@ type Row = {
   lastLogin: string
 }
 
-export default function UsersTableClient({ rows }: { rows: Row[] }) {
+export default function UsersTableClient({ rows, emptyMessage }: { rows: Row[]; emptyMessage: string }) {
   const router = useRouter()
 
   function go(id: string) {
@@ -25,7 +25,7 @@ export default function UsersTableClient({ rows }: { rows: Row[] }) {
       {rows.length === 0 ? (
         <tr>
           <td className={styles.empty} colSpan={6}>
-            No users found.
+            {emptyMessage}
           </td>
         </tr>
       ) : (
@@ -47,7 +47,6 @@ export default function UsersTableClient({ rows }: { rows: Row[] }) {
             <td>
               <div className={styles.userLink}>
                 <span className={styles.userName}>{r.username}</span>
-                <span className={styles.userId}>{r.id}</span>
               </div>
             </td>
 

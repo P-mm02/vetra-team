@@ -32,12 +32,9 @@ export default function ChangePassword({ userId, disabled = false }: Props) {
   const [touched, setTouched] = useState<Record<string, boolean>>({})
   const [values, setValues] = useState({ password: '', password2: '' })
 
-  const errors: FieldErrors = useMemo(
-    () => validate(values),
-    [values.password, values.password2],
-  )
+  const errors: FieldErrors = useMemo(() => validate(values), [values])
 
-  const canSubmit = !hasErrors(errors as any)
+  const canSubmit = !hasErrors(errors)
 
   function mark(name: string) {
     setTouched((p) => ({ ...p, [name]: true }))

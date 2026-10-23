@@ -4,7 +4,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import Image from 'next/image'
 import styles from './Projects.module.css'
-import projectsData from './projects.json'
+import type { PortfolioRecord } from '@/lib/portfolio'
 
 import Modal, { type ProjectItem } from './Modal/Modal'
 import { type Locale } from '@/lib/i18n'
@@ -33,10 +33,10 @@ const PROJECT_CATEGORY_BY_ID: Partial<
 function getProjectCategory(
   project: ProjectItem,
 ): Exclude<ProjectCategory, 'all'> {
-  return PROJECT_CATEGORY_BY_ID[project.id] ?? 'business'
+  return project.category ?? PROJECT_CATEGORY_BY_ID[project.id] ?? 'business'
 }
 
-export default function Projects({ locale = 'th' }: { locale?: Locale }) {
+export default function Projects({ locale = 'th', projectsData }: { locale?: Locale; projectsData: PortfolioRecord[] }) {
   const [mode, setMode] = useState<FilterMode>('example')
   const [category, setCategory] = useState<ProjectCategory>('all')
   const [active, setActive] = useState<ProjectItem | null>(null)
@@ -61,9 +61,9 @@ export default function Projects({ locale = 'th' }: { locale?: Locale }) {
     const list = (projectsData as ProjectItem[])
       .map((p) => localizeProject(p, locale))
       .slice()
-    list.sort(compareProjectsNewestFirst)
+    list.sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0) || compareProjectsNewestFirst(a, b))
     return list
-  }, [locale])
+  }, [locale, projectsData])
 
   const filtered = useMemo(() => {
     const modeFiltered =
@@ -99,13 +99,13 @@ export default function Projects({ locale = 'th' }: { locale?: Locale }) {
 
   useEffect(() => {
     const syncProjectFromUrl = () => {
-      const projectId = new URLSearchParams(window.location.search).get(
-        'project',
-      )
+      const parameters = new URLSearchParams(window.location.search)
+      const projectId = parameters.get('project')
       const project = allSorted.find((item) => item.id === projectId)
       const nextActive = project?.hasDetail ? project : null
 
       setActive(nextActive)
+      if (parameters.get('view') === 'all') setMode('all')
       if (nextActive && !nextActive.isExample) setMode('all')
     }
 

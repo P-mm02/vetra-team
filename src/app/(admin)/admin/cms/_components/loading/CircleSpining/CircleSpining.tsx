@@ -25,12 +25,7 @@ export default function CircleSpining({
   return (
     <div
       className={`${styles.wrap} ${className}`}
-      style={
-        {
-          ['--size' as any]: size,
-          ...(color ? ({ ['--ring' as any]: color } as any) : null),
-        } as React.CSSProperties
-      }
+      style={{ '--size': size, ...(color ? { '--ring': color } : {}) } as React.CSSProperties}
       role="status"
       aria-live="polite"
       aria-label={label}

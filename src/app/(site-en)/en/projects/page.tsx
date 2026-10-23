@@ -1,3 +1,5 @@
+import { getPublicProjects } from '@/lib/cms/projects'
+export const dynamic = 'force-dynamic'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import styles from '@/app/(site)/projects/page.module.css'
@@ -33,7 +35,7 @@ export const metadata: Metadata = {
   },
 }
 
-export default function EnglishProjectsPage() {
+export default async function EnglishProjectsPage() {
   return (
     <main className={styles.page}>
       <section className={styles.hero} aria-label="Projects hero">
@@ -52,7 +54,7 @@ export default function EnglishProjectsPage() {
 
       <section className={styles.section} aria-label="Projects list">
         <div className={styles.sectionInner}>
-          <Projects locale="en" />
+          <Projects locale="en" projectsData={await getPublicProjects()} />
         </div>
       </section>
     </main>

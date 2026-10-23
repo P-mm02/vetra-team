@@ -36,18 +36,18 @@ async function AnalyticsStream({
   const ga = gaClientFromEnv()
   if (!ga) return <AnalyticsEmpty measurementId={measurementId} />
 
-  try {
-    const data = await fetchAnalyticsData({
+  const result = await fetchAnalyticsData({
       client: ga.client,
       propertyId: ga.propertyId,
       rangeDays,
       compare,
-    })
+    }).then(
+      (data) => ({ ok: true as const, data }),
+      (error: unknown) => ({ ok: false as const, message: errMessage(error) }),
+    )
 
-    return <AnalyticsView data={data} rangeDays={rangeDays} compare={compare} />
-  } catch (err: any) {
-    return <AnalyticsError msg={errMessage(err)} />
-  }
+  if (!result.ok) return <AnalyticsError msg={result.message} />
+  return <AnalyticsView data={result.data} rangeDays={rangeDays} compare={compare} />
 }
 
 export default async function AnalyticsPage(props: {

@@ -31,6 +31,8 @@ export function proxy(req: NextRequest) {
 
   // Protect admin APIs (return 401 JSON, not redirect)
   if (pathname.startsWith('/api/admin')) {
+    // The token-protected first-owner endpoint must work before a session exists.
+    if (pathname === '/api/admin/bootstrap') return NextResponse.next()
     if (!token) {
       return NextResponse.json(
         { ok: false, message: 'Unauthorized' },

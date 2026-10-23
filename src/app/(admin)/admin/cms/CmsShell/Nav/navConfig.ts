@@ -1,36 +1,20 @@
 export type CmsNavItem = {
-  key:
-    | 'dashboard'
-    | 'content'
-    | 'projects'
-    | 'items'
-    | 'media'
-    | 'users'
-    | 'cloud'
-    | 'analytics'
-    | 'auditlog'
-    | 'iptracking'
-    | 'settings'
+  key: 'dashboard' | 'portfolio' | 'payments' | 'users' | 'trash' | 'analytics'
   label: string
   href: string
-  icon: string // keep simple (emoji). later swap to svg/lucide
+  roles?: readonly string[]
 }
 
 export const CMS_NAV: CmsNavItem[] = [
-  { key: 'dashboard', label: 'Dashboard', href: '/admin/cms', icon: '✦' },
-  { key: 'content', label: 'Content', href: '/admin/cms/content', icon: '◈' },
-  { key: 'items', label: 'Items', href: '/admin/cms/items', icon: '▦' },
-  { key: 'projects', label: 'Projects', href: '/admin/cms/projects', icon: '⬡', },
-  { key: 'media', label: 'Media', href: '/admin/cms/media', icon: '⧉' },
-  { key: 'users', label: 'Users', href: '/admin/cms/users', icon: '⦿' },
-  { key: 'analytics', label: 'Analytics', href: '/admin/cms/analytics', icon: '▤', },
-  { key: 'auditlog', label: 'AuditLog', href: '/admin/cms/auditlog', icon: '◎', },
-  { key: 'iptracking', label: 'IP Tracking', href: '/admin/cms/iptracking', icon: '◎', },
-  { key: 'cloud', label: 'Cloud Monitor', href: '/admin/cms/cloud', icon: '☁' },
-  { key: 'settings', label: 'Settings', href: '/admin/cms/settings', icon: '⚙', },
+  { key: 'dashboard', label: 'Dashboard', href: '/admin/cms' },
+  { key: 'portfolio', label: 'Portfolio', href: '/admin/cms/projects' },
+  { key: 'payments', label: 'Payments', href: '/admin/cms/payments', roles: ['admin', 'dev'] },
+  { key: 'users', label: 'Users', href: '/admin/cms/users', roles: ['admin', 'dev'] },
+  { key: 'trash', label: 'Trash', href: '/admin/cms/trash', roles: ['editor', 'admin', 'dev'] },
+  { key: 'analytics', label: 'Analytics', href: '/admin/cms/analytics', roles: ['admin', 'dev'] },
 ]
 
 export function isActivePath(pathname: string, href: string) {
-  if (href === '/admin/cms') return pathname === '/admin/cms'
+  if (href === '/admin/cms') return pathname === href
   return pathname === href || pathname.startsWith(`${href}/`)
 }

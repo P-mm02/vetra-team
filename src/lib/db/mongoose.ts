@@ -14,7 +14,6 @@ const uri: string = envUri
 
 // 4) Extend Node global type for dev hot-reload caching
 declare global {
-  // eslint-disable-next-line no-var
   var __mongoose:
     | {
         conn: typeof mongoose | null // cached connected instance

@@ -210,6 +210,15 @@ const EN_PROJECTS: Record<string, ProjectText> = {
 export function localizeProject(project: ProjectItem, locale: Locale) {
   if (locale === 'th') return project
 
+  if (project.english) {
+    const en = project.english
+    return { ...project, title: en.title || project.title, shortDesc: en.shortDesc || project.shortDesc,
+      cover: { ...project.cover, alt: en.coverAlt || project.cover.alt },
+      highlights: en.highlights.length ? en.highlights : project.highlights,
+      stack: en.stack?.length ? en.stack : project.stack,
+      slides: project.slides?.map((slide, index) => ({ ...slide, caption: en.slideCaptions[index] || slide.caption })),
+    }
+  }
   const text = EN_PROJECTS[project.id]
   if (!text) return project
 
