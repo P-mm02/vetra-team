@@ -29,6 +29,14 @@ export function dateTime(value: string | null | undefined, locale = 'en-GB') {
 
 /** Translate known service messages at display time so switching language also updates alerts. */
 const messages: Record<string, string> = {
+  'Could not load saved payment details.': 'โหลดข้อมูลชำระเงินที่บันทึกไว้ไม่สำเร็จ',
+  'Enter a saved payment name with 1–100 characters.': 'กรุณากรอกชื่อชุดข้อมูลความยาว 1–100 ตัวอักษร',
+  'Check the payment fields before saving these details.': 'กรุณาตรวจสอบชื่อรายการ ยอดเงิน และข้อมูลในแบบฟอร์มก่อนบันทึก',
+  'Check the saved payment name and fields and try again.': 'กรุณาตรวจสอบชื่อชุดข้อมูลและรายละเอียดในแบบฟอร์ม แล้วลองอีกครั้ง',
+  'This saved payment was not found.': 'ไม่พบชุดข้อมูลชำระเงินนี้',
+  'This saved payment changed. Reload and use its latest details before updating, or save your form as new.': 'ชุดข้อมูลนี้มีการเปลี่ยนแปลง กรุณาโหลดรายการและเลือกใช้ข้อมูลล่าสุดก่อนอัปเดต หรือบันทึกข้อมูลในแบบฟอร์มเป็นชุดใหม่',
+  'This save request was already used with different details.': 'รหัสการบันทึกนี้ถูกใช้กับข้อมูลที่ต่างกันแล้ว',
+  'The saved payment could not be confirmed. Retry this same save.': 'ยังยืนยันผลการบันทึกไม่ได้ กรุณาลองบันทึกข้อมูลเดิมอีกครั้ง',
   'Enable payments with PAYMENTS_ENABLED=true when setup is complete.': 'เมื่อตั้งค่าเสร็จแล้ว ให้เปิดรับชำระเงินด้วย PAYMENTS_ENABLED=true',
   'STRIPE_MODE must be test or live.': 'STRIPE_MODE ต้องเป็น test หรือ live',
   'Add a Stripe test secret key in STRIPE_SECRET_KEY.': 'เพิ่มคีย์ลับ Stripe สำหรับโหมดทดสอบใน STRIPE_SECRET_KEY',

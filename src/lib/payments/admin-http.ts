@@ -18,6 +18,12 @@ export function paymentApiError(error: unknown) {
   return paymentJson({ error: 'The payment service could not confirm this operation. Refresh its status before trying again.', code: 'PAYMENT_UNCERTAIN' }, 503)
 }
 
+export function paymentPresetApiError(error: unknown) {
+  if (error instanceof PaymentError) return paymentApiError(error)
+  console.error('Payment preset operation failed:', error instanceof Error ? error.name : 'Unknown error')
+  return paymentJson({ error: 'The saved payment could not be confirmed. Retry this same save.', code: 'PAYMENT_PRESET_UNCERTAIN' }, 503)
+}
+
 export async function readPaymentJson(request: Request) {
   if (Number(request.headers.get('content-length') || 0) > 15000) throw new PaymentError('The request is too large.', 413, 'INVALID_REQUEST')
   const text = await request.text()

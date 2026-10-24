@@ -42,6 +42,7 @@ const child = spawn(process.execPath, [
   'node_modules/next/dist/bin/next', 'dev', '--webpack', '--hostname', '127.0.0.1', '--port', String(port),
 ], { env: {
   ...process.env,
+  CMS_ISOLATED_TEST: 'true',
   MONGODB_URI: mongo.getUri('vetra_payment_route_test'),
   AUTH_SECRET: 'isolated-payment-route-test-secret-2026',
   SESSION_COOKIE_NAME: 'vetra_payment_route_test_session',
@@ -86,7 +87,7 @@ async function request(path, { cookie, method = 'GET', body, origin = base } = {
 async function testRoutes() {
   let checks = 0
   const check = (actual, expected, label) => {
-    assert.equal(actual, expected, label)
+    assert.deepEqual(actual, expected, label)
     checks++
     console.log(`PASS ${label}`)
   }
@@ -103,6 +104,101 @@ async function testRoutes() {
   const admin = await login('admin')
   const editor = await login('editor')
   const viewer = await login('viewer')
+  const presetDetails = {
+    gateway: 'stripe', kind: 'service', title: 'Website deposit',
+    description: 'Deposit for a website project — disposable local fixture.', amount: '12500.00',
+    customerName: 'Example customer', customerEmail: 'customer@example.invalid',
+    reference: 'DEMO-WEB-001', internalNote: 'Sample information for isolated payment preset checks.', expiresInDays: 90,
+  }
+  const presetPayload = { idempotencyKey: randomUUID(), name: 'Website deposit', details: presetDetails }
+  const requestCountBeforePresets = await db.collection('paymentrequests').countDocuments()
+  const attemptCountBeforePresets = await db.collection('paymentattempts').countDocuments()
+  check((await request('/api/admin/payment-presets')).response.status, 401, 'Anonymous users cannot read saved payment information')
+  for (const [role, cookie] of [['editor', editor], ['viewer', viewer]]) {
+    check((await request('/api/admin/payment-presets', { cookie })).response.status, 403, `${role} cannot list payment presets`)
+    check((await request('/api/admin/payment-presets', { cookie, method: 'POST', body: presetPayload })).response.status, 403, `${role} cannot save payment presets`)
+  }
+  check((await request('/api/admin/payment-presets', {
+    cookie: admin, method: 'POST', body: presetPayload, origin: 'https://untrusted.invalid',
+  })).response.status, 403, 'Cross-origin preset creation is rejected')
+  const savedPreset = await request('/api/admin/payment-presets', { cookie: admin, method: 'POST', body: presetPayload })
+  check(savedPreset.response.status, 201, 'Administrator can save a payment preset')
+  const preset = savedPreset.data.preset
+  check(preset.name, presetPayload.name, 'Saved preset retains its name')
+  for (const [field, value] of Object.entries(presetDetails)) {
+    check(preset.details[field], value, `Saved preset retains ${field}`)
+  }
+  check(Number.isInteger(preset.version), true, 'Saved preset includes its concurrency version')
+  check(Number.isNaN(Date.parse(preset.createdAt)), false, 'Saved preset includes its creation date')
+  check(Number.isNaN(Date.parse(preset.updatedAt)), false, 'Saved preset includes its update date')
+  const devPresets = await request('/api/admin/payment-presets', { cookie: dev })
+  check(devPresets.response.status, 200, 'Developer can read shared payment presets')
+  check(devPresets.data.presets.find(item => item.id === preset.id)?.name, preset.name, 'Developer sees the administrator saved preset')
+  const replayedPreset = await request('/api/admin/payment-presets', { cookie: admin, method: 'POST', body: presetPayload })
+  check(replayedPreset.response.status, 201, 'Retrying a preset save succeeds')
+  check(replayedPreset.data.preset.id, preset.id, 'Retrying a preset save returns the same preset')
+  const afterReplay = await request('/api/admin/payment-presets', { cookie: admin })
+  check(afterReplay.data.presets.filter(item => item.id === preset.id).length, 1, 'Preset save retry does not duplicate the preset')
+  const updatedDetails = { ...presetDetails, description: 'Updated deposit details.', amount: '15000.00', expiresInDays: 30 }
+  const updatePayload = { expectedVersion: preset.version, name: 'Website deposit (updated)', details: updatedDetails }
+  const presetPath = `/api/admin/payment-presets/${preset.id}`
+  check((await request(presetPath, { method: 'PATCH', body: updatePayload })).response.status, 401, 'Anonymous users cannot update payment presets')
+  for (const [role, cookie] of [['editor', editor], ['viewer', viewer]]) {
+    check((await request(presetPath, { cookie, method: 'PATCH', body: updatePayload })).response.status, 403, `${role} cannot update payment presets`)
+  }
+  check((await request(presetPath, {
+    cookie: admin, method: 'PATCH', body: updatePayload, origin: 'https://untrusted.invalid',
+  })).response.status, 403, 'Cross-origin preset update is rejected')
+  const updatedPreset = await request(presetPath, { cookie: dev, method: 'PATCH', body: updatePayload })
+  check(updatedPreset.response.status, 200, 'Developer can update a shared payment preset')
+  check(updatedPreset.data.preset.id, preset.id, 'Updating a preset retains its identity')
+  check(updatedPreset.data.preset.name, updatePayload.name, 'Updating a preset saves its new name')
+  check(updatedPreset.data.preset.version, preset.version + 1, 'Updating a preset advances its concurrency version')
+  for (const [field, value] of Object.entries(updatedDetails)) {
+    check(updatedPreset.data.preset.details[field], value, `Updated preset retains ${field}`)
+  }
+  check((await request(presetPath, { cookie: admin, method: 'PATCH', body: updatePayload })).response.status, 409, 'A stale preset update is rejected')
+  check((await request('/api/admin/payment-presets', {
+    cookie: admin, method: 'POST', body: { ...presetPayload, idempotencyKey: randomUUID(), details: { ...presetDetails, amount: '1.00' } },
+  })).response.status, 400, 'Saving a preset with an invalid payment amount is rejected')
+  check((await request(presetPath, {
+    cookie: admin, method: 'PATCH', body: {
+      ...updatePayload, expectedVersion: updatedPreset.data.preset.version, details: { ...updatedDetails, amount: '1e3' },
+    },
+  })).response.status, 400, 'Updating a preset with an invalid payment amount is rejected')
+  const blankPresetDetails = {
+    ...presetDetails, title: '', description: '', amount: '', customerName: '',
+    customerEmail: '', reference: '', internalNote: '',
+  }
+  const blankPreset = await request('/api/admin/payment-presets', {
+    cookie: admin, method: 'POST', body: {
+      idempotencyKey: randomUUID(), name: '', details: blankPresetDetails,
+    },
+  })
+  check(blankPreset.response.status, 201, 'A preset with empty payment fields can be saved')
+  check(blankPreset.data.preset.name, `Preset ${blankPreset.data.preset.id.slice(0, 8)}`, 'An empty preset name gets a generated label')
+  check(blankPreset.data.preset.details, blankPresetDetails, 'Empty payment fields round-trip through the API')
+  const finalPresets = await request('/api/admin/payment-presets', { cookie: admin })
+  const finalPreset = finalPresets.data.presets.find(item => item.id === preset.id)
+  check(finalPresets.data.presets.find(item => item.id === blankPreset.data.preset.id)?.details,
+    blankPresetDetails, 'A blank preset remains available to load')
+  check(finalPreset.details.amount, updatedDetails.amount, 'Rejected updates preserve the saved preset amount')
+  check(finalPreset.version, updatedPreset.data.preset.version, 'Rejected updates preserve the saved preset version')
+  check(await db.collection('paymentrequests').countDocuments(), requestCountBeforePresets, 'Saving and updating presets creates no payment request')
+  check(await db.collection('paymentattempts').countDocuments(), attemptCountBeforePresets, 'Saving and updating presets creates no payment attempt')
+
+  if (process.argv.includes('--serve')) {
+    const maintenance = await request('/api/admin/payment-presets', {
+      cookie: admin, method: 'POST', body: {
+        idempotencyKey: randomUUID(), name: 'Recurring maintenance', details: {
+          ...presetDetails, title: 'Website maintenance', description: 'Monthly website maintenance — disposable local fixture.',
+          amount: '2500.00', reference: 'DEMO-MAINT-001', expiresInDays: 14,
+        },
+      },
+    })
+    check(maintenance.response.status, 201, 'Manual UI review has a second disposable payment preset')
+  }
+
   check((await request('/api/admin/payments', { cookie: editor })).response.status, 403, 'Editor cannot list financial records')
   check((await request('/api/admin/payments', { cookie: viewer })).response.status, 403, 'Viewer cannot list financial records')
   const list = await request('/api/admin/payments', { cookie: admin })
@@ -114,12 +210,15 @@ async function testRoutes() {
   }
   check((await request('/api/admin/payments', { cookie: viewer, method: 'POST', body: payload })).response.status, 403, 'Viewer cannot create a payment request')
   check((await request('/api/admin/payments', { cookie: admin, method: 'POST', body: payload, origin: 'https://untrusted.invalid' })).response.status, 403, 'Cross-origin creation is rejected')
+  check((await request('/api/admin/payments', { cookie: dev, method: 'POST', body: { ...payload, idempotencyKey: randomUUID(), title: '' } })).response.status, 400, 'Payment creation still requires a title')
+  check((await request('/api/admin/payments', { cookie: dev, method: 'POST', body: { ...payload, idempotencyKey: randomUUID(), amount: '' } })).response.status, 400, 'Payment creation still requires an amount')
   const created = await request('/api/admin/payments', { cookie: dev, method: 'POST', body: payload })
   check(created.response.status, 201, 'Developer can create a request while checkout is disabled')
   const requestId = created.data.payment.id
   check((await db.collection('paymentrequests').countDocuments({ _id: requestId })), 1, 'Request is stored in isolated database')
   const record = await db.collection('paymentrequests').findOne({ _id: requestId })
   check((await request(`/api/payments/${record.shareToken}`)).response.status, 200, 'Public token can read safe request details')
+  check((await request(`/api/admin/payment-presets?token=${record.shareToken}`)).response.status, 401, 'A public payment token cannot read saved payment information')
   const checkout = await request(`/api/payments/${record.shareToken}/checkout`, { method: 'POST', body: {} })
   check(checkout.response.status, 503, 'Checkout stays unavailable without Stripe configuration')
   check((await db.collection('paymentattempts').countDocuments({ requestId })), 0, 'Disabled checkout creates no payment attempt')

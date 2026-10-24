@@ -37,6 +37,7 @@ If public project pages log a MongoDB `querySrv ENOTFOUND` error, verify that th
 4. Use **Users** to create accounts, change roles or access, and set passwords. Accounts can be searched by username or email. Developer accounts are restricted to developers, and self-lockout and removal of the last active privileged account are blocked.
 5. Use **Trash** to restore a removed project or account during its 30-day retention period. Removing an account also revokes its existing sessions.
 6. Use **Payments** to create a request with a server-owned THB amount, copy its public link, and review the verified status or reconcile a pending attempt. Checkout availability depends on the payment configuration shown in the CMS.
+7. For frequent payments, save a named preset from the new-payment form, even when payment fields are blank. Administrators and developers can load or update these shared presets. All form details are saved, including customer details and reference; complete and review them before creating each new payment request.
 
 `npm run test:users` exercises account permissions, unique identity constraints, concurrency protection, and retention against a separate temporary database. Both test commands use disposable data and never load the normal MongoDB connection as their test destination.
 

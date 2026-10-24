@@ -9,6 +9,12 @@ VETRA payment requests use Stripe Checkout for THB payments. Bangkok Bank Mercha
 3. Save the request, then use **Copy** or **Download PNG** to share its link or QR code. The QR opens the same customer payment page. Localhost links work only on your computer; use the configured public HTTPS website when sharing with customers.
 4. Review its status in **Payments**. **Refresh provider status** checks Stripe when an attempt exists. A return to the website alone does not prove payment.
 
+### Saved payment details
+
+On the new-payment form, fill in any details you want to reuse, expand **Save current details**, and choose **Save as new**. Every text field can be blank, including title, amount, and saved name. An unnamed preset receives an automatic name. It stores all editable fields, including customer name/email, reference, internal note, and the selected link lifetime. Presets are shared with administrators and developers and remain available on other devices.
+
+Select a preset and choose **Use** to fill the form. Add any missing title or amount, review the customer and reference, and edit any values before creating the payment link. To revise the preset itself, load it, edit the form, then choose **Update saved details**. Concurrent edits require loading the latest preset or saving a separate copy. Saving a preset creates no payment request or Stripe session; each **Create payment link** submission creates a separate request with a new link and a fresh expiry period.
+
 Request details are fixed after creation. To change them, cancel an unpaid link and create a new request. Cancellation closes checkout; it does not issue a refund. Payment records remain available for reference. This feature handles one-time payments for an agreed service or product; stock, delivery, tax invoices, refunds, and subscriptions are not automated.
 
 Customer names, emails, and internal notes are kept out of the public payment response. The title, description, amount, and reference are visible to anyone who has the link. Test requests remain test requests after switching the server to live mode; create new live requests when ready.
@@ -44,6 +50,7 @@ The app stores THB as the charged currency. Allowed amounts are ฿10.00–฿99
 ## Checks
 
 - `npm run test:payments` uses an isolated temporary MongoDB and an injected provider stub. It does not use Stripe credentials or make Stripe API calls.
+- `npm run test:payment-presets` verifies preset permissions, complete and blank field storage, retry safety, and concurrent updates in a disposable database. The payment route tests also exercise preset HTTP authorization and origin checks.
 - `npm run test:payment-routes` checks HTTP authorization and disabled-checkout behavior against a separate local server and temporary database at `127.0.0.1:43188`.
 - `npm run dev:payments-test` runs those route checks, then keeps that isolated server open for manual payment-page review. Test accounts are printed in its terminal. It has no Stripe keys, so checkout remains disabled.
 - Stripe sandbox and CLI testing verifies the real provider integration, webhook signature, and customer return flow. The automated stub test does not replace this check.

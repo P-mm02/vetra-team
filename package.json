@@ -18,6 +18,7 @@
     "test:public-outage": "npm run build && node scripts/test-public-outage.mjs",
     "test:users": "tsx scripts/test-user-safety.mjs",
     "test:payments": "tsx scripts/test-payments.mjs",
+    "test:payment-presets": "tsx scripts/test-payment-presets.mjs",
     "test:payment-routes": "node scripts/payments-test-server.mjs",
     "dev:payments-test": "node scripts/payments-test-server.mjs --serve",
     "dev:cms-test": "node scripts/cms-test-server.mjs --serve"
