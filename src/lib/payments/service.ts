@@ -154,7 +154,7 @@ export async function listPaymentRequests(actor: PaymentActor, query: PaymentLis
     else if (query.status === 'pending') { filter.status = 'pending'; filter.expiresAt = { $gt: now } }
     else filter.status = query.status
   }
-  const pageSize = 25
+  const pageSize = 20
   const total = await PaymentRequest.countDocuments(filter)
   const actualPage = Math.min(page, Math.max(1, Math.ceil(total / pageSize)))
   const requests = await PaymentRequest.find(filter).sort({ createdAt: -1, _id: -1 }).skip((actualPage - 1) * pageSize).limit(pageSize).lean<PaymentRequestDoc[]>()

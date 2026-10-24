@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react'
 import Link from 'next/link'
-import { ArrowRight, CircleAlert, Clock3, CreditCard, Plus, RefreshCw, Search } from 'lucide-react'
+import { ArrowRight, Clock3, CreditCard, Plus, RefreshCw, Search } from 'lucide-react'
 import type { PaymentListResponse, PaymentStatus } from '@/lib/payments/types'
 import { dateTime, money, responseError, paymentStatusLabel, paymentMessage } from './paymentUi'
 import { useCmsI18n } from '@/components/cms/CmsLanguageProvider'
@@ -50,7 +50,6 @@ export default function PaymentsClient() {
   const total = data?.total ?? 0
   const pageSize = data?.pageSize || 20
   const lastPage = Math.max(1, Math.ceil(total / pageSize))
-  const stripe = data?.configuration.gateways.find((gateway) => gateway.id === 'stripe')
   const openOnPage = payments.filter((payment) => payment.status === 'pending' || payment.status === 'processing').length
   const paidOnPage = payments.filter((payment) => payment.status === 'paid').length
   const reviewOnPage = payments.filter((payment) => payment.status === 'needs_review').length
@@ -60,7 +59,6 @@ export default function PaymentsClient() {
       <div className={styles.headerCopy}><span className={styles.eyebrow}>{t("Payments / Management", "การชำระเงิน / จัดการ")}</span><h1 className={styles.title}>{t("Payment links", "ลิงก์ชำระเงิน")}</h1><p className={styles.subtitle}>{t("Create a request, share its link or QR code, and follow its verified payment status.", "สร้างรายการเรียกเก็บเงิน ส่งลิงก์หรือ QR Code และติดตามสถานะที่ยืนยันแล้ว")}</p></div>
       <div className={styles.headerActions}><Link className={styles.primaryButton} href="/admin/cms/payments/new"><Plus size={19} aria-hidden="true" />{t("Create payment link", "สร้างลิงก์ชำระเงิน")}</Link></div>
     </header>
-    {data && (!stripe?.ready || data.configuration.mode === 'test' || !data.configuration.linksShareable) && <div className={styles.banner} role="status"><CircleAlert size={21} aria-hidden="true" /><div><strong>{!stripe?.ready ? t("Stripe setup is incomplete", "ยังตั้งค่า Stripe ไม่ครบ") : data.configuration.mode === 'test' ? t("Stripe is in test mode", "Stripe อยู่ในโหมดทดสอบ") : t("Public website URL is not configured", "ยังไม่ได้ตั้งค่า URL เว็บไซต์สาธารณะ")}</strong><p>{!stripe?.ready ? t("You can create payment requests now. Customer checkout stays unavailable until Stripe is configured.", "สร้างรายการเรียกเก็บเงินได้ทันที ลูกค้าจะเริ่มชำระเงินได้เมื่อตั้งค่า Stripe ครบแล้ว") : data.configuration.mode === 'test' ? t("Use these links for test payments only.", "ใช้ลิงก์เหล่านี้สำหรับทดสอบการชำระเงินเท่านั้น") : t("Links can be previewed locally, but should not be shared with customers yet.", "เปิดดูลิงก์บนเครื่องนี้ได้ แต่ยังไม่ควรส่งให้ลูกค้า")}</p>{data.configuration.configurationIssues.length > 0 && <p>{data.configuration.configurationIssues.map((issue) => paymentMessage(issue, locale)).join(' ')}</p>}</div></div>}
     <section className={styles.stats} aria-label={t("Payment overview", "ภาพรวมการชำระเงิน")}>
       <div className={styles.stat}><span>{t("Matching requests", "รายการที่พบ")}</span><strong>{loading && !data ? '—' : formatNumber(total)}</strong></div>
       <div className={styles.stat}><span>{t("Open on this page", "รายการที่ยังเปิดในหน้านี้")}</span><strong>{loading && !data ? '—' : formatNumber(openOnPage)}</strong></div>

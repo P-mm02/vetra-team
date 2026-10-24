@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Image from 'next/image'
 import { ArrowUpRight, CheckCircle2, CircleAlert, CreditCard, LoaderCircle, LockKeyhole, RefreshCw, ShieldCheck } from 'lucide-react'
 import { formatPaymentAmount, type PublicPaymentView } from '@/lib/payments/types'
 import styles from './PaymentCheckout.module.css'
@@ -24,7 +25,7 @@ const copy = {
   },
   th: {
     heading: 'รายการชำระเงิน', amount: 'ยอดชำระทั้งหมด', service: 'บริการ', product: 'สินค้า', type: 'ชำระสำหรับ',
-    reference: 'เลขอ้างอิง', expires: 'ชำระได้ถึง', gateway: 'ช่องทางชำระเงิน', pay: 'ชำระเงินผ่าน Stripe', resume: 'กลับไปยังหน้าชำระเงิน', recovering: 'หน้าชำระเงินก่อนหน้านี้เปิดไม่สำเร็จ สามารถใช้ลิงก์เดิมนี้เพื่อดำเนินการต่อได้อย่างปลอดภัย', opening: 'กำลังเปิดหน้าชำระเงิน…',
+    reference: 'เลขอ้างอิง', expires: 'ชำระได้ถึง', gateway: 'ช่องทางชำระเงิน', pay: 'ชำระเงิน', resume: 'กลับไปยังหน้าชำระเงิน', recovering: 'หน้าชำระเงินก่อนหน้านี้เปิดไม่สำเร็จ สามารถใช้ลิงก์เดิมนี้เพื่อดำเนินการต่อได้อย่างปลอดภัย', opening: 'กำลังเปิดหน้าชำระเงิน…',
     loading: 'กำลังโหลดรายละเอียดการชำระเงิน…', refresh: 'ตรวจสอบสถานะการชำระเงิน', checking: 'กำลังตรวจสอบ…',
     secure: 'กรอกข้อมูลการชำระเงินบน Stripe อย่างปลอดภัย', contact: 'ติดต่อ VETRA', privacy: 'ความเป็นส่วนตัว',
     test: 'การชำระเงินทดสอบ', testText: 'ลิงก์นี้ใช้สำหรับการทดสอบ ไม่มีการเรียกเก็บเงินจริง',
@@ -101,14 +102,12 @@ export default function PaymentCheckout({ token, locale, returned }: { token: st
   const isPaid = status === 'paid'
   const prefix = locale === 'en' ? '/en' : ''
   const query = returned ? '&checkout=returned' : ''
+  const nextLocale = locale === 'th' ? 'en' : 'th'
 
   return <main className={styles.page} lang={locale}>
     <header className={styles.top}>
-      <a className={styles.brand} href={prefix || '/'} aria-label="VETRA">VETRA</a>
-      <nav className={styles.languages} aria-label={locale === 'en' ? 'Language' : 'ภาษา'}>
-        <a href={`?lang=th${query}`} aria-current={locale === 'th' ? 'true' : undefined}>ไทย</a>
-        <a href={`?lang=en${query}`} aria-current={locale === 'en' ? 'true' : undefined}>EN</a>
-      </nav>
+      <a className={styles.brand} href={prefix || '/'} aria-label="VETRA"><Image src="/logo/vetra-logo_black-name.svg" alt="" width={1211} height={202} priority /></a>
+      <a className={styles.languageSwitch} href={`?lang=${nextLocale}${query}`} aria-label={locale === 'th' ? 'TH, switch to English' : 'EN, เปลี่ยนเป็นภาษาไทย'}>{locale.toUpperCase()}</a>
     </header>
     <article className={styles.card} aria-busy={loading || !!busy}>
       {loading ? <div className={styles.loading} role="status"><LoaderCircle size={28} /><p>{t.loading}</p></div> : payment ? <>

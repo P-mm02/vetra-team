@@ -1,9 +1,10 @@
 .page { width:min(100% - 2rem,42rem); margin:0 auto; padding:2.2rem 0 3rem; }
 .top { display:flex; align-items:center; justify-content:space-between; gap:1rem; margin-bottom:1.8rem; }
-.brand { font-size:var(--pay-font-heading); font-weight:700; letter-spacing:.14em; text-decoration:none; }
-.languages { display:flex; padding:.25rem; background:#fff9; border:1px solid var(--pay-border); border-radius:2rem; }
-.languages a { padding:.4rem .8rem; text-decoration:none; border-radius:2rem; }
-.languages a[aria-current="true"] { background:var(--pay-accent); color:#fff; }
+.brand { display:inline-flex; align-items:center; min-height:2.75rem; text-decoration:none; }
+.brand img { display:block; width:8.5rem; height:auto; }
+.brand:focus-visible { outline:3px solid var(--pay-ink); outline-offset:3px; }
+.languageSwitch { display:inline-flex; align-items:center; justify-content:center; min-width:2.75rem; min-height:2.75rem; padding:.45rem .85rem; border-radius:2rem; background:var(--pay-accent); color:#fff; font-weight:600; text-decoration:none; }
+.languageSwitch:focus-visible { outline:3px solid var(--pay-ink); outline-offset:3px; }
 .card { background:white; border:1px solid var(--pay-border); border-radius:1.7rem; box-shadow:0 1.5rem 4rem #3a245315; overflow:hidden; }
 .intro { padding:2rem 2rem 1.7rem; background:linear-gradient(130deg,#292344,#59408b); color:white; }
 .eyebrow { display:flex; align-items:center; gap:.6rem; margin:0 0 .75rem; opacity:.85; }
@@ -30,5 +31,5 @@
 .loading { padding:4rem 1.5rem; text-align:center; color:var(--pay-muted); }
 .loading svg { animation:turn 1.3s linear infinite; }
 @keyframes turn { to { transform:rotate(360deg); } }
-@media (hover:hover) and (pointer:fine) { .button:hover { background:#5633aa; } .refresh:hover { background:#f8f5fc; } .footer a:hover { color:var(--pay-accent); } }
+@media (hover:hover) and (pointer:fine) { .languageSwitch:hover,.button:hover { background:#5633aa; } .refresh:hover { background:#f8f5fc; } .footer a:hover { color:var(--pay-accent); } }
 @media (max-width:440px) { .page { padding-top:1.2rem; } .intro,.body { padding:1.4rem 1.2rem; } .details div { flex-wrap:wrap; gap:.2rem .8rem; } .details dd { text-align:left; } }
