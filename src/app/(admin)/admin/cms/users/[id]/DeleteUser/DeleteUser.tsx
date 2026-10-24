@@ -4,6 +4,8 @@
 import { useMemo, useState } from 'react'
 import styles from './DeleteUser.module.css'
 import { deleteUserAction } from './function'
+import { useCmsI18n } from '@/components/cms/CmsLanguageProvider'
+import { userActionError } from '../../i18n'
 
 type Props = {
   userId: string
@@ -16,25 +18,6 @@ type Props = {
   errCode?: string
 }
 
-function errText(code: string) {
-  switch (code) {
-    case 'self_delete':
-      return 'You cannot delete your own account.'
-    case 'forbidden':
-      return 'Only a dev can delete a dev user.'
-    case 'bad_id':
-      return 'Invalid user id.'
-    case 'last_privileged':
-      return 'Keep at least one active account with this privileged role.'
-    case 'conflict':
-      return 'This account changed. Refresh the page and try again.'
-    case 'csrf':
-      return 'Your session could not be verified. Refresh and try again.'
-    default:
-      return 'Delete failed. Please try again.'
-  }
-}
-
 export default function DeleteUser({
   userId,
   username,
@@ -44,6 +27,7 @@ export default function DeleteUser({
   version,
   errCode = '',
 }: Props) {
+  const { t } = useCmsI18n()
   const [confirming, setConfirming] = useState(false)
 
   const isSelf = meId === userId
@@ -55,12 +39,12 @@ export default function DeleteUser({
   }, [isSelf, targetRole, meRole])
 
   return (
-    <section className={styles.danger} aria-label="Danger zone">
+    <section className={styles.danger} aria-label={t('Remove account', 'ลบบัญชี')}>
       <div className={styles.head}>
         <div>
-          <h2 className={styles.h2}>Danger zone</h2>
+          <h2 className={styles.h2}>{t('Remove account', 'ลบบัญชี')}</h2>
           <p className={styles.sub}>
-            Move this user to Trash for 30 days and revoke active sessions.
+            {t('Move this user to Trash for 30 days and revoke active sessions.', 'ย้ายผู้ใช้นี้ไปถังขยะเป็นเวลา 30 วัน และยกเลิกเซสชันการเข้าสู่ระบบที่ใช้งานอยู่')}
           </p>
         </div>
 
@@ -72,23 +56,23 @@ export default function DeleteUser({
           onClick={() => setConfirming(true)}
           title={
             isSelf
-              ? 'You cannot delete your own account.'
+              ? t('You cannot delete your own account.', 'คุณไม่สามารถลบบัญชีของตนเองได้')
               : targetRole === 'dev' && meRole !== 'dev'
-                ? 'Only dev can delete dev.'
+                ? t('Only a developer can remove a developer account.', 'เฉพาะผู้พัฒนาเท่านั้นที่ลบบัญชีผู้พัฒนาได้')
                 : ''
           }
         >
-          Move to Trash
+          {t('Move to Trash', 'ย้ายไปถังขยะ')}
         </button>
       </div>
 
       {!canDeleteTarget ? (
         <div className={styles.note} role="status" aria-live="polite">
           {isSelf ? (
-            <>You can’t delete your own account.</>
+            <>{t('You cannot delete your own account.', 'คุณไม่สามารถลบบัญชีของตนเองได้')}</>
           ) : (
             <>
-              Only a <b>dev</b> can delete a <b>dev</b> user.
+              {t('Only a developer can remove a developer account.', 'เฉพาะผู้พัฒนาเท่านั้นที่ลบบัญชีผู้พัฒนาได้')}
             </>
           )}
         </div>
@@ -97,7 +81,7 @@ export default function DeleteUser({
       {errCode ? (
         <div className={styles.error} role="alert">
           <span className={styles.dot} aria-hidden="true" />
-          {errText(errCode)}
+          {userActionError(errCode, t, 'delete')}
         </div>
       ) : null}
 
@@ -105,13 +89,13 @@ export default function DeleteUser({
         <div
           className={styles.confirmBox}
           role="dialog"
-          aria-label="Confirm delete"
+          aria-label={t('Confirm removal', 'ยืนยันการลบ')}
         >
           <div className={styles.confirmTitle}>
-            Move <b>{username}</b> to Trash?
+            {t(`Move ${username} to Trash?`, `ย้าย ${username} ไปถังขยะหรือไม่?`)}
           </div>
           <div className={styles.confirmText}>
-            Login stops immediately. You can restore this account from Trash for 30 days.
+            {t('Login stops immediately. You can restore this account from Trash for 30 days.', 'บัญชีจะเข้าสู่ระบบไม่ได้ทันที คุณสามารถกู้คืนบัญชีนี้จากถังขยะได้ภายใน 30 วัน')}
           </div>
 
           <form action={deleteUserAction} className={styles.confirmActions}>
@@ -123,7 +107,7 @@ export default function DeleteUser({
               className={styles.ghost}
               onClick={() => setConfirming(false)}
             >
-              Cancel
+              {t('Cancel', 'ยกเลิก')}
             </button>
 
             <button
@@ -131,7 +115,7 @@ export default function DeleteUser({
               className={styles.dangerBtn}
               disabled={!canDeleteTarget}
             >
-              Move to Trash
+              {t('Move to Trash', 'ย้ายไปถังขยะ')}
             </button>
           </form>
         </div>

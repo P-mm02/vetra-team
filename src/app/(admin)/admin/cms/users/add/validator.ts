@@ -24,8 +24,8 @@ export function validateAddUser(v: AddUserValues): FieldErrors {
 
   const username = normalizeLower(v.username)
   const email = normalizeLower(v.email)
-  const password = normalizeInput(v.password)
-  const password2 = normalizeInput(v.password2)
+  const password = v.password
+  const password2 = v.password2
 
   // username
   if (!username) e.username = 'Username is required.'

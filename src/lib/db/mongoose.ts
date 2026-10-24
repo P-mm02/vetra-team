@@ -5,14 +5,7 @@ import mongoose from 'mongoose'
 mongoose.set('strictQuery', true) // prevent unknown query keys from behaving unexpectedly
 mongoose.set('autoIndex', process.env.NODE_ENV !== 'production') // avoid index-build cost in prod cold starts
 
-// 2) Read env + fail fast if missing
-const envUri = process.env.MONGODB_URI
-if (!envUri) throw new Error('Missing env: MONGODB_URI')
-
-// 3) Freeze URI as a real string type (fixes TS "string | undefined")
-const uri: string = envUri
-
-// 4) Extend Node global type for dev hot-reload caching
+// 2) Extend Node global type for dev hot-reload caching
 declare global {
   var __mongoose:
     | {
@@ -22,16 +15,21 @@ declare global {
     | undefined
 }
 
-// 5) Create/get global cache container (prevents many connections in dev)
+// 3) Create/get global cache container (prevents many connections in dev)
 const cached =
   global.__mongoose ?? (global.__mongoose = { conn: null, promise: null })
 
-// 6) Connect helper used by server routes/actions
+// 4) Connect helper used by server routes/actions
 export async function connectMongo(): Promise<typeof mongoose> {
-  // 6.1) Return existing connection if available
+  // Read the URI on connection, so importing a public page can show a controlled
+  // unavailable state if deployment configuration is missing.
+  const uri = process.env.MONGODB_URI
+  if (!uri) throw new Error('Missing env: MONGODB_URI')
+
+  // Return existing connection if available
   if (cached.conn) return cached.conn
 
-  // 6.2) Create a single shared connection promise if none exists
+  // Create a single shared connection promise if none exists
   if (!cached.promise) {
     cached.promise = mongoose
       .connect(uri, {
@@ -48,7 +46,7 @@ export async function connectMongo(): Promise<typeof mongoose> {
       })
   }
 
-  // 6.3) Await the shared promise and store the resolved connection
+  // Await the shared promise and store the resolved connection
   cached.conn = await cached.promise
   return cached.conn
 }

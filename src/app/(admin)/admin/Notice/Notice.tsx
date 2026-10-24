@@ -4,6 +4,7 @@
 import { useState } from 'react'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import styles from './Notice.module.css'
+import { useCmsI18n } from '@/components/cms/CmsLanguageProvider'
 
 export type NoticeTone = 'info' | 'success' | 'warning' | 'danger'
 
@@ -27,6 +28,7 @@ export default function Notice({
   dismissible = true,
   clearQueryKey = 'err',
 }: Props) {
+  const { t } = useCmsI18n()
   const [open, setOpen] = useState(true)
   const router = useRouter()
   const pathname = usePathname()
@@ -58,7 +60,7 @@ export default function Notice({
           <div className={styles.leftTop}>
             {title ? <div className={styles.title}>{title}</div> : null}
             {code !== undefined ? (
-              <div className={styles.code}>Code: {String(code)}</div>
+              <div className={styles.code}>{t('Code:', 'รหัส:')} {String(code)}</div>
             ) : null}
           </div>
 
@@ -67,8 +69,8 @@ export default function Notice({
               type="button"
               className={styles.close}
               onClick={onClose}
-              aria-label="Close notice"
-              title="Close"
+              aria-label={t('Close notice', 'ปิดการแจ้งเตือน')}
+              title={t('Close', 'ปิด')}
             >
               ×
             </button>

@@ -1,15 +1,16 @@
 /* src/app/(admin)/admin/cms/analytics/page.module.css */
 
 .page {
-  width: min(80rem, 100%);
+  width: min(88rem, 100%);
   margin: 0 auto;
   display: grid;
   gap: 0.9rem;
   padding: 1.5rem;
+  min-width: 0;
   border: 1px solid rgba(190, 182, 239, 0.18);
   border-radius: 1.2rem;
-  background: #1d1b39;
-  color: #fff;
+  background: var(--cms-surface);
+  color: var(--cms-text);
   color-scheme: dark;
   box-shadow: 0 1rem 2.5rem rgba(41, 33, 100, 0.15);
 }
@@ -36,8 +37,8 @@
   margin: 0;
   font-weight: 900;
   letter-spacing: 0.2px;
-  font-size: 1.55rem;
-  line-height: 1.15;
+  font-size: var(--cms-font-title);
+  line-height: 1.4;
 }
 
 .sub {
@@ -58,7 +59,7 @@
   background: rgba(125, 231, 255, 0.10);
   color: rgba(255, 255, 255, 0.88);
   font-weight: 900;
-  font-size: 0.9rem;
+  font-size: var(--cms-font-body);
 }
 
 .mono {
@@ -70,7 +71,7 @@
 .panel {
   border-radius: 26px;
   border: 1px solid rgba(255, 255, 255, 0.11);
-  background: rgba(14, 12, 30, 0.35);
+  background: var(--cms-field);
   padding: 1rem 1.05rem;
 }
 
@@ -88,6 +89,7 @@
 }
 
 .noticeText {
+  overflow-wrap: anywhere;
   margin-top: 0.35rem;
   color: rgba(255, 255, 255, 0.78);
   line-height: 1.6;
@@ -110,14 +112,14 @@
 .helpCard {
   border-radius: 18px;
   border: 1px solid rgba(255, 255, 255, 0.10);
-  background: rgba(14, 12, 30, 0.35);
+  background: var(--cms-field);
   padding: 0.85rem 0.95rem;
 }
 
 .k {
   color: rgba(255, 255, 255, 0.70);
   font-weight: 800;
-  font-size: 0.92rem;
+  font-size: var(--cms-font-body);
 }
 
 .v {
@@ -129,7 +131,7 @@
   margin-top: 0.35rem;
   color: rgba(255, 255, 255, 0.62);
   line-height: 1.55;
-  font-size: 0.95rem;
+  font-size: var(--cms-font-body);
 }
 
 .list {
@@ -154,3 +156,6 @@
 @media (max-width: 768px) {
   .page { padding: 1rem; }
 }
+
+.noticeText summary { cursor: pointer; margin-top: .75rem; color: var(--cms-accent); }
+.noticeText summary:focus-visible { outline: 2px solid var(--cms-accent); outline-offset: 3px; }

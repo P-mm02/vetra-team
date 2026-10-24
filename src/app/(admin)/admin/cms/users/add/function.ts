@@ -15,10 +15,6 @@ function canManageUsers(role: string) {
   return role === 'dev' || role === 'admin'
 }
 
-function norm(v: unknown) {
-  return typeof v === 'string' ? v.trim() : ''
-}
-
 function normLower(v: unknown) {
   return typeof v === 'string' ? v.trim().toLowerCase() : ''
 }
@@ -74,8 +70,8 @@ export async function createUserAction(formData: FormData) {
     isActiveRaw = parsed
   }
 
-  const password = norm(formData.get('password'))
-  const password2 = norm(formData.get('password2'))
+  const password = typeof formData.get('password') === 'string' ? String(formData.get('password')) : ''
+  const password2 = typeof formData.get('password2') === 'string' ? String(formData.get('password2')) : ''
 
   const backQs = new URLSearchParams()
   backQs.set('username', usernameRaw)

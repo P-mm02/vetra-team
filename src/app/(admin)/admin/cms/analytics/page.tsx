@@ -3,6 +3,7 @@
 import { Suspense } from "react";
 import { redirect } from 'next/navigation'
 import { getCurrentUser } from '@/lib/auth/session'
+import { getCmsI18n } from '@/lib/cms/i18n-server'
 
 
 import {
@@ -23,6 +24,11 @@ export const revalidate = 0
 export const fetchCache = 'force-no-store'
 
 type SP = Record<string, string | string[] | undefined>
+
+export async function generateMetadata() {
+  const { t } = await getCmsI18n()
+  return { title: t('Analytics', 'สถิติผู้เข้าชม') }
+}
 
 async function AnalyticsStream({
   measurementId,

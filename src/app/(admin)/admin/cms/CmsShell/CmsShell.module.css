@@ -1,35 +1,14 @@
 .shell {
-  color-scheme: light;
-  --bg: #f6f7fb;
-  --bg-2: #f0f2f9;
-  --text: #1e2540;
-  --muted: #626b80;
-  --accent: #128da4;
-  --accent-strong: #6746bf;
-  --border: #d9deea;
-  --border-soft: #e3e7f0;
-  --glass: #ffffff;
-  --card: #ffffff;
-  --soft: #f5f6fb;
-  --shadow-lg: 0 1.35rem 3.5rem rgba(38, 35, 76, 0.12);
-  --shadow-md: 0 0.5rem 1.8rem rgba(38, 35, 76, 0.07);
-  --focus: 0 0 0 3px rgba(103, 70, 191, 0.28);
-  --cms-text: var(--text);
-  --cms-muted: var(--muted);
-  --cms-accent: var(--accent-strong);
-  --cms-border: var(--border-soft);
-  --cms-surface: var(--card);
-  --cms-surface-raised: var(--card);
-  --cms-field: #f8f9fc;
-  --cms-accent-soft: #f0eafb;
-  --cms-shadow: var(--shadow-md);
+  color-scheme: dark;
+  --card: var(--cms-surface);
+  --glass: var(--cms-surface-raised);
+  --shadow-md: var(--cms-shadow);
   min-height: 100vh;
   width: 100%;
   color: var(--text);
   background:
-    radial-gradient(circle at 8% -12%, rgba(113, 83, 207, 0.10), transparent 32rem),
-    radial-gradient(circle at 95% 8%, rgba(18, 141, 164, 0.07), transparent 25rem),
-    var(--bg);
+    radial-gradient(circle at 95% 0%, rgba(125, 231, 255, 0.04), transparent 30rem),
+    linear-gradient(rgba(7, 7, 20, 0.5), rgba(7, 7, 20, 0.92));
 }
 
 .sidebar {
@@ -44,7 +23,7 @@
   overflow-y: auto;
   overscroll-behavior: contain;
   border-right: 1px solid var(--border-soft);
-  background: var(--card);
+  background: var(--cms-surface-raised);
   box-shadow: var(--shadow-lg);
   transform: translateX(-104%);
   visibility: hidden;
@@ -59,7 +38,8 @@
   z-index: 60;
   border: 0;
   padding: 0;
-  background: rgba(16, 19, 42, 0.42);
+  background: rgba(4, 4, 14, 0.65);
+  backdrop-filter: blur(4px);
   opacity: 0;
   visibility: hidden;
   pointer-events: none;

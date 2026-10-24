@@ -7,12 +7,18 @@ import { User } from '@/models/User/User'
 import styles from './page.module.css'
 import UsersTableClient from './UsersTableClient'
 import Notice from '@/app/(admin)/admin/Notice/Notice'
+import { getCmsI18n } from '@/lib/cms/i18n-server'
 
 const PAGE_SIZE = 50
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 export const fetchCache = 'force-no-store'
+
+export async function generateMetadata() {
+  const { t } = await getCmsI18n()
+  return { title: t('Users', 'ผู้ใช้') }
+}
 
 type RowUser = {
   _id: unknown
@@ -22,15 +28,6 @@ type RowUser = {
   isActive?: boolean
   createdAt?: Date
   lastLoginAt?: Date | null
-}
-
-function fmtDate(d?: Date | null) {
-  if (!d) return '—'
-  try {
-    return new Intl.DateTimeFormat('en-GB', { dateStyle: 'medium' }).format(d)
-  } catch {
-    return '—'
-  }
 }
 
 function canManageUsers(role: string) {
@@ -58,6 +55,7 @@ export default async function UsersPage({
 }: {
   searchParams: Promise<Record<string, string | string[] | undefined>>
 }) {
+  const { t, formatDate, formatNumber } = await getCmsI18n()
   const sp = await searchParams
   const me = await getCurrentUser()
   if (!me) redirect('/admin/login?next=/admin/cms/users')
@@ -99,73 +97,73 @@ export default async function UsersPage({
       email: String(u.email || '—'),
       role: String(u.role || 'viewer'),
       active: Boolean(u.isActive),
-      created: fmtDate(u.createdAt),
-      lastLogin: fmtDate(u.lastLoginAt),
+      created: formatDate(u.createdAt, { dateStyle: 'medium' }),
+      lastLogin: formatDate(u.lastLoginAt, { dateStyle: 'medium' }),
     }
   })
 
   return (
-    <main className={styles.page} aria-label="Users">
+    <main className={styles.page} aria-label={t('Users', 'ผู้ใช้')}>
       <header className={styles.header}>
         <div className={styles.headerText}>
-          <h1 className={styles.h1}>Users</h1>
+          <h1 className={styles.h1}>{t('Users', 'ผู้ใช้')}</h1>
           <p className={styles.sub}>
-            Manage admin accounts, roles, and access status. Removed accounts stay in Trash for 30 days.
+            {t('Manage accounts, roles, and access status. Removed accounts stay in Trash for 30 days.', 'จัดการบัญชี สิทธิ์ และสถานะการเข้าถึง บัญชีที่ถูกลบจะอยู่ในถังขยะเป็นเวลา 30 วัน')}
           </p>
         </div>
 
         <div className={styles.headerActions}>
-          <Link className={styles.btn} href="/admin/cms/trash">Trash</Link>
-          <Link className={styles.btn} href="/admin/cms/users/add">Create user</Link>
+          <Link className={styles.btn} href="/admin/cms/trash">{t('Trash', 'ถังขยะ')}</Link>
+          <Link className={styles.btn} href="/admin/cms/users/add">{t('Create user', 'สร้างผู้ใช้')}</Link>
         </div>
       </header>
 
       {pickOne(sp.deleted) === '1' ? (
         <Notice
           tone="success"
-          title="Moved to Trash"
-          message="This user can be restored for 30 days. Their sessions have been revoked."
+          title={t('Moved to Trash', 'ย้ายไปถังขยะแล้ว')}
+          message={t('This user can be restored for 30 days. Their sessions have been revoked.', 'สามารถกู้คืนผู้ใช้นี้ได้ภายใน 30 วัน ระบบได้ยกเลิกเซสชันการเข้าสู่ระบบของบัญชีนี้แล้ว')}
           clearQueryKey="deleted"
         />
       ) : null}
 
       <form className={styles.searchForm} action="/admin/cms/users" method="get" role="search">
-        <label htmlFor="user-search">Search users</label>
+        <label htmlFor="user-search">{t('Search users', 'ค้นหาผู้ใช้')}</label>
         <div className={styles.searchControls}>
-          <input id="user-search" name="q" type="search" defaultValue={query} maxLength={100} placeholder="Username or email" autoComplete="off" />
-          <button type="submit" className={styles.searchButton}>Search</button>
-          {query && <Link className={styles.clearSearch} href="/admin/cms/users">Clear</Link>}
+          <input id="user-search" name="q" type="search" defaultValue={query} maxLength={100} placeholder={t('Username or email', 'ชื่อผู้ใช้หรืออีเมล')} autoComplete="off" />
+          <button type="submit" className={styles.searchButton}>{t('Search', 'ค้นหา')}</button>
+          {query && <Link className={styles.clearSearch} href="/admin/cms/users">{t('Clear', 'ล้างการค้นหา')}</Link>}
         </div>
       </form>
 
-      <section className={styles.panel} aria-label="User list">
+      <section className={styles.panel} aria-label={t('User list', 'รายการผู้ใช้')}>
         <div className={styles.tableWrap}>
           <table className={styles.table}>
             <thead>
               <tr>
-                <th>User</th>
-                <th>Email</th>
-                <th>Role</th>
-                <th>Status</th>
-                <th>Created</th>
-                <th>Last login</th>
+                <th>{t('User', 'ผู้ใช้')}</th>
+                <th>{t('Email', 'อีเมล')}</th>
+                <th>{t('Role', 'สิทธิ์')}</th>
+                <th>{t('Status', 'สถานะ')}</th>
+                <th>{t('Created', 'วันที่สร้าง')}</th>
+                <th>{t('Last login', 'เข้าสู่ระบบล่าสุด')}</th>
               </tr>
             </thead>
 
             {/* clickable rows (client) */}
-            <UsersTableClient rows={rows} emptyMessage={query ? 'No users match this search.' : 'No users found.'} />
+            <UsersTableClient rows={rows} emptyMessage={query ? t('No users match this search.', 'ไม่พบผู้ใช้ที่ตรงกับคำค้นหา') : t('No users found.', 'ยังไม่มีผู้ใช้')} />
           </table>
         </div>
 
         <footer className={styles.foot}>
           <span className={styles.resultCount}>
             <span className={styles.footDot} aria-hidden="true" />
-            {total === 0 ? 'No users to show' : `Showing ${(page - 1) * PAGE_SIZE + 1}–${(page - 1) * PAGE_SIZE + rows.length} of ${total} users`}
+            {total === 0 ? t('No users to show', 'ไม่มีผู้ใช้ที่จะแสดง') : t(`Showing ${formatNumber((page - 1) * PAGE_SIZE + 1)}–${formatNumber((page - 1) * PAGE_SIZE + rows.length)} of ${formatNumber(total)} users`, `แสดงผู้ใช้ ${formatNumber((page - 1) * PAGE_SIZE + 1)}–${formatNumber((page - 1) * PAGE_SIZE + rows.length)} จาก ${formatNumber(total)} คน`)}
           </span>
-          <nav className={styles.pagination} aria-label="Users pages">
-            {page > 1 ? <Link href={pageHref(query, page - 1)} className={styles.pageButton}>Previous</Link> : <span className={`${styles.pageButton} ${styles.pageDisabled}`}>Previous</span>}
-            <span className={styles.pageInfo}>Page {page} of {totalPages}</span>
-            {page < totalPages ? <Link href={pageHref(query, page + 1)} className={styles.pageButton}>Next</Link> : <span className={`${styles.pageButton} ${styles.pageDisabled}`}>Next</span>}
+          <nav className={styles.pagination} aria-label={t('Users pages', 'หน้ารายการผู้ใช้')}>
+            {page > 1 ? <Link href={pageHref(query, page - 1)} className={styles.pageButton}>{t('Previous', 'ก่อนหน้า')}</Link> : <span className={`${styles.pageButton} ${styles.pageDisabled}`}>{t('Previous', 'ก่อนหน้า')}</span>}
+            <span className={styles.pageInfo}>{t(`Page ${formatNumber(page)} of ${formatNumber(totalPages)}`, `หน้า ${formatNumber(page)} จาก ${formatNumber(totalPages)}`)}</span>
+            {page < totalPages ? <Link href={pageHref(query, page + 1)} className={styles.pageButton}>{t('Next', 'ถัดไป')}</Link> : <span className={`${styles.pageButton} ${styles.pageDisabled}`}>{t('Next', 'ถัดไป')}</span>}
           </nav>
         </footer>
       </section>

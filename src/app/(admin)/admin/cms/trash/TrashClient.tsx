@@ -2,6 +2,8 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
+import { useCmsI18n } from '@/components/cms/CmsLanguageProvider'
+import { portfolioText } from '../projects/_components/i18n'
 import { ArrowLeft, FolderKanban, RefreshCw, RotateCcw, Sparkles, Trash2, UsersRound } from 'lucide-react'
 import styles from './trash.module.css'
 
@@ -17,19 +19,14 @@ type TrashItem = {
 type TrashResponse = { items: TrashItem[]; canRestore: boolean }
 type Filter = 'all' | 'project' | 'user'
 
-function dateLabel(value: string) {
-  const date = new Date(value)
-  return Number.isNaN(date.getTime()) ? 'Unknown date' : new Intl.DateTimeFormat('en-GB', {
-    day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Asia/Bangkok',
-  }).format(date)
-}
-
 async function errorMessage(response: Response, fallback: string) {
   const body = await response.json().catch(() => null) as { error?: string; message?: string } | null
   return body?.error || body?.message || fallback
 }
 
 export default function TrashClient({ role }: { role: string }) {
+  const { locale, t, formatNumber, formatDate } = useCmsI18n()
+  const text = (message: string) => portfolioText(message, locale)
   const [items, setItems] = useState<TrashItem[]>([])
   const [canRestore, setCanRestore] = useState(false)
   const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('loading')
@@ -108,41 +105,41 @@ export default function TrashClient({ role }: { role: string }) {
 
   return (
     <main className={styles.page}>
-      <Link href="/admin/cms" className={styles.back}><ArrowLeft size={17} aria-hidden="true" /> Dashboard</Link>
+      <Link href="/admin/cms" className={styles.back}><ArrowLeft size={17} aria-hidden="true" /> {text("Dashboard")}</Link>
       <header className={styles.header}>
         <div>
-          <span className={styles.eyebrow}>CONTENT RECOVERY</span>
-          <h1>Trash</h1>
-          <p>Deleted projects and accounts can be restored for 30 days. After that, they are removed automatically.</p>
+          <span className={styles.eyebrow}>{text("CONTENT RECOVERY")}</span>
+          <h1>{text("Trash")}</h1>
+          <p>{text("Deleted projects and accounts can be restored for 30 days. After that, they are removed automatically.")}</p>
         </div>
         <button type="button" className={styles.refresh} onClick={() => void load()} disabled={status === 'loading'}>
-          <RefreshCw size={18} aria-hidden="true" /> Refresh
+          <RefreshCw size={18} aria-hidden="true" /> {text("Refresh")}
         </button>
       </header>
 
       <div className={styles.summary}>
         <div className={styles.summaryIcon}><Trash2 size={21} aria-hidden="true" /></div>
-        <div><strong>{status === 'ready' ? items.length : '—'} items in Trash</strong><span>Items stay recoverable until their expiry date.</span></div>
+        <div><strong>{t(`${status === 'ready' ? formatNumber(items.length) : '—'} items in Trash`, `${status === 'ready' ? formatNumber(items.length) : '—'} รายการในถังขยะ`)}</strong><span>{text("Items stay recoverable until their expiry date.")}</span></div>
       </div>
 
-      {notice && <p className={`${styles.notice} ${notice.error ? styles.noticeError : ''}`} role="status">{notice.text}</p>}
+      {notice && <p className={`${styles.notice} ${notice.error ? styles.noticeError : ''}`} role="status">{text(notice.text)}</p>}
 
-      <section className={styles.panel} aria-label="Deleted items">
+      <section className={styles.panel} aria-label={text("Deleted items")}>
         <div className={styles.panelHead}>
-          <h2>Deleted items</h2>
-          {status === 'ready' && <div className={styles.filters} role="group" aria-label="Filter Trash">
-            <button type="button" aria-pressed={filter === 'all'} className={filter === 'all' ? styles.filterActive : ''} onClick={() => setFilter('all')}>All <span>{items.length}</span></button>
-            <button type="button" aria-pressed={filter === 'project'} className={filter === 'project' ? styles.filterActive : ''} onClick={() => setFilter('project')}>Projects <span>{projectCount}</span></button>
-            <button type="button" aria-pressed={filter === 'user'} className={filter === 'user' ? styles.filterActive : ''} onClick={() => setFilter('user')}>Users <span>{userCount}</span></button>
+          <h2>{text("Deleted items")}</h2>
+          {status === 'ready' && <div className={styles.filters} role="group" aria-label={text("Filter Trash")}>
+            <button type="button" aria-pressed={filter === 'all'} className={filter === 'all' ? styles.filterActive : ''} onClick={() => setFilter('all')}>{text("All")} <span>{formatNumber(items.length)}</span></button>
+            <button type="button" aria-pressed={filter === 'project'} className={filter === 'project' ? styles.filterActive : ''} onClick={() => setFilter('project')}>{text("Projects")} <span>{formatNumber(projectCount)}</span></button>
+            <button type="button" aria-pressed={filter === 'user'} className={filter === 'user' ? styles.filterActive : ''} onClick={() => setFilter('user')}>{text("Users")} <span>{formatNumber(userCount)}</span></button>
           </div>}
         </div>
 
-        {status === 'loading' && <div className={styles.state} role="status">Loading Trash…</div>}
-        {status === 'error' && <div className={styles.state} role="alert">Trash could not be loaded. Use Refresh to try again.</div>}
+        {status === 'loading' && <div className={styles.state} role="status">{text("Loading Trash…")}</div>}
+        {status === 'error' && <div className={styles.state} role="alert">{text("Trash could not be loaded. Use Refresh to try again.")}</div>}
         {status === 'ready' && visibleItems.length === 0 && <div className={styles.empty}>
           <span className={styles.emptyIcon}><Trash2 size={28} aria-hidden="true" /></span>
-          <h3>{filter === 'all' ? 'Trash is empty' : `No deleted ${filter === 'project' ? 'projects' : 'users'}`}</h3>
-          <p>Deleted items will appear here during their 30-day recovery period.</p>
+          <h3>{filter === 'all' ? text("Trash is empty") : text(filter === 'project' ? 'No deleted projects' : 'No deleted users')}</h3>
+          <p>{text("Deleted items will appear here during their 30-day recovery period.")}</p>
         </div>}
         {status === 'ready' && visibleItems.length > 0 && <ul className={styles.list}>
           {visibleItems.map(item => {
@@ -152,10 +149,10 @@ export default function TrashClient({ role }: { role: string }) {
               <span className={`${styles.itemIcon} ${item.kind === 'project' ? styles.projectIcon : styles.userIcon}`}>
                 {item.kind === 'project' ? <FolderKanban size={20} aria-hidden="true" /> : <UsersRound size={20} aria-hidden="true" />}
               </span>
-              <span className={styles.itemBody}><strong>{item.title}</strong><span>{item.kind === 'project' ? 'Portfolio project' : 'User account'} · Deleted {dateLabel(item.deletedAt)}</span></span>
-              <span className={styles.expiry}>Expires {dateLabel(item.purgeAt)}</span>
+              <span className={styles.itemBody}><strong>{item.title}</strong><span>{item.kind === 'project' ? text("Portfolio project") : text("User account")} · {text("Deleted")} {formatDate(item.deletedAt)}</span></span>
+              <span className={styles.expiry}>{text("Expires")} {formatDate(item.purgeAt)}</span>
               {allowed && <button type="button" className={styles.restore} disabled={Boolean(busyId)} onClick={() => void restore(item)}>
-                <RotateCcw size={17} aria-hidden="true" /> {restoring ? 'Restoring…' : 'Restore'}
+                <RotateCcw size={17} aria-hidden="true" /> {restoring ? text("Restoring…") : text("Restore")}
               </button>}
             </li>
           })}
@@ -164,8 +161,8 @@ export default function TrashClient({ role }: { role: string }) {
 
       {canManageUsers && <section className={styles.cleanup} aria-labelledby="cleanup-title">
         <div className={styles.cleanupIcon}><Sparkles size={23} aria-hidden="true" /></div>
-        <div className={styles.cleanupCopy}><h2 id="cleanup-title">Unused upload cleanup</h2><p>Remove leftover uploads that are confirmed unreferenced. Media used by published or recoverable items is protected.</p></div>
-        <button type="button" className={styles.cleanupButton} disabled={cleanupBusy} onClick={() => void cleanup()}>{cleanupBusy ? 'Cleaning up…' : 'Run cleanup'}</button>
+        <div className={styles.cleanupCopy}><h2 id="cleanup-title">{text("Unused upload cleanup")}</h2><p>{text("Remove leftover uploads that are confirmed unreferenced. Media used by active or recoverable items is protected.")}</p></div>
+        <button type="button" className={styles.cleanupButton} disabled={cleanupBusy} onClick={() => void cleanup()}>{cleanupBusy ? text("Cleaning up…") : text("Run cleanup")}</button>
       </section>}
     </main>
   )

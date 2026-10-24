@@ -3,7 +3,7 @@
 .form {
   display: grid;
   gap: 0.95rem;
-  color-scheme: light;
+  color-scheme: dark;
 }
 
 .grid {
@@ -26,7 +26,7 @@
 
 .hint {
   color: var(--muted);
-  font-size: 1rem;
+  font-size: var(--cms-font-body);
   line-height: 1.45;
 }
 
@@ -39,7 +39,7 @@
   padding: 0.72rem 0.8rem;
   outline: none;
   transition: border-color 140ms ease, box-shadow 140ms ease, transform 140ms ease;
-  color-scheme: light;
+  color-scheme: dark;
 }
 
 .input::placeholder {
@@ -58,9 +58,9 @@
 
 .fieldError {
   margin-top: 0.1rem;
-  color: #ad3153;
+  color: var(--cms-danger);
   font-weight: 900;
-  font-size: 1rem;
+  font-size: var(--cms-font-body);
   line-height: 1.35;
 }
 
@@ -86,6 +86,7 @@
 }
 
 .actions {
+  flex-wrap: wrap;
   display: flex;
   gap: 0.65rem;
   justify-content: flex-end;
@@ -117,7 +118,7 @@
 
 .btn {
   border-color: var(--accent-strong);
-  background: var(--accent-strong);
+  background: var(--cms-gradient);
   color: #fff;
   box-shadow: var(--shadow-md);
 }
@@ -144,7 +145,12 @@
   }
 
   .actions {
+  flex-wrap: wrap;
     justify-content: flex-start;
     flex-wrap: wrap;
   }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn, .ghostBtn { transition: none; }
 }

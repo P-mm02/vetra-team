@@ -2,6 +2,8 @@
 
 import { useCallback, useEffect, useRef, useState, type ChangeEvent } from 'react'
 import Link from 'next/link'
+import { useCmsI18n } from '@/components/cms/CmsLanguageProvider'
+import { portfolioText } from './i18n'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { prepareImage } from './prepareImage'
@@ -15,6 +17,17 @@ type LookupResponse = { project: PortfolioRecord | null; status: 'missing' | 'up
 type Stage = 'idle' | 'preparing' | 'uploading' | 'saving' | 'checking' | 'cleanup' | 'deleting'
 
 const MAX_RETRIES = 3
+
+function formatFileSize(bytes: number) {
+  return bytes < 1024 * 1024 ? `${Math.max(1, Math.round(bytes / 1024))} KB` : `${(bytes / 1024 / 1024).toFixed(2)} MB`
+}
+
+function preparedSize(asset: ProjectAsset, locale: 'th' | 'en') {
+  if (!asset.file) return ''
+  const original = asset.originalBytes && asset.originalBytes !== asset.file.size
+    ? `${formatFileSize(asset.originalBytes)} ${locale === 'th' ? 'ต้นฉบับ' : 'original'} → ` : ''
+  return `${original}${formatFileSize(asset.file.size)} ${locale === 'th' ? 'พร้อมแล้ว' : 'ready'}`
+}
 
 function isValidProject(form: PortfolioInput, cover: ProjectAsset, slides: ProjectAsset[]) {
   if (!/^[a-z0-9][a-z0-9-]{2,100}$/.test(form.id.trim())) return 'Project ID needs 3–101 lowercase letters, numbers, or hyphens.'
@@ -56,6 +69,8 @@ function makeInput(form: PortfolioInput, cover: ProjectAsset, slides: ProjectAss
 }
 
 export default function ProjectEditor({ id }: { id?: string }) {
+  const { locale, t, formatNumber } = useCmsI18n()
+  const text = (message: string) => portfolioText(message, locale)
   const router = useRouter()
   const isNew = !id
   const [form, setForm] = useState<PortfolioInput>(() => emptyProject())
@@ -137,13 +152,13 @@ export default function ProjectEditor({ id }: { id?: string }) {
     setStage('preparing')
     setError('')
     setProgress(`Preparing ${files.length} image${files.length === 1 ? '' : 's'} in your browser…`)
+    const prepared: ProjectAsset[] = []
     try {
-      const prepared: ProjectAsset[] = []
       for (const file of files) {
         const ready = await prepareImage(file)
         const previewUrl = URL.createObjectURL(ready)
         ownedPreviewUrls.current.push(previewUrl)
-        prepared.push({ key: newSubmissionId(), src: '', alt: '', caption: '', englishCaption: '', priority: false, file: ready, previewUrl })
+        prepared.push({ key: newSubmissionId(), src: '', alt: '', caption: '', englishCaption: '', priority: false, file: ready, originalBytes: file.size, previewUrl })
       }
       if (target === 'cover') {
         revokePreview(cover.previewUrl)
@@ -152,6 +167,7 @@ export default function ProjectEditor({ id }: { id?: string }) {
       else setSlides((current) => [...current, ...prepared])
       setSuccess(`${prepared.length} image${prepared.length === 1 ? '' : 's'} ready. Files will upload when you save.`)
     } catch (cause) {
+      prepared.forEach((asset) => revokePreview(asset.previewUrl))
       setError(cause instanceof Error ? cause.message : 'Could not prepare image.')
     } finally {
       setProgress('')
@@ -282,9 +298,14 @@ export default function ProjectEditor({ id }: { id?: string }) {
         setSlides([...nextSlides])
       }
     } catch (cause) {
+      if (!mediaConfigured) {
+        setError(cause instanceof Error ? cause.message : 'Media storage is not configured yet.')
+        setStage('idle'); setProgress(''); inFlight.current = false
+        return
+      }
       const failures = uploadFailures + 1
       setUploadFailures(failures)
-      setError(`${cause instanceof Error ? cause.message : 'Upload failed.'} ${failures <= MAX_RETRIES ? 'Press Save to retry only the remaining images.' : 'Retry limit reached. Clean up this attempt before starting again.'}`)
+      setError(`${cause instanceof Error ? cause.message : 'Upload failed.'} ${failures <= MAX_RETRIES ? 'Your selected images are kept. Press Save to retry unfinished uploads.' : 'Retry limit reached. Clean up this attempt before starting again.'}`)
       if (failures > MAX_RETRIES) setCleanupNeeded(true)
       setStage('idle'); setProgress(''); inFlight.current = false
       return
@@ -381,7 +402,7 @@ export default function ProjectEditor({ id }: { id?: string }) {
 
   async function moveToTrash() {
     if (!id || version == null || !canEdit || inFlight.current) return
-    if (!window.confirm(`Move “${form.title}” to Trash? You can restore it for 30 days.`)) return
+    if (!window.confirm(t(`Move “${form.title}” to Trash? You can restore it for 30 days.`, `ย้าย “${form.title}” ไปถังขยะหรือไม่? คุณสามารถกู้คืนได้ภายใน 30 วัน`))) return
     inFlight.current = true
     setStage('deleting')
     setError('')
@@ -404,58 +425,59 @@ export default function ProjectEditor({ id }: { id?: string }) {
     })
   }
 
-  if (loading) return <main className={styles.state} role="status">Loading project editor…</main>
-  if (loadError) return <main className={styles.state} role="alert"><h1>Could not open project</h1><p>{loadError}</p><button type="button" className={styles.secondaryButton} onClick={() => void load()}>Try again</button></main>
+  if (loading) return <main className={styles.state} role="status">{text("Loading project editor…")}</main>
+  if (loadError) return <main className={styles.state} role="alert"><h1>{text("Could not open project")}</h1><p>{text(loadError)}</p><button type="button" className={styles.secondaryButton} onClick={() => void load()}>{text("Try again")}</button></main>
 
   return (
     <main className={styles.page}>
-      <div className={styles.breadcrumb}><Link href="/admin/cms/projects">Projects</Link><span aria-hidden="true">/</span><span>{isNew ? 'New project' : form.title || id}</span></div>
-      <header className={styles.header}><div><div className={styles.eyebrow}>{isNew ? 'New project' : 'Project details'}</div><h1>{isNew ? 'Add a project' : form.title || 'Edit project'}</h1><p>Changes appear on the website immediately after you save.</p></div><div className={styles.headerActions}><Link className={styles.secondaryButton} href="/admin/cms/projects">Back to projects</Link>{canEdit && <button type="button" className={styles.primaryButton} onClick={() => void save()} disabled={busy || uncertain || cleanupNeeded}>{stage === 'uploading' || stage === 'saving' ? 'Saving…' : 'Save changes'}</button>}</div></header>
-      {!canEdit && <div className={styles.notice}>Your account can view this project but cannot change it.</div>}
-      {!mediaConfigured && <div className={styles.notice}>Media storage is not configured. Existing images can stay, but new images cannot be uploaded.</div>}
-      {progress && <div className={styles.progress} role="status">{progress}</div>}
-      {error && <div className={styles.error} role="alert"><strong>Action needed</strong><p>{error}</p><div className={styles.errorActions}>{uncertain && <button type="button" className={styles.secondaryButton} onClick={() => void resolveUncertain()}>Check save status</button>}{uncertain && saveFailures <= MAX_RETRIES && <button type="button" className={styles.primaryButton} onClick={() => void retryUncertainSave()}>Retry same save</button>}{cleanupNeeded && <button type="button" className={styles.secondaryButton} onClick={() => void cleanupUploads()}>Clean unused uploads</button>}</div></div>}
-      {success && <div className={styles.success} role="status">{success}</div>}
+      <div className={styles.breadcrumb}><Link href="/admin/cms/projects">{text("Projects")}</Link><span aria-hidden="true">/</span><span>{isNew ? text("New project") : form.title || id}</span></div>
+      <header className={styles.header}><div><div className={styles.eyebrow}>{isNew ? text("New project") : text("Project details")}</div><h1>{isNew ? text("Add a project") : form.title || text("Edit project")}</h1><p>{text("Changes appear on the website immediately after you save.")}</p></div><div className={styles.headerActions}><Link className={styles.secondaryButton} href="/admin/cms/projects">{text("Back to projects")}</Link>{canEdit && <button type="button" className={styles.primaryButton} onClick={() => void save()} disabled={busy || uncertain || cleanupNeeded}>{stage === 'uploading' || stage === 'saving' ? text("Saving…") : text("Save changes")}</button>}</div></header>
+      {!canEdit && <div className={styles.notice}>{text("Your account can view this project but cannot change it.")}</div>}
+      {!mediaConfigured && <div className={styles.notice}>{text("Cloudinary is not configured yet. You can choose and preview images here; saving new images will work after the storage credentials are added.")}</div>}
+      {progress && <div className={styles.progress} role="status">{text(progress)}</div>}
+      {error && <div className={styles.error} role="alert"><strong>{text("Action needed")}</strong><p>{text(error)}</p><div className={styles.errorActions}>{uncertain && <button type="button" className={styles.secondaryButton} onClick={() => void resolveUncertain()}>{text("Check save status")}</button>}{uncertain && saveFailures <= MAX_RETRIES && <button type="button" className={styles.primaryButton} onClick={() => void retryUncertainSave()}>{text("Retry same save")}</button>}{cleanupNeeded && <button type="button" className={styles.secondaryButton} onClick={() => void cleanupUploads()}>{text("Clean unused uploads")}</button>}</div></div>}
+      {success && <div className={styles.success} role="status">{text(success)}</div>}
       <div className={styles.layout}>
         <div className={styles.mainColumn}>
-          <section className={styles.panel}><div className={styles.panelHeading}><span className={styles.step}>01</span><div><h2>Project basics</h2><p>Primary fields and portfolio placement</p></div></div><div className={styles.fields}>
-            <label className={styles.field}><span>Project ID <em>Required</em></span><input value={form.id} disabled={!editable || !isNew} onChange={(e) => setField('id', e.target.value.toLowerCase().replace(/\s+/g, '-'))} placeholder="p-038-project-name" /><small>This ID stays fixed after you create the project.</small></label>
-            <div className={styles.fieldPair}><label className={styles.field}><span>Year</span><input type="number" min="1900" max="2100" value={form.year} disabled={!editable} onChange={(e) => setField('year', Number(e.target.value))} /></label><label className={styles.field}><span>Category</span><select value={form.category} disabled={!editable} onChange={(e) => setField('category', e.target.value as ProjectCategory)}>{Object.entries(CATEGORY_LABELS).map(([value, label]) => <option key={value} value={value}>{label}</option>)}</select></label></div>
-            <div className={styles.fieldPair}><label className={styles.field}><span>Display order</span><input type="number" value={form.sortOrder} disabled={!editable} onChange={(e) => setField('sortOrder', Number(e.target.value))} /><small>Lower numbers appear first.</small></label><div className={styles.switches}><label><input type="checkbox" checked={form.isExample} disabled={!editable} onChange={(e) => setField('isExample', e.target.checked)} /><span>Featured project</span></label><label><input type="checkbox" checked={form.hasDetail} disabled={!editable} onChange={(e) => setField('hasDetail', e.target.checked)} /><span>Show detail modal</span></label></div></div>
+          <section className={styles.panel}><div className={styles.panelHeading}><span className={styles.step}>01</span><div><h2>{text("Project basics")}</h2><p>{text("Primary fields and portfolio placement")}</p></div></div><div className={styles.fields}>
+            <label className={styles.field}><span>{text("Project ID")} <em>{text("Required")}</em></span><input value={form.id} disabled={!editable || !isNew} onChange={(e) => setField('id', e.target.value.toLowerCase().replace(/\s+/g, '-'))} placeholder="p-038-project-name" /><small>{text("This ID stays fixed after you create the project.")}</small></label>
+            <div className={styles.fieldPair}><label className={styles.field}><span>{text("Year")}</span><input type="number" min="1900" max="2100" value={form.year} disabled={!editable} onChange={(e) => setField('year', Number(e.target.value))} /></label><label className={styles.field}><span>{text("Category")}</span><select value={form.category} disabled={!editable} onChange={(e) => setField('category', e.target.value as ProjectCategory)}>{Object.entries(CATEGORY_LABELS).map(([value, label]) => <option key={value} value={value}>{text(label)}</option>)}</select></label></div>
+            <div className={styles.fieldPair}><label className={styles.field}><span>{text("Display order")}</span><input type="number" value={form.sortOrder} disabled={!editable} onChange={(e) => setField('sortOrder', Number(e.target.value))} /><small>{text("Lower numbers appear first.")}</small></label><div className={styles.switches}><label><input type="checkbox" checked={form.isExample} disabled={!editable} onChange={(e) => setField('isExample', e.target.checked)} /><span>{text("Featured project")}</span></label><label><input type="checkbox" checked={form.hasDetail} disabled={!editable} onChange={(e) => setField('hasDetail', e.target.checked)} /><span>{text("Show detail modal")}</span></label></div></div>
           </div></section>
-          <section className={styles.panel}><div className={styles.panelHeading}><span className={styles.step}>02</span><div><h2>Content</h2><p>Thai first, with separate English copy</p></div></div><div className={styles.languageColumns}>
-            <div className={styles.languageCard}><div className={styles.languageTitle}><span>TH</span><h3>Thai · Primary</h3></div><label className={styles.field}><span>Project title <em>Required</em></span><input value={form.title} disabled={!editable} onChange={(e) => setField('title', e.target.value)} /></label><label className={styles.field}><span>Short description <em>Required</em></span><textarea rows={4} value={form.shortDesc} disabled={!editable} onChange={(e) => setField('shortDesc', e.target.value)} /></label><label className={styles.field}><span>Highlights <small>One per line</small></span><textarea rows={5} value={arrayToLines(form.highlights)} disabled={!editable} onChange={(e) => setField('highlights', linesToArray(e.target.value))} /></label></div>
-            <div className={styles.languageCard}><div className={styles.languageTitle}><span>EN</span><h3>English</h3></div><label className={styles.field}><span>Project title</span><input value={form.english.title} disabled={!editable} onChange={(e) => setEnglish('title', e.target.value)} /></label><label className={styles.field}><span>Short description</span><textarea rows={4} value={form.english.shortDesc} disabled={!editable} onChange={(e) => setEnglish('shortDesc', e.target.value)} /></label><label className={styles.field}><span>Highlights <small>One per line</small></span><textarea rows={5} value={arrayToLines(form.english.highlights)} disabled={!editable} onChange={(e) => setEnglish('highlights', linesToArray(e.target.value))} /></label></div>
-          </div><div className={styles.fields}><div className={styles.fieldPair}><label className={styles.field}><span>Technology stack · Thai <small>One per line</small></span><textarea rows={3} value={arrayToLines(form.stack)} disabled={!editable} onChange={(e) => setField('stack', linesToArray(e.target.value))} /></label><label className={styles.field}><span>Technology stack · English <small>One per line</small></span><textarea rows={3} value={arrayToLines(form.english.stack)} disabled={!editable} onChange={(e) => setEnglish('stack', linesToArray(e.target.value))} /></label></div></div></section>
-          <section className={styles.panel}><div className={styles.panelHeading}><span className={styles.step}>03</span><div><h2>Gallery</h2><p>Images stay on this device until you press Save</p></div></div><div className={styles.fields}>
-            <div className={styles.mediaHeader}><h3>Cover image</h3>{canEdit && <label className={styles.secondaryButton}>Choose cover<input type="file" accept="image/jpeg,image/png,image/webp,image/gif,image/avif" hidden disabled={!editable || !mediaConfigured} onChange={(e) => void pickImage(e, 'cover')} /></label>}</div>
-            <div className={styles.coverRow}><div className={styles.coverPreview}>{cover.previewUrl || cover.src ? <Image unoptimized src={cover.previewUrl || cover.src} alt="Cover preview" width={640} height={400} /> : <span>No cover selected</span>}</div><div className={styles.coverFields}><label className={styles.field}><span>Thai image description <em>Required</em></span><input value={cover.alt} disabled={!editable} onChange={(e) => setCover((current) => ({ ...current, alt: e.target.value }))} /></label><label className={styles.field}><span>English image description</span><input value={form.english.coverAlt} disabled={!editable} onChange={(e) => setEnglish('coverAlt', e.target.value)} /></label>{cover.file && <p className={styles.fileHint}>Selected: {cover.file.name} · {(cover.file.size / 1024 / 1024).toFixed(2)} MB{cover.uploadedSrc ? ' · Ready to save' : ' · Uploads when you save'}</p>}</div></div>
-            <div className={styles.mediaHeader}><h3>Gallery images</h3>{canEdit && <label className={styles.secondaryButton}>Add images<input type="file" multiple accept="image/jpeg,image/png,image/webp,image/gif,image/avif" hidden disabled={!editable || !mediaConfigured} onChange={(e) => void pickImage(e, 'gallery')} /></label>}</div>
-            {slides.length === 0 && <div className={styles.emptyGallery}>No gallery images yet.</div>}
+          <section className={styles.panel}><div className={styles.panelHeading}><span className={styles.step}>02</span><div><h2>{text("Content")}</h2><p>{text("Thai first, with separate English copy")}</p></div></div><div className={styles.languageColumns}>
+            <div className={styles.languageCard}><div className={styles.languageTitle}><span>TH</span><h3>{text("Thai · Primary")}</h3></div><label className={styles.field}><span>{text("Project title")} <em>{text("Required")}</em></span><input value={form.title} disabled={!editable} onChange={(e) => setField('title', e.target.value)} /></label><label className={styles.field}><span>{text("Short description")} <em>{text("Required")}</em></span><textarea rows={4} value={form.shortDesc} disabled={!editable} onChange={(e) => setField('shortDesc', e.target.value)} /></label><label className={styles.field}><span>{text("Highlights")} <small>{text("One per line")}</small></span><textarea rows={5} value={arrayToLines(form.highlights)} disabled={!editable} onChange={(e) => setField('highlights', linesToArray(e.target.value))} /></label></div>
+            <div className={styles.languageCard}><div className={styles.languageTitle}><span>EN</span><h3>{text("English")}</h3></div><label className={styles.field}><span>{text("Project title")}</span><input value={form.english.title} disabled={!editable} onChange={(e) => setEnglish('title', e.target.value)} /></label><label className={styles.field}><span>{text("Short description")}</span><textarea rows={4} value={form.english.shortDesc} disabled={!editable} onChange={(e) => setEnglish('shortDesc', e.target.value)} /></label><label className={styles.field}><span>{text("Highlights")} <small>{text("One per line")}</small></span><textarea rows={5} value={arrayToLines(form.english.highlights)} disabled={!editable} onChange={(e) => setEnglish('highlights', linesToArray(e.target.value))} /></label></div>
+          </div><div className={styles.fields}><div className={styles.fieldPair}><label className={styles.field}><span>{text("Technology stack · Thai")} <small>{text("One per line")}</small></span><textarea rows={3} value={arrayToLines(form.stack)} disabled={!editable} onChange={(e) => setField('stack', linesToArray(e.target.value))} /></label><label className={styles.field}><span>{text("Technology stack · English")} <small>{text("One per line")}</small></span><textarea rows={3} value={arrayToLines(form.english.stack)} disabled={!editable} onChange={(e) => setEnglish('stack', linesToArray(e.target.value))} /></label></div></div></section>
+          <section className={styles.panel}><div className={styles.panelHeading}><span className={styles.step}>03</span><div><h2>{text("Gallery")}</h2><p>{text("Images stay on this device until you press Save")}</p></div></div><div className={styles.fields}>
+            <div className={styles.mediaHeader}><h3>{text("Cover image")}</h3>{canEdit && <label className={styles.secondaryButton}>{text("Choose cover")}<input type="file" accept="image/jpeg,image/png,image/webp,image/gif,image/avif" className={styles.fileInput} disabled={!editable} onChange={(e) => void pickImage(e, 'cover')} /></label>}</div>
+            <div className={styles.coverRow}><div className={styles.coverPreview}>{cover.previewUrl || cover.src ? <Image unoptimized src={cover.previewUrl || cover.src} alt={text("Cover preview")} width={640} height={400} /> : <span>{text("No cover selected")}</span>}</div><div className={styles.coverFields}><label className={styles.field}><span>{text("Thai image description")} <em>{text("Required")}</em></span><input value={cover.alt} disabled={!editable} onChange={(e) => setCover((current) => ({ ...current, alt: e.target.value }))} /></label><label className={styles.field}><span>{text("English image description")}</span><input value={form.english.coverAlt} disabled={!editable} onChange={(e) => setEnglish('coverAlt', e.target.value)} /></label>{cover.file && <p className={styles.fileHint}>{text("Selected:")} {cover.file.name} · {preparedSize(cover, locale)} · {cover.uploadedSrc ? text("Uploaded; ready to save") : text("Uploads when you save")}</p>}</div></div>
+            <div className={styles.mediaHeader}><h3>{text("Gallery images")}</h3>{canEdit && <label className={styles.secondaryButton}>{text("Add images")}<input type="file" multiple accept="image/jpeg,image/png,image/webp,image/gif,image/avif" className={styles.fileInput} disabled={!editable} onChange={(e) => void pickImage(e, 'gallery')} /></label>}</div>
+            {slides.length === 0 && <div className={styles.emptyGallery}>{text("No gallery images yet.")}</div>}
             <div className={styles.galleryList}>{slides.map((slide, index) => (
               <div className={styles.galleryItem} key={slide.key}>
                 <div className={styles.galleryImage}><Image unoptimized src={slide.previewUrl || slide.src} alt="" width={320} height={320} /></div>
                 <div className={styles.galleryFields}>
                   <div className={styles.galleryTop}>
-                    <strong>Image {index + 1}</strong>
+                    <strong>{text("Image")} {formatNumber(index + 1)}</strong>
                     {canEdit && <div className={styles.galleryActions}>
-                      <button type="button" className={styles.smallButton} disabled={!editable || index === 0} onClick={() => moveSlide(index, -1)} aria-label={`Move image ${index + 1} up`}>↑</button>
-                      <button type="button" className={styles.smallButton} disabled={!editable || index === slides.length - 1} onClick={() => moveSlide(index, 1)} aria-label={`Move image ${index + 1} down`}>↓</button>
-                      <button type="button" className={styles.removeButton} disabled={!editable} onClick={() => { revokePreview(slide.previewUrl); setSlides((current) => current.filter((item) => item.key !== slide.key)) }}>Remove</button>
+                      <button type="button" className={styles.smallButton} disabled={!editable || index === 0} onClick={() => moveSlide(index, -1)} aria-label={t(`Move image ${index + 1} up`, `เลื่อนรูปภาพที่ ${formatNumber(index + 1)} ขึ้น`)}>↑</button>
+                      <button type="button" className={styles.smallButton} disabled={!editable || index === slides.length - 1} onClick={() => moveSlide(index, 1)} aria-label={t(`Move image ${index + 1} down`, `เลื่อนรูปภาพที่ ${formatNumber(index + 1)} ลง`)}>↓</button>
+                      <button type="button" className={styles.removeButton} disabled={!editable} onClick={() => { revokePreview(slide.previewUrl); setSlides((current) => current.filter((item) => item.key !== slide.key)) }}>{text("Remove")}</button>
                     </div>}
                   </div>
-                  <label className={styles.field}><span>Thai image description <em>Required</em></span><input value={slide.alt} disabled={!editable} onChange={(e) => setSlides((current) => current.map((item) => item.key === slide.key ? { ...item, alt: e.target.value } : item))} /></label>
+                  <label className={styles.field}><span>{text("Thai image description")} <em>{text("Required")}</em></span><input value={slide.alt} disabled={!editable} onChange={(e) => setSlides((current) => current.map((item) => item.key === slide.key ? { ...item, alt: e.target.value } : item))} /></label>
                   <div className={styles.fieldPair}>
-                    <label className={styles.field}><span>Thai caption</span><input value={slide.caption} disabled={!editable} onChange={(e) => setSlides((current) => current.map((item) => item.key === slide.key ? { ...item, caption: e.target.value } : item))} /></label>
-                    <label className={styles.field}><span>English caption</span><input value={slide.englishCaption} disabled={!editable} onChange={(e) => setSlides((current) => current.map((item) => item.key === slide.key ? { ...item, englishCaption: e.target.value } : item))} /></label>
+                    <label className={styles.field}><span>{text("Thai caption")}</span><input value={slide.caption} disabled={!editable} onChange={(e) => setSlides((current) => current.map((item) => item.key === slide.key ? { ...item, caption: e.target.value } : item))} /></label>
+                    <label className={styles.field}><span>{text("English caption")}</span><input value={slide.englishCaption} disabled={!editable} onChange={(e) => setSlides((current) => current.map((item) => item.key === slide.key ? { ...item, englishCaption: e.target.value } : item))} /></label>
                   </div>
-                  <label className={styles.checkLabel}><input type="checkbox" checked={slide.priority} disabled={!editable} onChange={(e) => setSlides((current) => current.map((item) => item.key === slide.key ? { ...item, priority: e.target.checked } : item))} />Load this image first</label>
+                  <label className={styles.checkLabel}><input type="checkbox" checked={slide.priority} disabled={!editable} onChange={(e) => setSlides((current) => current.map((item) => item.key === slide.key ? { ...item, priority: e.target.checked } : item))} />{text("Load this image first")}</label>
+                  {slide.file && <p className={styles.fileHint}>{slide.file.name} · {preparedSize(slide, locale)} · {slide.uploadedSrc ? text("Uploaded; ready to save") : text("Uploads when you save")}</p>}
                 </div>
               </div>
             ))}</div>
           </div></section>
         </div>
-        <aside className={styles.sideColumn}><section className={styles.summary}><div className={styles.summaryTop}>Save changes</div><h2>Review and save</h2><p>Changes appear on the website immediately after saving.</p><ul><li>{form.title.trim() ? '✓' : '○'} Thai project title</li><li>{form.shortDesc.trim() ? '✓' : '○'} Thai summary</li><li>{cover.src || cover.file ? '✓' : '○'} Cover image</li><li>{cover.alt.trim() ? '✓' : '○'} Cover description</li></ul>{canEdit && <button type="button" className={styles.primaryButton} onClick={() => void save()} disabled={busy || uncertain || cleanupNeeded}>{stage === 'uploading' || stage === 'saving' ? 'Saving…' : 'Save changes'}</button>}{!isNew && canEdit && <button type="button" className={styles.dangerButton} disabled={busy} onClick={() => void moveToTrash()}>Move to Trash</button>}</section><div className={styles.sideHint}>If saving is interrupted, your text and selected images stay here so you can try again.</div></aside>
+        <aside className={styles.sideColumn}><section className={styles.summary}><div className={styles.summaryTop}>{text("Save changes")}</div><h2>{text("Review and save")}</h2><p>{text("Changes appear on the website immediately after saving.")}</p><ul><li>{form.title.trim() ? '✓' : '○'} {text("Thai project title")}</li><li>{form.shortDesc.trim() ? '✓' : '○'} {text("Thai summary")}</li><li>{cover.src || cover.file ? '✓' : '○'} {text("Cover image")}</li><li>{cover.alt.trim() ? '✓' : '○'} {text("Cover description")}</li></ul>{canEdit && <button type="button" className={styles.primaryButton} onClick={() => void save()} disabled={busy || uncertain || cleanupNeeded}>{stage === 'uploading' || stage === 'saving' ? text("Saving…") : text("Save changes")}</button>}{!isNew && canEdit && <button type="button" className={styles.dangerButton} disabled={busy} onClick={() => void moveToTrash()}>{text("Move to Trash")}</button>}</section><div className={styles.sideHint}>{text("If saving is interrupted, your text and selected images stay here so you can try again.")}</div></aside>
       </div>
     </main>
   )

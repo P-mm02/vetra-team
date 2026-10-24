@@ -1,11 +1,14 @@
 import { connectMongo } from '@/lib/db/mongoose'
-import { CmsState, Project, Submission } from './models'
+import { CmsState, MediaAsset, Project, Submission } from './models'
 import { CmsError } from './http'
 import legacy from '@/app/(site)/projects/Projects/projects.json'
 import { localizeProject } from '@/app/(site)/projects/Projects/projectContent'
 import { compareProjectsNewestFirst } from '@/app/(site)/projects/Projects/projectChronology'
 import type { PortfolioInput, PortfolioRecord } from '@/lib/portfolio'
 import type { ProjectItem } from '@/app/(site)/projects/Projects/Modal/Modal'
+import seedMediaData from './project-seed-media.json'
+
+const seedMedia: Array<{ publicId: string; src: string }> = seedMediaData
 
 const categories: Record<string, PortfolioInput['category']> = {
   'p-005-electronic': 'commerce', 'p-007-furniture': 'commerce', 'p-012-manhwa-manhua-manga-2': 'webapp',
@@ -26,6 +29,18 @@ export function legacyProjects(): PortfolioRecord[] {
 export async function initializePortfolio() {
   await connectMongo()
   if ((await CmsState.findById('portfolio-v1').lean())?.ready) return
+  if (seedMedia.length) {
+    await MediaAsset.bulkWrite(seedMedia.map(({ publicId, src }) => ({ updateOne: {
+      filter: { _id: publicId },
+      update: { $setOnInsert: { src, userId: 'portfolio-seed', submissionId: 'portfolio-seed', status: 'ready', protectedUntil: new Date(0) } },
+      upsert: true,
+    } })))
+    const rows = await MediaAsset.find({ _id: { $in: seedMedia.map(({ publicId }) => publicId) } }).lean()
+    const byId = new Map(rows.map(row => [row._id, row]))
+    if (seedMedia.some(({ publicId, src }) => byId.get(publicId)?.src !== src || byId.get(publicId)?.status !== 'ready')) {
+      throw new Error('Seed image records do not match the portfolio images.')
+    }
+  }
   await Project.bulkWrite(legacyProjects().map(({ version, updatedAt, ...data }) => ({ updateOne: {
     filter: { _id: data.id }, update: { $setOnInsert: { data, version, updatedAt: new Date(updatedAt), deletedAt: null, purgeAt: null } }, upsert: true,
   } })))
@@ -43,6 +58,15 @@ export async function getPublicProjects(): Promise<PortfolioRecord[]> {
   // Before the first CMS visit, show the existing portfolio without writing to the database.
   if (!(await CmsState.findById('portfolio-v1').lean())?.ready) return legacyProjects()
   return (await Project.find({ deletedAt: null }).sort({ 'data.sortOrder': 1, 'data.year': -1, _id: 1 }).lean()).map(toPortfolioRecord)
+}
+export async function getPublicProjectsForPage(): Promise<PortfolioRecord[] | null> {
+  try { return await getPublicProjects() }
+  catch (error) {
+    // Never substitute checked-in projects for CMS data after an outage: they
+    // could include work that staff edited or moved to Trash.
+    console.error('Public portfolio unavailable:', error)
+    return null
+  }
 }
 export async function getSubmission(id: string, actorId: string) {
   const receipt = await Submission.findOne({ _id: id, userId: actorId }).lean()

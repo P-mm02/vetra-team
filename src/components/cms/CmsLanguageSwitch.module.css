@@ -1,0 +1,6 @@
+.switch { display: inline-flex; align-items: center; flex: none; padding: 0.2rem; gap: 0.15rem; border: 1px solid var(--border); border-radius: 999px; background: var(--soft); }
+.switch button { min-width: 2.65rem; min-height: 2.5rem; padding: 0.4rem 0.6rem; border: 1px solid transparent; border-radius: 999px; color: var(--muted); background: transparent; font-size: var(--font-xs); font-weight: 700; cursor: pointer; transition: background var(--t-fast), color var(--t-fast); }
+.switch button[aria-pressed='true'] { color: var(--accent); background: rgba(125, 231, 255, 0.1); border-color: rgba(125, 231, 255, 0.23); }
+.switch button:disabled { cursor: progress; }
+@media (hover: hover) and (pointer: fine) { .switch button:hover { color: var(--text); background: rgba(255,255,255,0.06); } }
+@media (prefers-reduced-motion: reduce) { .switch button { transition: none; } }

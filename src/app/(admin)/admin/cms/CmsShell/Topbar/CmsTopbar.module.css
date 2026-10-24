@@ -9,7 +9,7 @@
   min-height: 5.25rem;
   padding: 0.75rem max(1rem, env(safe-area-inset-right)) 0.75rem max(1rem, env(safe-area-inset-left));
   border-bottom: 1px solid var(--border-soft);
-  background: rgba(255, 255, 255, 0.91);
+  background: rgba(12, 11, 30, 0.92);
   backdrop-filter: blur(16px);
 }
 .left, .userBox { display: flex; align-items: center; min-width: 0; }
@@ -32,18 +32,24 @@
 .eyebrow { color: var(--accent-strong); font-size: var(--font-xs); font-weight: 800; letter-spacing: 0.12em; }
 .workspaceName { font-size: var(--font-lg); font-weight: 800; }
 .userBox { gap: 0.65rem; }
-.avatar { display: grid; flex: none; width: 2.4rem; height: 2.4rem; place-items: center; border-radius: 50%; background: #e9e0fb; color: #6544bd; font-weight: 900; }
+.avatar { display: grid; flex: none; width: 2.4rem; height: 2.4rem; place-items: center; border-radius: 50%; background: var(--cms-gradient); color: var(--accent); font-weight: 900; }
 .userMeta { display: grid; min-width: 0; line-height: 1.2; }
 .userName { max-width: 12rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 750; }
 .userRole { color: var(--muted); font-size: var(--font-sm); text-transform: capitalize; }
 .logoutBtn { margin-left: 0.25rem; }
 .logoutBtn:disabled { cursor: wait; opacity: 0.55; }
 @media (hover: hover) and (pointer: fine) {
-  .menuBtn:hover, .logoutBtn:hover { border-color: #c5b6ea; background: #f5f1fd; }
+  .menuBtn:hover, .logoutBtn:hover { border-color: var(--accent); background: var(--cms-accent-soft); }
 }
 @media (max-width: 640px) {
   .topbar { min-height: 4.5rem; }
   .divider, .eyebrow, .userMeta { display: none; }
   .workspaceName { font-size: var(--font-md); }
   .userBox { gap: 0.35rem; }
+}
+@media (max-width: 480px) {
+  .workspaceName, .avatar { display: none; }
+  .eyebrow { display: block; font-family: var(--font-display); letter-spacing: 0.04em; color: var(--text); }
+  .left { gap: 0.5rem; }
+  .topbar { gap: 0.5rem; padding-inline: 0.75rem; }
 }

@@ -1,6 +1,12 @@
 import { redirect } from 'next/navigation'
 import { getCurrentUser } from '@/lib/auth/session'
 import TrashClient from './TrashClient'
+import { getCmsI18n } from '@/lib/cms/i18n-server'
+
+export async function generateMetadata() {
+  const { t } = await getCmsI18n()
+  return { title: t('Trash', 'ถังขยะ') }
+}
 
 export const dynamic = 'force-dynamic'
 

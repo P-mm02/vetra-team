@@ -36,6 +36,7 @@ export type ProjectAsset = {
   englishCaption: string
   priority: boolean
   file?: File
+  originalBytes?: number
   previewUrl?: string
   uploadedSrc?: string
 }

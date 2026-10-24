@@ -1,7 +1,8 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { getPublicProjects } from '@/lib/cms/projects'
+import { getPublicProjectsForPage } from '@/lib/cms/projects'
 import type { ProjectItem } from '@/app/(site)/projects/Projects/Modal/Modal'
+import PortfolioUnavailable from '@/app/(site)/projects/PortfolioUnavailable'
 import { localizedPath, type Locale } from '@/lib/i18n'
 import { localizeProject } from '@/app/(site)/projects/Projects/projectContent'
 import { compareProjectsNewestFirst } from '@/app/(site)/projects/Projects/projectChronology'
@@ -31,7 +32,9 @@ const copy = {
 } satisfies Record<Locale, Record<string, string>>
 
 async function getRecentProjects(locale: Locale) {
-  return ((await getPublicProjects()) as ProjectItem[])
+  const projects = await getPublicProjectsForPage()
+  if (!projects) return null
+  return (projects as ProjectItem[])
     .map((project) => localizeProject(project, locale))
     .sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0) || compareProjectsNewestFirst(a, b))
     .slice(0, 6)
@@ -45,6 +48,11 @@ export default async function RecentProjects({
   const t = copy[locale]
   const projects = await getRecentProjects(locale)
   const projectsHref = localizedPath(locale, '/projects')
+  if (!projects) return (
+    <section className={styles.section} aria-label={t.title}>
+      <div className={styles.container}><PortfolioUnavailable locale={locale} retryPath={localizedPath(locale, '/')} /></div>
+    </section>
+  )
 
   return (
     <section className={styles.section} aria-labelledby="recent-projects-title">

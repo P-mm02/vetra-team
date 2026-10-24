@@ -11,10 +11,17 @@ import Notice from '@/app/(admin)/admin/Notice/Notice'
 import EditUserForm from './EditUserForm'
 import ChangePassword from './ChangePassword/ChangePassword'
 import DeleteUser from './DeleteUser/DeleteUser'
+import { getCmsI18n } from '@/lib/cms/i18n-server'
+import { userActionError, userRoleLabel } from '../i18n'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 export const fetchCache = 'force-no-store'
+
+export async function generateMetadata() {
+  const { t } = await getCmsI18n()
+  return { title: t('Edit user', 'แก้ไขผู้ใช้') }
+}
 
 type UserView = {
   _id: unknown
@@ -30,18 +37,6 @@ type UserView = {
 
 type SearchParams = Record<string, string | string[] | undefined>
 
-function fmtDateTime(d?: Date | null) {
-  if (!d) return '—'
-  try {
-    return new Intl.DateTimeFormat('en-GB', {
-      dateStyle: 'medium',
-      timeStyle: 'short',
-    }).format(d)
-  } catch {
-    return '—'
-  }
-}
-
 function canManageUsers(role: string) {
   return role === 'dev' || role === 'admin'
 }
@@ -51,56 +46,6 @@ function pickOne(v: string | string[] | undefined) {
   return Array.isArray(v) ? (v[0] ?? '') : v
 }
 
-function errText(code: string) {
-  switch (code) {
-    case 'missing':
-      return 'Please fill in all required fields.'
-    case 'bad_email':
-      return 'Email format looks invalid.'
-    case 'bad_username':
-      return 'Username must be 3–30 chars and only contain letters, numbers, underscore (_) or dot (.)'
-    case 'dup_email':
-      return 'This email is already used.'
-    case 'dup_username':
-      return 'This username is already used.'
-    case 'forbidden':
-      return 'You don’t have permission to edit this user (dev-only restriction).'
-    case 'self_edit':
-      return 'You cannot change your own role or disable your own account here.'
-    case 'bad_id':
-      return 'Invalid user id.'
-    case 'last_privileged':
-      return 'Keep at least one active account with this privileged role.'
-    case 'conflict':
-      return 'This account changed. Refresh the page and try again.'
-    case 'csrf':
-      return 'Your session could not be verified. Refresh and try again.'
-    default:
-      return 'Something went wrong. Please try again.'
-  }
-}
-
-function cpErrText(code: string) {
-  switch (code) {
-    case 'missing':
-      return 'Please fill in all required fields.'
-    case 'bad_password':
-      return 'Password must be 8–200 characters.'
-    case 'no_match':
-      return 'Passwords do not match.'
-    case 'forbidden':
-      return 'You don’t have permission to change this password.'
-    case 'bad_id':
-      return 'Invalid user id.'
-    case 'conflict':
-      return 'This account changed. Refresh the page and try again.'
-    case 'csrf':
-      return 'Your session could not be verified. Refresh and try again.'
-    default:
-      return 'Something went wrong. Please try again.'
-  }
-}
-
 export default async function UserEditPage({
   params,
   searchParams,
@@ -108,6 +53,7 @@ export default async function UserEditPage({
   params: Promise<{ id: string }>
   searchParams: Promise<SearchParams>
 }) {
+  const { t, formatDate } = await getCmsI18n()
   const { id } = await params
   const sp = await searchParams
 
@@ -161,57 +107,57 @@ export default async function UserEditPage({
   const isSelf = String(me.id) === userId
 
   return (
-    <main className={styles.page} aria-label="Edit user">
+    <main className={styles.page} aria-label={t('Edit user', 'แก้ไขผู้ใช้')}>
       <header className={styles.header}>
         <div className={styles.headerLeft}>
           <Link className={styles.back} href="/admin/cms/users">
-            {'<'} Back to Users
+            {'<'} {t('Back to users', 'กลับไปยังผู้ใช้')}
           </Link>
 
-          <h1 className={styles.h1}>Edit: {username || '—'}</h1>
+          <h1 className={styles.h1}>{t('Edit', 'แก้ไข')}: {username || '—'}</h1>
 
           <p className={styles.sub}>
-            {email || '—'} • <span className={styles.rolePill}>{role}</span>{' '}
+            {email || '—'} • <span className={styles.rolePill}>{userRoleLabel(role, t)}</span>{' '}
             <span
               className={`${styles.statusPill} ${
                 isActive ? styles.statusOn : styles.statusOff
               }`}
             >
-              {isActive ? 'Active' : 'Disabled'}
+              {isActive ? t('Active', 'เปิดใช้งาน') : t('Disabled', 'ปิดใช้งาน')}
             </span>
           </p>
         </div>
 
       </header>
 
-      <section className={styles.grid} aria-label="User meta">
+      <section className={styles.grid} aria-label={t('User details', 'รายละเอียดผู้ใช้')}>
         <article className={styles.card}>
-          <div className={styles.k}>User ID</div>
+          <div className={styles.k}>{t('User ID', 'รหัสผู้ใช้')}</div>
           <div className={styles.vMono}>{userId}</div>
         </article>
 
         <article className={styles.card}>
-          <div className={styles.k}>Created</div>
-          <div className={styles.v}>{fmtDateTime(user.createdAt)}</div>
+          <div className={styles.k}>{t('Created', 'วันที่สร้าง')}</div>
+          <div className={styles.v}>{formatDate(user.createdAt, { dateStyle: 'medium', timeStyle: 'short' })}</div>
         </article>
 
         <article className={styles.card}>
-          <div className={styles.k}>Updated</div>
-          <div className={styles.v}>{fmtDateTime(user.updatedAt)}</div>
+          <div className={styles.k}>{t('Updated', 'แก้ไขล่าสุด')}</div>
+          <div className={styles.v}>{formatDate(user.updatedAt, { dateStyle: 'medium', timeStyle: 'short' })}</div>
         </article>
 
         <article className={styles.card}>
-          <div className={styles.k}>Last login</div>
-          <div className={styles.v}>{fmtDateTime(user.lastLoginAt)}</div>
+          <div className={styles.k}>{t('Last login', 'เข้าสู่ระบบล่าสุด')}</div>
+          <div className={styles.v}>{formatDate(user.lastLoginAt, { dateStyle: 'medium', timeStyle: 'short' })}</div>
         </article>
       </section>
 
-      <section className={styles.panel} aria-label="Edit form">
+      <section className={styles.panel} aria-label={t('Edit form', 'แบบฟอร์มแก้ไขผู้ใช้')}>
         {err ? (
           <Notice
             tone="danger"
-            title="Save failed"
-            message={errText(err)}
+            title={t('Save failed', 'บันทึกไม่สำเร็จ')}
+            message={userActionError(err, t)}
             code={400}
             dismissible
             clearQueryKey="err"
@@ -219,8 +165,8 @@ export default async function UserEditPage({
         ) : ok ? (
           <Notice
             tone="success"
-            title="Saved"
-            message={ok}
+            title={t('Saved', 'บันทึกแล้ว')}
+            message={t('Saved changes.', 'บันทึกการเปลี่ยนแปลงแล้ว')}
             code={200}
             dismissible
             clearQueryKey="ok"
@@ -240,12 +186,12 @@ export default async function UserEditPage({
         />
       </section>
 
-      <section className={styles.panel} aria-label="Change password">
+      <section className={styles.panel} aria-label={t('Change password', 'เปลี่ยนรหัสผ่าน')}>
         {cpErr ? (
           <Notice
             tone="danger"
-            title="Change password failed"
-            message={cpErrText(cpErr)}
+            title={t('Change password failed', 'เปลี่ยนรหัสผ่านไม่สำเร็จ')}
+            message={userActionError(cpErr, t, 'password')}
             code={400}
             dismissible
             clearQueryKey="cp_err"
@@ -253,8 +199,8 @@ export default async function UserEditPage({
         ) : cpOk ? (
           <Notice
             tone="success"
-            title="Password updated"
-            message="New password saved."
+            title={t('Password updated', 'เปลี่ยนรหัสผ่านแล้ว')}
+            message={t('New password saved.', 'บันทึกรหัสผ่านใหม่แล้ว')}
             code={200}
             dismissible
             clearQueryKey="cp_ok"

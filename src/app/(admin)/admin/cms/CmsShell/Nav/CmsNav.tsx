@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { ChartNoAxesCombined, CreditCard, FolderKanban, LayoutDashboard, Trash2, UsersRound, X } from 'lucide-react'
 import styles from './CmsNav.module.css'
 import { CMS_NAV, isActivePath, type CmsNavItem } from './navConfig'
+import { useCmsI18n } from '@/components/cms/CmsLanguageProvider'
 
 const icons = {
   dashboard: LayoutDashboard,
@@ -22,6 +23,7 @@ export default function CmsNav({
   role: string
   onClose: () => void
 }) {
+  const { t } = useCmsI18n()
   return (
     <>
       <div className={styles.sideTop}>
@@ -31,17 +33,17 @@ export default function CmsNav({
           </span>
           <span className={styles.brandText}>
             <span className={styles.brandName}>VETRA</span>
-            <span className={styles.brandTag}>CONTENT STUDIO</span>
+            <span className={styles.brandTag}>{t('CONTENT STUDIO', 'ระบบจัดการเนื้อหา')}</span>
           </span>
         </Link>
 
-        <button type="button" className={styles.closeBtn} onClick={onClose} aria-label="Close menu">
+        <button type="button" className={styles.closeBtn} onClick={onClose} aria-label={t('Close menu', 'ปิดเมนู')}>
           <X size={20} aria-hidden="true" />
         </button>
       </div>
 
-      <div className={styles.sectionLabel}>WORKSPACE</div>
-      <nav className={styles.nav} aria-label="CMS navigation">
+      <div className={styles.sectionLabel}>{t('WORKSPACE', 'จัดการเว็บไซต์')}</div>
+      <nav className={styles.nav} aria-label={t('CMS navigation', 'เมนูระบบจัดการเนื้อหา')}>
         {CMS_NAV.filter((item) => !item.roles || item.roles.includes(role)).map((item) => {
           const active = isActivePath(pathname, item.href)
           const Icon = icons[item.key]
@@ -54,7 +56,7 @@ export default function CmsNav({
               aria-current={active ? 'page' : undefined}
             >
               <Icon className={styles.navIcon} size={19} strokeWidth={1.9} aria-hidden="true" />
-              <span className={styles.navLabel}>{item.label}</span>
+              <span className={styles.navLabel}>{t(item.label, item.labelTh)}</span>
             </Link>
           )
         })}

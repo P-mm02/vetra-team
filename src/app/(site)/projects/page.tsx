@@ -1,9 +1,10 @@
-import { getPublicProjects } from '@/lib/cms/projects'
+import { getPublicProjectsForPage } from '@/lib/cms/projects'
 export const dynamic = 'force-dynamic'
 // src/app/projects/page.tsx
 import type { Metadata } from 'next'
 import styles from './page.module.css'
 import Projects from './Projects/Projects'
+import PortfolioUnavailable from './PortfolioUnavailable'
 import Link from 'next/link'
 import { localizedPath, pageAlternates } from '@/lib/i18n'
 
@@ -35,6 +36,7 @@ export const metadata: Metadata = {
 }
 
 export default async function ProjectsPage() {
+  const projects = await getPublicProjectsForPage()
   return (
     <main className={styles.page}>
       <section className={styles.hero} aria-label="ส่วนแนะนำผลงาน">
@@ -53,7 +55,7 @@ export default async function ProjectsPage() {
 
       <section className={styles.section} aria-label="รายการผลงาน">
         <div className={styles.sectionInner}>
-          <Projects locale="th" projectsData={await getPublicProjects()} />
+          {projects ? <Projects locale="th" projectsData={projects} /> : <PortfolioUnavailable locale="th" retryPath="/projects" />}
         </div>
       </section>
     </main>

@@ -5,10 +5,17 @@ import { getCurrentUser } from '@/lib/auth/session'
 import styles from './page.module.css'
 import AddUserForm from './AddUserForm'
 import Notice from '@/app/(admin)/admin/Notice/Notice'
+import { getCmsI18n } from '@/lib/cms/i18n-server'
+import { userActionError } from '../i18n'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 export const fetchCache = 'force-no-store'
+
+export async function generateMetadata() {
+  const { t } = await getCmsI18n()
+  return { title: t('Create user', 'สร้างผู้ใช้') }
+}
 
 type SearchParams = Record<string, string | string[] | undefined>
 
@@ -21,39 +28,13 @@ function pickOne(v: string | string[] | undefined) {
   return Array.isArray(v) ? (v[0] ?? '') : v
 }
 
-function errText(code: string) {
-  switch (code) {
-    case 'missing':
-      return 'Please fill in all required fields.'
-    case 'bad_email':
-      return 'Email format looks invalid.'
-    case 'bad_username':
-      return 'Username must be 3–30 chars and only contain letters, numbers, underscore (_) or dot (.)'
-    case 'bad_password':
-      return 'Password must be at least 8 characters.'
-    case 'no_match':
-      return 'Passwords do not match.'
-    case 'dup_email':
-      return 'This email is already used.'
-    case 'dup_username':
-      return 'This username is already used.'
-    case 'forbidden':
-      return 'You don’t have permission to manage users.'
-    case 'bad_role':
-      return 'Choose a valid role for this account.'
-    case 'csrf':
-      return 'Your session could not be verified. Refresh and try again.'
-    default:
-      return 'Something went wrong. Please try again.'
-  }
-}
-
 export default async function AddUserPage({
   searchParams,
 }: {
   // ✅ Next.js 16: Promise
   searchParams: Promise<SearchParams>
 }) {
+  const { t } = await getCmsI18n()
   const me = await getCurrentUser()
   if (!me) redirect('/admin/login?next=/admin/cms/users/add')
   if (!canManageUsers(String(me.role))) redirect('/admin/cms')
@@ -76,34 +57,32 @@ export default async function AddUserPage({
   const isActive = isActiveParam ? isActiveParam !== '0' : true
 
   return (
-    <main className={styles.page} aria-label="Add user">
+    <main className={styles.page} aria-label={t('Add user', 'เพิ่มผู้ใช้')}>
       <header className={styles.header}>
         <div className={styles.headerText}>
           <div className={styles.breadcrumb}>
             <Link className={styles.back} href="/admin/cms/users">
-              {'<'} Users
+              {'<'} {t('Users', 'ผู้ใช้')}
             </Link>
             <span className={styles.sep} aria-hidden="true">
               /
             </span>
-            <span className={styles.here}>Add</span>
+            <span className={styles.here}>{t('Add', 'เพิ่ม')}</span>
           </div>
 
-          <h1 className={styles.h1}>Create user</h1>
+          <h1 className={styles.h1}>{t('Create user', 'สร้างผู้ใช้')}</h1>
           <p className={styles.sub}>
-            Login uses <span className={styles.kbd}>username</span> +{' '}
-            <span className={styles.kbd}>password</span>. Email is kept for
-            contact and account reference.
+            {t('Users can sign in with their username or email and password.', 'ผู้ใช้เข้าสู่ระบบได้ด้วยชื่อผู้ใช้หรืออีเมลและรหัสผ่าน')}
           </p>
         </div>
       </header>
 
-      <section className={styles.panel} aria-label="Create user form">
+      <section className={styles.panel} aria-label={t('Create user form', 'แบบฟอร์มสร้างผู้ใช้')}>
         {err ? (
           <Notice
             tone="danger"
-            title="Create user failed"
-            message={errText(err)}
+            title={t('Create user failed', 'สร้างผู้ใช้ไม่สำเร็จ')}
+            message={userActionError(err, t, 'create')}
             code={400}
             dismissible
             clearQueryKey="err"

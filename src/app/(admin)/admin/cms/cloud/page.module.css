@@ -25,7 +25,7 @@
   margin: 0;
   font-weight: 900;
   letter-spacing: 0.2px;
-  font-size: 1.45rem;
+  font-size: var(--font-lg);
   line-height: 1.15;
 }
 
@@ -51,14 +51,14 @@
 }
 
 .metaLabel {
-  font-size: 0.72rem;
+  font-size: var(--font-xs);
   color: rgba(255, 255, 255, 0.62);
   letter-spacing: 0.2px;
 }
 
 .metaValue {
   margin-top: 0.1rem;
-  font-size: 0.82rem;
+  font-size: var(--font-xs);
   color: rgba(255, 255, 255, 0.9);
   font-weight: 700;
   white-space: nowrap;
@@ -101,13 +101,13 @@
 
 .cardTitle {
   font-weight: 900;
-  font-size: 1.05rem;
+  font-size: var(--font-md);
   letter-spacing: 0.2px;
   min-width: 0;
 }
 
 .badge {
-  font-size: 0.72rem;
+  font-size: var(--font-xs);
   font-weight: 800;
   padding: 0.22rem 0.55rem;
   border-radius: 999px;
@@ -124,7 +124,7 @@
 .cardSub {
   margin: 0;
   color: rgba(255, 255, 255, 0.72);
-  font-size: 0.86rem;
+  font-size: var(--font-xs);
   line-height: 1.45;
 }
 
@@ -182,7 +182,7 @@
 
 .usageMain,
 .usageRight {
-  font-size: 0.9rem;
+  font-size: var(--font-xs);
 }
 
 .usageStrong {
@@ -209,14 +209,14 @@
 }
 
 .statLabel {
-  font-size: 0.72rem;
+  font-size: var(--font-xs);
   color: rgba(255, 255, 255, 0.62);
   letter-spacing: 0.2px;
 }
 
 .statValue {
   margin-top: 0.15rem;
-  font-size: 0.88rem;
+  font-size: var(--font-xs);
   font-weight: 800;
   color: rgba(255, 255, 255, 0.9);
   word-break: break-word;
@@ -230,7 +230,7 @@
   background: rgba(255, 255, 255, 0.03);
   border: 1px dashed rgba(255, 255, 255, 0.12);
   color: rgba(255, 255, 255, 0.68);
-  font-size: 0.82rem;
+  font-size: var(--font-xs);
   line-height: 1.45;
 }
 

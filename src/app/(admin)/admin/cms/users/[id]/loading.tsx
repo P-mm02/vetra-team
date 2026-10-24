@@ -1,3 +1,6 @@
+'use client'
+
+import { useCmsI18n } from '@/components/cms/CmsLanguageProvider'
 // src/app/(admin)/admin/cms/users/[id]/loading.tsx
 import Link from 'next/link'
 import styles from './page.module.css'
@@ -6,8 +9,9 @@ import Skeleton from '@/app/(admin)/admin/cms/_components/loading/Skeleton/Skele
 import CircleSpining from '@/app/(admin)/admin/cms/_components/loading/CircleSpining/CircleSpining'
 
 export default function Loading() {
+  const { t } = useCmsI18n()
   return (
-    <main className={styles.page} aria-label="Loading user">
+    <main className={styles.page} aria-label={t('Loading user', 'กำลังโหลดผู้ใช้')}>
       <header className={styles.header}>
         <div className={styles.headerLeft}>
           <Link
@@ -15,11 +19,11 @@ export default function Loading() {
             href="/admin/cms/users"
             aria-disabled="true"
           >
-            {'<'} Back to Users
+            {'<'} {t('Back to users', 'กลับไปยังผู้ใช้')}
           </Link>
 
           <h1 className={styles.h1}>
-            Edit:{' '}
+            {t('Edit', 'แก้ไข')}:{' '}
             <span style={{ display: 'inline-block', verticalAlign: 'middle' }}>
               <Skeleton style={{ width: '14rem', height: '1.1em' }} />
             </span>
@@ -39,30 +43,30 @@ export default function Loading() {
       </header>
 
       {/* Meta grid */}
-      <section className={styles.grid} aria-label="User meta loading">
+      <section className={styles.grid} aria-label={t('User meta loading', 'กำลังโหลดรายละเอียดผู้ใช้')}>
         <article className={styles.card}>
-          <div className={styles.k}>User ID</div>
+          <div className={styles.k}>{t('User ID', 'รหัสผู้ใช้')}</div>
           <div className={styles.vMono}>
             <Skeleton style={{ width: '100%', height: '1.15rem' }} />
           </div>
         </article>
 
         <article className={styles.card}>
-          <div className={styles.k}>Created</div>
+          <div className={styles.k}>{t('Created', 'วันที่สร้าง')}</div>
           <div className={styles.v}>
             <Skeleton style={{ width: '70%', height: '1.15rem' }} />
           </div>
         </article>
 
         <article className={styles.card}>
-          <div className={styles.k}>Updated</div>
+          <div className={styles.k}>{t('Updated', 'แก้ไขล่าสุด')}</div>
           <div className={styles.v}>
             <Skeleton style={{ width: '70%', height: '1.15rem' }} />
           </div>
         </article>
 
         <article className={styles.card}>
-          <div className={styles.k}>Last login</div>
+          <div className={styles.k}>{t('Last login', 'เข้าสู่ระบบล่าสุด')}</div>
           <div className={styles.v}>
             <Skeleton style={{ width: '70%', height: '1.15rem' }} />
           </div>
@@ -70,7 +74,7 @@ export default function Loading() {
       </section>
 
       {/* Edit form panel */}
-      <section className={styles.panel} aria-label="Edit form loading">
+      <section className={styles.panel} aria-label={t('Edit form loading', 'กำลังโหลดแบบฟอร์มแก้ไข')}>
         {/* Notice placeholder */}
         <div
           style={{ display: 'grid', gap: '0.6rem', marginBottom: '0.85rem' }}
@@ -83,7 +87,7 @@ export default function Loading() {
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 16rem), 1fr))',
               gap: '0.85rem',
             }}
           >
@@ -137,7 +141,7 @@ export default function Loading() {
                 gap: '0.6rem',
               }}
             >
-              <CircleSpining size="2.2rem" hideLabel label="Loading…" />
+              <CircleSpining size="2.2rem" hideLabel label={t('Loading…', 'กำลังโหลด…')} />
               <Skeleton style={{ width: '10rem', height: '2.6rem' }} />
             </span>
           </div>
@@ -145,7 +149,7 @@ export default function Loading() {
       </section>
 
       {/* Change password panel */}
-      <section className={styles.panel} aria-label="Change password loading">
+      <section className={styles.panel} aria-label={t('Change password loading', 'กำลังโหลดแบบฟอร์มเปลี่ยนรหัสผ่าน')}>
         <div
           style={{ display: 'grid', gap: '0.6rem', marginBottom: '0.85rem' }}
         >
@@ -156,7 +160,7 @@ export default function Loading() {
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 16rem), 1fr))',
               gap: '0.85rem',
             }}
           >
@@ -187,7 +191,7 @@ export default function Loading() {
       </section>
 
       {/* Danger zone */}
-      <section aria-label="Danger zone loading">
+      <section aria-label={t('Danger zone loading', 'กำลังโหลดส่วนลบบัญชี')}>
         <div style={{ borderRadius: 26, padding: '1rem 1.05rem' }}>
           <div
             style={{

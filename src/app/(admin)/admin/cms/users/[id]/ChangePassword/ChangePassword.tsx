@@ -5,13 +5,15 @@ import { useMemo, useState } from 'react'
 import styles from './ChangePassword.module.css'
 import { changePasswordAction } from './function'
 import { hasErrors } from '../../add/validator'
+import { useCmsI18n } from '@/components/cms/CmsLanguageProvider'
+import { userValidationMessage } from '../../i18n'
 
 type FieldErrors = Partial<Record<'password' | 'password2', string>>
 
 function validate(v: { password: string; password2: string }): FieldErrors {
   const e: FieldErrors = {}
-  const p1 = v.password.trim()
-  const p2 = v.password2.trim()
+  const p1 = v.password
+  const p2 = v.password2
 
   if (!p1) e.password = 'Password is required.'
   else if (p1.length < 8 || p1.length > 200)
@@ -29,6 +31,7 @@ type Props = {
 }
 
 export default function ChangePassword({ userId, disabled = false }: Props) {
+  const { t } = useCmsI18n()
   const [touched, setTouched] = useState<Record<string, boolean>>({})
   const [values, setValues] = useState({ password: '', password2: '' })
 
@@ -65,20 +68,20 @@ export default function ChangePassword({ userId, disabled = false }: Props) {
       }}
     >
       <div className={styles.head}>
-        <h2 className={styles.h2}>Change password</h2>
+        <h2 className={styles.h2}>{t('Change password', 'เปลี่ยนรหัสผ่าน')}</h2>
         <p className={styles.sub}>
-          Set a new password for this user. Min 8 characters.
+          {t('Set a new password for this user using 8–200 characters.', 'กำหนดรหัสผ่านใหม่ให้ผู้ใช้นี้ ความยาว 8–200 ตัวอักษร')}
         </p>
       </div>
 
       <div className={styles.grid}>
         <label className={styles.field}>
-          <span className={styles.label}>New password *</span>
+          <span className={styles.label}>{t('New password *', 'รหัสผ่านใหม่ *')}</span>
           <input
             className={styles.input}
             name="password"
             type="password"
-            placeholder="Min 8 characters"
+            placeholder={t('At least 8 characters', 'อย่างน้อย 8 ตัวอักษร')}
             autoComplete="new-password"
             required
             minLength={8}
@@ -89,17 +92,17 @@ export default function ChangePassword({ userId, disabled = false }: Props) {
             disabled={disabled}
           />
           {touched.password && errors.password ? (
-            <div className={styles.fieldError}>{errors.password}</div>
+            <div className={styles.fieldError}>{userValidationMessage(errors.password, t)}</div>
           ) : null}
         </label>
 
         <label className={styles.field}>
-          <span className={styles.label}>Confirm password *</span>
+          <span className={styles.label}>{t('Confirm password *', 'ยืนยันรหัสผ่าน *')}</span>
           <input
             className={styles.input}
             name="password2"
             type="password"
-            placeholder="Re-type password"
+            placeholder={t('Re-type password', 'กรอกรหัสผ่านอีกครั้ง')}
             autoComplete="new-password"
             required
             minLength={8}
@@ -110,7 +113,7 @@ export default function ChangePassword({ userId, disabled = false }: Props) {
             disabled={disabled}
           />
           {touched.password2 && errors.password2 ? (
-            <div className={styles.fieldError}>{errors.password2}</div>
+            <div className={styles.fieldError}>{userValidationMessage(errors.password2, t)}</div>
           ) : null}
         </label>
       </div>
@@ -125,11 +128,11 @@ export default function ChangePassword({ userId, disabled = false }: Props) {
           }}
           disabled={disabled}
         >
-          Clear
+          {t('Clear', 'ล้างข้อมูล')}
         </button>
 
         <button className={styles.btn} type="submit" disabled={disabled}>
-          Update password
+          {t('Update password', 'เปลี่ยนรหัสผ่าน')}
         </button>
       </footer>
     </form>

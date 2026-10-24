@@ -2,6 +2,8 @@
 import type { Metadata, Viewport } from 'next'
 import type { ReactNode } from 'react'
 import './globals.css'
+import { getCmsI18n } from '@/lib/cms/i18n-server'
+import { CmsLanguageProvider } from '@/components/cms/CmsLanguageProvider'
 
 import { Playfair_Display, Prompt, Noto_Sans_Thai } from 'next/font/google'
 
@@ -33,7 +35,7 @@ export const viewport: Viewport = {
   colorScheme: 'dark',
 }
 
-export const metadata: Metadata = {
+const adminMetadata: Metadata = {
   title: {
     default: 'VETRA | CMS',
     template: '%s • Admin • VETRA',
@@ -64,15 +66,22 @@ export const metadata: Metadata = {
   },
 }
 
-export default function AdminLayout({
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = await getCmsI18n()
+  return { ...adminMetadata, title: { default: 'VETRA | CMS', template: t('%s • Admin • VETRA', '%s • ระบบจัดการ • VETRA') } }
+}
+
+export default async function AdminLayout({
   children,
 }: Readonly<{ children: ReactNode }>) {
+  const { locale } = await getCmsI18n()
   return (
     <html
-      lang="th"
+      lang={locale}
+      data-scroll-behavior="smooth"
       className={`${fontPlayfair.variable} ${fontPrompt.variable} ${fontNoto.variable}`}
     >
-      <body>{children}</body>
+      <body><CmsLanguageProvider initialLocale={locale}>{children}</CmsLanguageProvider></body>
     </html>
   )
 }

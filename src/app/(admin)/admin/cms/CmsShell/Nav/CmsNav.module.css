@@ -29,8 +29,8 @@
 
 .brandLogo img { width: 2.2rem; height: 2.2rem; object-fit: contain; }
 .brandText { display: grid; min-width: 0; line-height: 1.1; }
-.brandName { font-weight: 900; letter-spacing: 0.12em; }
-.brandTag { color: var(--muted); font-size: var(--font-xs); font-weight: 700; letter-spacing: 0.13em; }
+.brandName { font-family: var(--font-display); font-size: var(--font-lg); font-weight: 900; letter-spacing: 0.12em; }
+.brandTag { color: var(--muted); font-size: var(--font-xs); font-weight: 600; letter-spacing: 0.04em; line-height: 1.4; }
 
 .closeBtn {
   display: grid;
@@ -61,9 +61,9 @@
 }
 .navIcon { flex: none; }
 .navLabel { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.navItemActive { border-color: rgba(102, 70, 191, 0.12); background: #efeafb; color: var(--accent-strong); }
+.navItemActive { border-color: rgba(125, 231, 255, 0.22); background: var(--cms-gradient); color: var(--accent); }
 @media (hover: hover) and (pointer: fine) {
   .navItem:hover { background: var(--soft); color: var(--text); }
-  .navItemActive:hover { background: #ebe4fb; color: var(--accent-strong); }
-  .closeBtn:hover { background: #ebe4fb; }
+  .navItemActive:hover { background: var(--cms-accent-soft); color: var(--accent); }
+  .closeBtn:hover { background: var(--cms-accent-soft); }
 }

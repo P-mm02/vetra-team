@@ -2,7 +2,8 @@
 /* Self-contained, safe for reuse across projects */
 
 .page {
-  width: min(980px, 100%);
+  min-width: 0;
+  width: min(64rem, 100%);
   margin: 0 auto;
   display: grid;
   gap: 0.9rem;
@@ -27,7 +28,7 @@
   margin-bottom: 0.35rem;
   color: var(--muted);
   font-weight: 800;
-  font-size: 1rem;
+  font-size: var(--cms-font-body);
 }
 
 .back {
@@ -36,8 +37,10 @@
   font-weight: 900;
 }
 
-.back:hover {
+@media (hover: hover) and (pointer: fine) {
+  .back:hover {
   text-decoration: underline;
+}
 }
 
 .sep {
@@ -52,8 +55,8 @@
   margin: 0;
   font-weight: 900;
   letter-spacing: 0.2px;
-  font-size: 1.45rem;
-  line-height: 1.15;
+  font-size: var(--cms-font-title);
+  line-height: 1.4;
 }
 
 .sub {
@@ -65,7 +68,7 @@
 .kbd {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
     'Liberation Mono', 'Courier New', monospace;
-  font-size: 1rem;
+  font-size: var(--cms-font-body);
   padding: 0.12rem 0.38rem;
   border-radius: 10px;
   border: 1px solid var(--border);
@@ -73,6 +76,7 @@
 }
 
 .panel {
+  min-width: 0;
   border-radius: var(--r-lg);
   border: 1px solid var(--border-soft);
   background: var(--card);
@@ -88,13 +92,13 @@
 
 .grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.85rem;
 }
 
 .grid2 {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.85rem;
 }
 
@@ -112,7 +116,7 @@
 
 .hint {
   color: var(--muted);
-  font-size: 1rem;
+  font-size: var(--cms-font-body);
   line-height: 1.55;
 }
 
@@ -171,6 +175,7 @@
 }
 
 .actions {
+  flex-wrap: wrap;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -185,17 +190,19 @@
   cursor: pointer;
   letter-spacing: 0.2px;
   border: 1px solid var(--accent-strong);
-  background: var(--accent-strong);
+  background: var(--cms-gradient);
   color: #fff;
   box-shadow: var(--shadow-md);
   transition: transform var(--t-fast), border-color var(--t-fast),
     box-shadow var(--t-fast);
 }
 
-.btn:hover:not(:disabled) {
+@media (hover: hover) and (pointer: fine) {
+  .btn:hover:not(:disabled) {
   transform: translateY(-1px);
   border-color: var(--accent);
   box-shadow: var(--shadow-lg);
+}
 }
 
 .btn:disabled {
@@ -216,17 +223,19 @@
     box-shadow var(--t-fast);
 }
 
-.ghostBtn:hover {
+@media (hover: hover) and (pointer: fine) {
+  .ghostBtn:hover {
   transform: translateY(-1px);
   border-color: var(--accent-strong);
   box-shadow: 0 14px 44px rgba(0, 0, 0, 0.25); /* keep: softer than token */
 }
+}
 
 .fieldError {
   margin-top: 0.15rem;
-  color: #ad3153;
+  color: var(--cms-danger);
   font-weight: 700;
-  font-size: 1rem;
+  font-size: var(--cms-font-body);
 }
 
 @media (max-width: 820px) {
@@ -234,4 +243,8 @@
   .grid2 {
     grid-template-columns: 1fr;
   }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn, .ghostBtn { transition: none; }
 }

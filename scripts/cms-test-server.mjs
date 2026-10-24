@@ -23,6 +23,8 @@ const child = spawn(process.execPath, ['node_modules/next/dist/bin/next', 'dev',
   ...process.env, MONGODB_URI: mongo.getUri('vetra_cms_isolated_test'), AUTH_SECRET: 'isolated-test-secret-not-for-deployment-2026',
   SESSION_COOKIE_NAME: 'vetra_cms_test_session', NEXT_PUBLIC_SITE_URL: base, CMS_BOOTSTRAP_TOKEN: 'cms-test-bootstrap-token', CRON_SECRET: 'cms-test-cron-secret',
   CLOUDINARY_CLOUD_NAME: '', CLOUDINARY_API_KEY: '', CLOUDINARY_API_SECRET: '', NEXT_PUBLIC_GA_ID: '', GA4_PROPERTY_ID: '', GA4_CLIENT_EMAIL: '', GA4_PRIVATE_KEY: '',
+  PAYMENTS_ENABLED: 'false', STRIPE_MODE: 'test', STRIPE_SECRET_KEY: '', STRIPE_WEBHOOK_SECRET: '',
+  CMS_ISOLATED_TEST: 'true',
 }, stdio: ['ignore', 'pipe', 'pipe'], windowsHide: true })
 child.stdout.on('data', b => process.stdout.write(b)); child.stderr.on('data', b => process.stderr.write(b))
 let stopped = false

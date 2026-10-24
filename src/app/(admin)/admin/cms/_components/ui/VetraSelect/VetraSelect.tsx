@@ -2,6 +2,7 @@
 
 import { useEffect, useId, useMemo, useRef, useState } from 'react'
 import styles from './VetraSelect.module.css'
+import { useCmsI18n } from '@/components/cms/CmsLanguageProvider'
 
 export type SelectOption<T extends string> = {
   value: T
@@ -30,10 +31,12 @@ export default function VetraSelect<T extends string>({
   onChange,
   options,
   label,
-  placeholder = 'Select…',
+  placeholder,
   disabled = false,
   className = '',
 }: Props<T>) {
+  const { t } = useCmsI18n()
+  const emptyLabel = placeholder ?? t('Select…', 'เลือก…')
   const uid = useId()
   const btnRef = useRef<HTMLButtonElement | null>(null)
   const listRef = useRef<HTMLDivElement | null>(null)
@@ -185,7 +188,7 @@ export default function VetraSelect<T extends string>({
           {selected ? (
             selected.label
           ) : (
-            <span className={styles.placeholder}>{placeholder}</span>
+            <span className={styles.placeholder}>{emptyLabel}</span>
           )}
         </span>
       </button>

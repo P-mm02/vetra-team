@@ -124,16 +124,10 @@ export async function createSession(userId: string) {
 
 // 8) Destroy session + clear cookie
 export async function destroySession() {
-  await connectMongo()
-
   const cookieStore = await cookies()
   const token = cookieStore.get(COOKIE_NAME)?.value
 
-  if (token) {
-    const tokenHash = tokenToHash(token)
-    await Session.deleteOne({ tokenHash }).catch(() => null)
-  }
-
+  // Clear the browser cookie even when the database is temporarily down.
   cookieStore.set({
     name: COOKIE_NAME,
     value: '',
@@ -143,6 +137,16 @@ export async function destroySession() {
     path: '/',
     maxAge: 0,
   })
+
+  if (token) {
+    try {
+      await connectMongo()
+      await Session.deleteOne({ tokenHash: tokenToHash(token) })
+    } catch {
+      // The expired cookie prevents reuse in this browser. The stored session
+      // remains bounded by expiresAt if the database cannot be reached.
+    }
+  }
 
   return { ok: true }
 }
@@ -163,15 +167,16 @@ type LeanUser = {
   email: string
   role: string
   isActive: boolean
+  passwordChangedAt?: Date | null
 }
 
 // 9) Resolve current user from session cookie
 export async function getCurrentUser(): Promise<CurrentUser | null> {
-  await connectMongo()
-
   const cookieStore = await cookies()
   const token = cookieStore.get(COOKIE_NAME)?.value
   if (!token) return null
+
+  await connectMongo()
 
   const tokenHash = tokenToHash(token)
   const now = new Date()
@@ -184,10 +189,11 @@ export async function getCurrentUser(): Promise<CurrentUser | null> {
   if (!session) return null
 
   const user = await User.findOne({ _id: session.userId, deletedAt: null })
-    .select({ username: 1, email: 1, role: 1, isActive: 1 })
+    .select({ username: 1, email: 1, role: 1, isActive: 1, passwordChangedAt: 1 })
     .lean<LeanUser | null>()
 
-  if (!user || !user.isActive) {
+  if (!user || !user.isActive ||
+      (user.passwordChangedAt && session.createdAt < user.passwordChangedAt)) {
     await Session.deleteOne({ tokenHash }).catch(() => null)
     return null
   }

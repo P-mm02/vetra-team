@@ -2,6 +2,7 @@
 /* Self-contained, safe for reuse across projects */
 
 .page {
+  min-width: 0;
   width: min(80rem, 100%);
   margin: 0 auto;
   display: grid;
@@ -24,8 +25,8 @@
   margin: 0;
   font-weight: 900;
   letter-spacing: 0.2px;
-  font-size: 1.4rem;
-  line-height: 1.15;
+  font-size: var(--cms-font-title);
+  line-height: 1.4;
 }
 
 .sub {
@@ -52,7 +53,7 @@
   cursor: pointer;
   letter-spacing: 0.2px;
   border: 1px solid var(--accent-strong);
-  background: var(--accent-strong);
+  background: var(--cms-gradient);
   color: #fff;
   box-shadow: var(--shadow-md);
   transition: transform var(--t-fast), border-color var(--t-fast),
@@ -99,10 +100,11 @@
   font-weight: 800;
   cursor: pointer;
 }
-.searchButton { border: 1px solid var(--accent-strong); background: var(--accent-strong); color: #fff; }
+.searchButton { border: 1px solid var(--accent-strong); background: var(--cms-gradient); color: #fff; }
 .clearSearch { border: 1px solid var(--border); background: var(--card); color: var(--text); }
 
 .panel {
+  min-width: 0;
   border-radius: var(--r-lg);
   border: 1px solid var(--border-soft);
   background: var(--card);
@@ -118,7 +120,7 @@
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
-  min-width: 980px;
+  min-width: 62rem;
 }
 
 .table thead th {
@@ -126,7 +128,7 @@
   top: 0;
   z-index: 2;
   text-align: left;
-  font-size: 1rem;
+  font-size: var(--cms-font-body);
   letter-spacing: 0.2px;
   padding: 0.85rem 0.9rem;
   color: var(--text);
@@ -174,7 +176,7 @@
 .mono {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
     'Liberation Mono', 'Courier New', monospace;
-  font-size: 1rem;
+  font-size: var(--cms-font-body);
 }
 
 .table tbody td:nth-child(3),
@@ -200,7 +202,7 @@
   background: rgba(190, 140, 255, 0.1);
   color: var(--text);
   font-weight: 600;
-  font-size: 1rem;
+  font-size: var(--cms-font-body);
 }
 
 .statusPill {
@@ -208,7 +210,7 @@
   border-radius: 0.5rem;
   padding: 0.2rem 0.4rem;
   font-weight: 600;
-  font-size: 1rem;
+  font-size: var(--cms-font-body);
   border: 1px solid var(--border);
   background: var(--soft);
   color: var(--text);
@@ -232,7 +234,7 @@
   gap: 0.85rem;
   padding: 0.85rem 0.9rem;
   color: var(--muted);
-  font-size: 1rem;
+  font-size: var(--cms-font-body);
 }
 .resultCount { display: inline-flex; align-items: center; gap: 0.55rem; }
 .pagination { display: inline-flex; align-items: center; flex-wrap: wrap; gap: 0.45rem; }
@@ -253,9 +255,9 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .rowLink:hover td { background: rgba(103, 70, 191, 0.06); }
-  .searchButton:hover { background: #5637a7; }
-  .clearSearch:hover, a.pageButton:hover { border-color: #c9bbeb; background: #f5f1fd; }
+  .rowLink:hover td { background: var(--cms-accent-soft); }
+  .searchButton:hover { background: var(--cms-accent-soft); }
+  .clearSearch:hover, a.pageButton:hover { border-color: var(--cms-accent); background: var(--cms-accent-soft); }
 }
 
 @media (max-width: 720px) {
@@ -264,4 +266,8 @@
     align-items: stretch;
   }
   .searchControls input { flex-basis: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn { transition: none; }
 }

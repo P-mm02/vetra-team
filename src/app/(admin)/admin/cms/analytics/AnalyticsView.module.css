@@ -1,16 +1,17 @@
 /* src/app/(admin)/admin/cms/analytics/AnalyticsView.module.css */
 
 .page {
-  width: min(80rem, 100%);
+  width: min(88rem, 100%);
   margin: 0 auto;
   display: grid;
   gap: 0.9rem;
   min-width: 0;
   padding: 1.5rem;
+  min-width: 0;
   border: 1px solid rgba(190, 182, 239, 0.18);
   border-radius: 1.2rem;
-  background: #1d1b39;
-  color: #fff;
+  background: var(--cms-surface);
+  color: var(--cms-text);
   color-scheme: dark;
   box-shadow: 0 1rem 2.5rem rgba(41, 33, 100, 0.15);
 }
@@ -31,8 +32,8 @@
   margin: 0;
   font-weight: 900;
   letter-spacing: 0.2px;
-  font-size: 1.55rem;
-  line-height: 1.15;
+  font-size: var(--cms-font-title);
+  line-height: 1.4;
 }
 
 .sub {
@@ -62,7 +63,7 @@
   display: inline-flex;
   border-radius: 999px;
   border: 1px solid rgba(255, 255, 255, 0.10);
-  background: rgba(14, 12, 30, 0.25);
+  background: var(--cms-field);
   overflow: hidden;
 }
 
@@ -72,13 +73,14 @@
   border: 0;
   background: transparent;
   margin: 0;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
+  font-family: inherit;
   text-align: inherit;
   cursor: pointer;
 
-  padding: 0.28rem 0.62rem;
+  padding: 0.6rem 0.75rem;
+  min-height: 2.75rem;
   font-weight: 600;
-  font-size: 1rem;
+  font-size: var(--cms-font-body);
   color: rgba(255, 255, 255, 0.78);
   border-right: 1px solid rgba(255, 255, 255, 0.08);
 
@@ -130,14 +132,15 @@
   justify-content: center;
 
   border-radius: 999px;
-  padding: 0.28rem 0.7rem;
+  padding: 0.6rem 0.9rem;
+  min-height: 2.75rem;
 
   border: 1px solid rgba(255, 255, 255, 0.10);
-  background: rgba(14, 12, 30, 0.25);
+  background: var(--cms-field);
   color: rgba(255, 255, 255, 0.80);
 
   font-weight: 600;
-  font-size: 0.88rem;
+  font-size: var(--cms-font-body);
   text-decoration: none;
 }
 
@@ -165,14 +168,14 @@
 /* KPI */
 .kpiGrid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
   gap: 0.85rem;
 }
 
 .card {
   border-radius: 22px;
   border: 1px solid rgba(255, 255, 255, 0.10);
-  background: rgba(14, 12, 30, 0.45);
+  background: var(--cms-field);
   padding: 0.9rem 0.95rem;
   min-width: 0;
 }
@@ -186,7 +189,7 @@
 .big {
   margin-top: 0.4rem;
   font-weight: 600;
-  font-size: 1.2rem;
+  font-size: var(--cms-font-metric);
   text-align: center;
 }
 
@@ -206,7 +209,7 @@
 .panel {
   border-radius: 26px;
   border: 1px solid rgba(255, 255, 255, 0.11);
-  background: rgba(14, 12, 30, 0.35);
+  background: var(--cms-field);
   padding: 1rem 1.05rem;
   min-width: 0;
 }
@@ -223,7 +226,7 @@
   margin: 0;
   font-weight: 900;
   letter-spacing: 0.2px;
-  font-size: 1.15rem;
+  font-size: var(--cms-font-heading);
 }
 
 .sub2 {
@@ -265,7 +268,7 @@
 
 .table th {
   text-align: center;
-  font-size: 0.92rem;
+  font-size: var(--cms-font-body);
   letter-spacing: 0.2px;
   color: rgba(255, 255, 255, 0.78);
   font-weight: 600;
@@ -298,7 +301,7 @@
   margin-top: 0.7rem;
   color: rgba(255, 255, 255, 0.62);
   line-height: 1.6;
-  font-size: 0.95rem;
+  font-size: var(--cms-font-body);
 }
 
 /* loading */
@@ -320,4 +323,8 @@
 
 @media (max-width: 768px) {
   .page { padding: 1rem; }
+}
+
+@media (max-width: 420px) {
+  .kpiGrid { grid-template-columns: 1fr; }
 }

@@ -72,7 +72,7 @@ export default function HomeHero({ locale = 'th' }: { locale?: Locale }) {
               <div className={styles.visualGrid}>
                 <div className={`${styles.projectPreview} ${styles.previewMain}`}>
                   <Image
-                    src="/images/projects/Toilet-by-Nakin.webp"
+                    src="https://res.cloudinary.com/di70a5gqx/image/upload/v1792782339/vetra-team/cms/project-import/3b030acb7b929af1f57ab83346e89e1c14e79eae0c28548b8bc668b08affa715.webp"
                     alt="Responsive service website by VETRA"
                     fill
                     priority
@@ -85,7 +85,7 @@ export default function HomeHero({ locale = 'th' }: { locale?: Locale }) {
                 <div className={styles.previewSide}>
                   <div className={styles.projectPreview}>
                     <Image
-                      src="/images/projects/X-Tribe.webp"
+                      src="https://res.cloudinary.com/di70a5gqx/image/upload/v1792782349/vetra-team/cms/project-import/0b7d0298cbae704898efcd62f9677322c8926d69de81867f747a26d92567f619.webp"
                       alt="E-commerce website by VETRA"
                       fill
                       priority
@@ -97,7 +97,7 @@ export default function HomeHero({ locale = 'th' }: { locale?: Locale }) {
 
                   <div className={styles.projectPreview}>
                     <Image
-                      src="/images/projects/Go-Wallet.webp"
+                      src="https://res.cloudinary.com/di70a5gqx/image/upload/v1792782290/vetra-team/cms/project-import/91b8d9008d70f9ad8ebc75e9ba6bfdb5f089defae0444f4518a89e18a8bce73f.webp"
                       alt="Fintech web application by VETRA"
                       fill
                       priority

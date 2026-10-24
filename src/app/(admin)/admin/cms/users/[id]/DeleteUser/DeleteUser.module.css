@@ -2,8 +2,8 @@
 
 .danger {
   border-radius: 26px;
-  border: 1px solid #edc8d1;
-  background: #fff7f9;
+  border: 1px solid color-mix(in srgb, var(--cms-danger) 35%, transparent);
+  background: var(--cms-danger-soft);
   padding: 1rem 1.05rem;
 }
 
@@ -18,7 +18,7 @@
   margin: 0;
   font-weight: 900;
   letter-spacing: 0.2px;
-  font-size: 1.15rem;
+  font-size: var(--cms-font-heading);
   color: var(--text);
 }
 
@@ -66,7 +66,7 @@
 .deleteBtn:focus-visible {
   outline: none;
   box-shadow:
-    0 0 0 2px #fff,
+    0 0 0 2px var(--bg),
     0 0 0 5px rgba(175, 54, 84, 0.38);
 }
 
@@ -91,8 +91,8 @@
   align-items: center;
   padding: 0.75rem 0.85rem;
   border-radius: 18px;
-  border: 1px solid #edc8d1;
-  background: #fff0f4;
+  border: 1px solid color-mix(in srgb, var(--cms-danger) 35%, transparent);
+  background: var(--cms-danger-soft);
   color: var(--text);
   font-weight: 900;
 }
@@ -114,7 +114,7 @@
   padding: 0.95rem 0.95rem;
   border-radius: 20px;
 
-  border: 1px solid #edc8d1;
+  border: 1px solid color-mix(in srgb, var(--cms-danger) 35%, transparent);
   background: var(--card);
   box-shadow: var(--shadow-md);
   display: grid;
@@ -171,7 +171,7 @@
 .ghost:focus-visible {
   outline: none;
   box-shadow:
-    0 0 0 2px #fff,
+    0 0 0 2px var(--bg),
     0 0 0 5px rgba(103, 70, 191, 0.3);
 }
 
@@ -199,7 +199,7 @@
 .dangerBtn:focus-visible {
   outline: none;
   box-shadow:
-    0 0 0 2px #fff,
+    0 0 0 2px var(--bg),
     0 0 0 5px rgba(175, 54, 84, 0.38);
 }
 

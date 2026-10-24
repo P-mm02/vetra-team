@@ -7,9 +7,9 @@ import { User } from '@/models/User/User'
 import { verifyPassword } from '@/lib/auth/password'
 import { createSession, assertSameOrigin } from '@/lib/auth/session'
 
-// 1) Validate request body (username + password)
+// Keep the username key for existing clients; the field also accepts email.
 const BodySchema = z.object({
-  username: z.string().min(3).max(30),
+  username: z.string().trim().min(3).max(254),
   password: z.string().min(8).max(200),
 })
 
@@ -50,11 +50,20 @@ export async function POST(req: Request) {
     )
   }
 
-  const username = parsed.data.username.trim().toLowerCase()
+  const identifier = parsed.data.username.toLowerCase()
   const password = parsed.data.password
   const now = new Date()
 
-  await connectMongo()
+  const unavailable = () => NextResponse.json(
+    { ok: false, message: 'Sign-in is temporarily unavailable. Please try again.' },
+    { status: 503 },
+  )
+
+  try {
+    await connectMongo()
+  } catch {
+    return unavailable()
+  }
 
   // Always return same error (avoid user enumeration)
   const invalid = () =>
@@ -64,17 +73,25 @@ export async function POST(req: Request) {
     )
 
   // Select sensitive fields explicitly (passwordHash/loginAttempts/lockUntil are select:false)
-  const user = await User.findOne({ username, deletedAt: null })
-    .select({
-      username: 1,
-      email: 1,
-      role: 1,
-      isActive: 1,
-      passwordHash: 1,
-      loginAttempts: 1,
-      lockUntil: 1,
+  let user: LeanLoginUser | null
+  try {
+    user = await User.findOne({
+      deletedAt: null,
+      $or: [{ username: identifier }, { email: identifier }],
     })
-    .lean<LeanLoginUser | null>()
+      .select({
+        username: 1,
+        email: 1,
+        role: 1,
+        isActive: 1,
+        passwordHash: 1,
+        loginAttempts: 1,
+        lockUntil: 1,
+      })
+      .lean<LeanLoginUser | null>()
+  } catch {
+    return unavailable()
+  }
 
   // Generic failure (don’t reveal if username exists)
   if (!user || !user.isActive) return invalid()
@@ -88,29 +105,36 @@ export async function POST(req: Request) {
   const passOk = await verifyPassword(password, storedHash)
 
   if (!passOk) {
-    const attempts = Number(user.loginAttempts ?? 0) + 1
-    const update: Record<string, unknown> = {
-      $set: { loginAttempts: attempts },
+    try {
+      const failed = await User.findOneAndUpdate(
+        { _id: user._id, deletedAt: null, isActive: true },
+        { $inc: { loginAttempts: 1 } },
+        { returnDocument: 'after', projection: { loginAttempts: 1 } },
+      ).lean<{ loginAttempts: number } | null>()
+      if (failed && failed.loginAttempts >= MAX_ATTEMPTS) {
+        await User.updateOne(
+          { _id: user._id },
+          { $set: { lockUntil: new Date(now.getTime() + LOCK_MINUTES * 60 * 1000) } },
+        )
+      }
+    } catch {
+      return unavailable()
     }
-
-    if (attempts >= MAX_ATTEMPTS) {
-      ;(update.$set as Record<string, unknown>).lockUntil = new Date(
-        now.getTime() + LOCK_MINUTES * 60 * 1000,
-      )
-    }
-
-    await User.updateOne({ _id: user._id }, update).catch(() => null)
     return invalid()
   }
 
-  // Success: create session cookie
-  await createSession(String(user._id))
-
-  // Reset lock state + audit
-  await User.updateOne(
-    { _id: user._id },
-    { $set: { lastLoginAt: now, loginAttempts: 0, lockUntil: null } },
-  ).catch(() => null)
+  try {
+    // Reset the failure counter before issuing a session. A failed write must
+    // not make a sign-in look successful while the account stays locked.
+    const reset = await User.updateOne(
+      { _id: user._id, deletedAt: null, isActive: true },
+      { $set: { lastLoginAt: now, loginAttempts: 0, lockUntil: null } },
+    )
+    if (reset.matchedCount !== 1) return invalid()
+    await createSession(String(user._id))
+  } catch {
+    return unavailable()
+  }
 
   return NextResponse.json({
     ok: true,

@@ -17,10 +17,6 @@ function canManageUsers(role: string) {
   return role === 'dev' || role === 'admin'
 }
 
-function norm(v: unknown) {
-  return typeof v === 'string' ? v.trim() : ''
-}
-
 export async function changePasswordAction(userId: string, formData: FormData) {
   // ✅ Strict CSRF guard for admin mutations
   try {
@@ -36,8 +32,8 @@ export async function changePasswordAction(userId: string, formData: FormData) {
   if (!mongoose.Types.ObjectId.isValid(userId))
     redirect(`/admin/cms/users/${encodeURIComponent(userId)}?cp_err=bad_id`)
 
-  const password = norm(formData.get('password'))
-  const password2 = norm(formData.get('password2'))
+  const password = typeof formData.get('password') === 'string' ? String(formData.get('password')) : ''
+  const password2 = typeof formData.get('password2') === 'string' ? String(formData.get('password2')) : ''
 
   if (!password || !password2)
     redirect(`/admin/cms/users/${encodeURIComponent(userId)}?cp_err=missing`)

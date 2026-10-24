@@ -1,10 +1,25 @@
 // src/app/(admin)/admin/cms/cloud/page.tsx
 import styles from './page.module.css'
 import { connectMongo } from '@/lib/db/mongoose'
+import { getCmsI18n } from '@/lib/cms/i18n-server'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 export const fetchCache = 'force-no-store'
+
+export async function generateMetadata() {
+  const { t } = await getCmsI18n()
+  return { title: t('Cloud usage', 'การใช้พื้นที่จัดเก็บ') }
+}
+
+const thaiCopy: Record<string, string> = {
+  'Data size': 'ขนาดข้อมูล', 'Index size': 'ขนาดดัชนี', 'Storage size': 'พื้นที่จัดเก็บ',
+  'Collections': 'คอลเลกชัน', 'Assets': 'ไฟล์สื่อ', 'Bandwidth': 'ปริมาณรับส่งข้อมูล',
+  'Transformations': 'การแปลงไฟล์', 'Last sync': 'ซิงก์ล่าสุด', 'Not connected': 'ยังไม่ได้เชื่อมต่อ',
+  'Live MongoDB stats fetched from db.stats(). Quota is configurable via MONGO_QUOTA_MB.': 'สถิติ MongoDB ปัจจุบัน โควตาเป็นค่าที่กำหนดไว้ในการตั้งค่าระบบ',
+  'Mock mode: could not read MongoDB stats (permissions or connectivity).': 'ข้อมูลตัวอย่าง: ไม่สามารถอ่านสถิติ MongoDB ได้ กรุณาตรวจสอบสิทธิ์หรือการเชื่อมต่อ',
+  'Mock mode: connect Cloudinary Admin API later.': 'ข้อมูลตัวอย่าง: การแสดงสถิติการใช้พื้นที่ Cloudinary ยังไม่ได้เปิดใช้งาน',
+}
 
 type Usage = {
   usedBytes: number
@@ -105,7 +120,7 @@ async function getCloudinaryUsage(): Promise<Usage> {
   }
 }
 
-function UsageCard({
+async function UsageCard({
   title,
   subtitle,
   usage,
@@ -114,6 +129,8 @@ function UsageCard({
   subtitle: string
   usage: Usage
 }) {
+  const { t } = await getCmsI18n()
+  const copy = (value: string) => t(value, thaiCopy[value] ?? value.replace('(mock)', '(ตัวอย่าง)'))
   const percent = fmtPercent(usage.usedBytes, usage.quotaBytes)
   const remaining = Math.max(0, usage.quotaBytes - usage.usedBytes)
 
@@ -126,15 +143,15 @@ function UsageCard({
         <div className={styles.cardTitleRow}>
           <div className={styles.cardTitle}>{title}</div>
           {usage.isMock ? (
-            <span className={styles.badge}>Mock</span>
+            <span className={styles.badge}>{t('Sample data', 'ข้อมูลตัวอย่าง')}</span>
           ) : (
-            <span className={`${styles.badge} ${styles.badgeLive}`}>Live</span>
+            <span className={`${styles.badge} ${styles.badgeLive}`}>{t('Live', 'ข้อมูลปัจจุบัน')}</span>
           )}
         </div>
         <p className={styles.cardSub}>{subtitle}</p>
       </header>
 
-      <div className={styles.barWrap} aria-label={`${title} usage`}>
+      <div className={styles.barWrap} aria-label={t(`${title} usage`, `พื้นที่ใช้งาน ${title}`)}>
         <div
           className={`${styles.barFill} ${styles[`barFill_${warn}`]}`}
           style={{ width: `${percent}%` }}
@@ -147,13 +164,13 @@ function UsageCard({
           <span className={styles.usageStrong}>
             {fmtBytes(usage.usedBytes)}
           </span>{' '}
-          <span className={styles.usageDim}>used</span>
+          <span className={styles.usageDim}>{t('used', 'ใช้แล้ว')}</span>
           <span className={styles.usageDim}> · </span>
           <span className={styles.usageStrong}>{fmtBytes(remaining)}</span>{' '}
-          <span className={styles.usageDim}>left</span>
+          <span className={styles.usageDim}>{t('left', 'คงเหลือ')}</span>
         </div>
         <div className={styles.usageRight}>
-          <span className={styles.usageDim}>Quota:</span>{' '}
+          <span className={styles.usageDim}>{t('Quota:', 'โควตา:')}</span>{' '}
           <span className={styles.usageStrong}>
             {fmtBytes(usage.quotaBytes)}
           </span>
@@ -163,18 +180,19 @@ function UsageCard({
       <div className={styles.statsGrid}>
         {usage.details.map((d) => (
           <div key={d.label} className={styles.stat}>
-            <div className={styles.statLabel}>{d.label}</div>
-            <div className={styles.statValue}>{d.value}</div>
+            <div className={styles.statLabel}>{copy(d.label)}</div>
+            <div className={styles.statValue}>{copy(d.value)}</div>
           </div>
         ))}
       </div>
 
-      {usage.note ? <p className={styles.hint}>{usage.note}</p> : null}
+      {usage.note ? <p className={styles.hint}>{copy(usage.note)}</p> : null}
     </section>
   )
 }
 
 export default async function CloudPage() {
+  const { t, formatDate } = await getCmsI18n()
   const [mongo, cloudinary] = await Promise.all([
     getMongoUsage(),
     getCloudinaryUsage(),
@@ -184,20 +202,16 @@ export default async function CloudPage() {
     <div className={styles.page}>
       <header className={styles.header}>
         <div className={styles.headerText}>
-          <h1 className={styles.h1}>Cloud Usage</h1>
+          <h1 className={styles.h1}>{t('Cloud Usage', 'การใช้พื้นที่จัดเก็บ')}</h1>
           <p className={styles.sub}>
-            Storage visibility for MongoDB + Cloudinary. Safe fallbacks
-            included.
+            {t('Storage overview for MongoDB and Cloudinary. Unconnected statistics are marked as sample data.', 'ภาพรวมพื้นที่จัดเก็บ MongoDB และ Cloudinary สถิติที่ยังไม่เชื่อมต่อจะแสดงป้ายข้อมูลตัวอย่าง')}
           </p>
         </div>
 
         <div className={styles.meta}>
-          <div className={styles.metaLabel}>Last updated</div>
+          <div className={styles.metaLabel}>{t('Last updated', 'อัปเดตล่าสุด')}</div>
           <div className={styles.metaValue}>
-            {new Intl.DateTimeFormat('en-GB', {
-              dateStyle: 'medium',
-              timeStyle: 'short',
-            }).format(new Date())}
+            {formatDate(new Date(), { dateStyle: 'medium', timeStyle: 'short' })}
           </div>
         </div>
       </header>
@@ -205,12 +219,12 @@ export default async function CloudPage() {
       <div className={styles.grid}>
         <UsageCard
           title="MongoDB"
-          subtitle="Database storage usage (db.stats when available)"
+          subtitle={t('Database storage usage', 'พื้นที่จัดเก็บฐานข้อมูล')}
           usage={mongo}
         />
         <UsageCard
           title="Cloudinary"
-          subtitle="Media storage + delivery (mock for now)"
+          subtitle={t('Media storage and delivery (sample data)', 'พื้นที่จัดเก็บและรับส่งสื่อ (ข้อมูลตัวอย่าง)')}
           usage={cloudinary}
         />
       </div>

@@ -5,14 +5,18 @@ import sharp from 'sharp'
 import { MediaAsset, Project, Submission } from './models'
 import { CmsError } from './http'
 import { portfolioImages, type PortfolioInput } from '@/lib/portfolio'
+import seedMediaData from './project-seed-media.json'
 
 // The provider request times out after 45 seconds. Keep an uncertain upload
 // reserved longer so a cleanup request cannot destroy it while it finishes.
 const UPLOAD_LEASE_MS = 5 * 60 * 1000
 const DELETE_LEASE_MS = 5 * 60 * 1000
 const ABANDONED_SUBMISSION_MS = 24 * 60 * 60 * 1000
+const seedMedia: Array<{ publicId: string; src: string }> = seedMediaData
+const seedImageSources = new Set(seedMedia.map(asset => asset.src))
 
 export function mediaConfigured() { return !!(process.env.CLOUDINARY_CLOUD_NAME && process.env.CLOUDINARY_API_KEY && process.env.CLOUDINARY_API_SECRET) }
+class CloudinaryRejectedError extends CmsError {}
 async function cloudinary(action: string, form: FormData, params: Record<string, string>) {
   if (!mediaConfigured()) throw new CmsError('Image uploads need Cloudinary configuration. Existing images can still be used.', 503)
   params.timestamp = String(Math.floor(Date.now() / 1000))
@@ -21,7 +25,19 @@ async function cloudinary(action: string, form: FormData, params: Record<string,
   form.set('api_key', process.env.CLOUDINARY_API_KEY!)
   for (const [key, val] of Object.entries(params)) form.set(key, val)
   const response = await fetch(`https://api.cloudinary.com/v1_1/${encodeURIComponent(process.env.CLOUDINARY_CLOUD_NAME!)}/image/${action}`, { method: 'POST', body: form, signal: AbortSignal.timeout(45000) })
-  if (!response.ok) throw new CmsError('The image service could not complete this request. Please retry.', 502)
+  if (!response.ok) {
+    // A definite client-side rejection did not create an asset. Other failures
+    // can have an uncertain outcome, so the upload lease must remain in place.
+    if ([400, 401, 403, 404, 413, 415, 422, 429].includes(response.status)) {
+      const message = [401, 403].includes(response.status)
+        ? 'Cloudinary rejected the storage credentials. Ask an administrator to check the settings, then retry.'
+        : response.status === 429
+          ? 'Cloudinary is limiting uploads. Wait a moment, then retry.'
+          : 'Cloudinary rejected this image. Check the file and retry.'
+      throw new CloudinaryRejectedError(message, 502)
+    }
+    throw new CmsError('The image service may still be processing this request. Wait a few minutes, then retry.', 502)
+  }
   return response.json()
 }
 export async function ensureSubmission(id: string, actorId: string) {
@@ -32,6 +48,7 @@ export async function ensureSubmission(id: string, actorId: string) {
   return receipt
 }
 export async function uploadImage(file: File, submissionId: string, uploadKey: string, actorId: string) {
+  if (!mediaConfigured()) throw new CmsError('Image uploads need Cloudinary configuration. Existing images can still be used.', 503)
   const receipt = await ensureSubmission(submissionId, actorId)
   if (receipt.status !== 'uploading') throw new CmsError('This submission has already been saved or closed. Reload the editor.', 409)
   // This CAS prevents a stale-submission cleanup from closing a receipt while
@@ -74,9 +91,22 @@ export async function uploadImage(file: File, submissionId: string, uploadKey: s
     throw error
   }
   const form = new FormData(); form.set('file', file)
-  const result = await cloudinary('upload', form, { public_id: publicId, overwrite: 'true' })
+  let result
+  try { result = await cloudinary('upload', form, { public_id: publicId, overwrite: 'true' }) }
+  catch (error) {
+    if (error instanceof CloudinaryRejectedError) {
+      await MediaAsset.updateOne(
+        { _id: publicId, status: 'uploading', submissionId, userId: actorId },
+        { $set: { status: 'ready', src: '', protectedUntil: new Date(0) } },
+      )
+    }
+    throw error
+  }
   const src = String(result.secure_url || '')
-  if (!src.startsWith(`https://res.cloudinary.com/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload/`)) throw new CmsError('The image service returned an unexpected URL.', 502)
+  if (result.public_id !== publicId || result.resource_type !== 'image' ||
+    !src.startsWith(`https://res.cloudinary.com/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload/`)) {
+    throw new CmsError('The image service returned an unexpected asset. Wait a few minutes, then retry.', 502)
+  }
   const saved = await MediaAsset.updateOne(
     { _id: publicId, status: 'uploading', submissionId, userId: actorId },
     { $set: { src, status: 'ready', protectedUntil: new Date(Date.now() + 3600000) } },
@@ -87,6 +117,7 @@ export async function uploadImage(file: File, submissionId: string, uploadKey: s
 export async function protectProjectMedia(project: PortfolioInput, actorId: string, submissionId: string) {
   for (const src of new Set(portfolioImages(project))) {
     if (src.startsWith('/images/projects/')) {
+      if (seedMedia.length) throw new CmsError('Local project images have moved to cloud storage. Reload this project before saving.', 409)
       const root = path.resolve('public', 'images', 'projects')
       const candidate = path.resolve('public', src.slice(1))
       if (!candidate.startsWith(root + path.sep) || !/\.(png|jpe?g|webp|gif|avif)$/i.test(candidate) || !(await stat(candidate).catch(() => null))?.isFile()) throw new CmsError('One of the selected local images could not be found.')
@@ -95,8 +126,8 @@ export async function protectProjectMedia(project: PortfolioInput, actorId: stri
     const asset = await MediaAsset.findOne({ src, status: 'ready' }).lean()
     if (!asset) throw new CmsError('An image is not available. Upload it again before saving.')
     const referenced = await Project.exists({ $or: [{ 'data.cover.src': src }, { 'data.slides.src': src }] })
-    if (!referenced && asset.userId !== actorId) throw new CmsError('This image does not belong to your account.', 403)
-    if (!referenced && asset.submissionId !== submissionId) {
+    if (!referenced && !seedImageSources.has(src) && asset.userId !== actorId) throw new CmsError('This image does not belong to your account.', 403)
+    if (!referenced && !seedImageSources.has(src) && asset.submissionId !== submissionId) {
       const previous = await Submission.findById(asset.submissionId).lean()
       if (previous?.status === 'saving') throw new CmsError('This image is part of an uncertain save. Resolve that save first.', 409)
     }
@@ -104,7 +135,7 @@ export async function protectProjectMedia(project: PortfolioInput, actorId: stri
     // submission. Old-submission cleanup then cannot claim them by ID.
     const locked = await MediaAsset.updateOne(
       { _id: asset._id, src, status: 'ready', submissionId: asset.submissionId },
-      { $set: { submissionId: referenced ? asset.submissionId : submissionId, protectedUntil: new Date(Date.now() + 3600000) } },
+      { $set: { submissionId: referenced || seedImageSources.has(src) ? asset.submissionId : submissionId, protectedUntil: new Date(Date.now() + 3600000) } },
     )
     if (!locked.matchedCount) throw new CmsError('An image is being cleaned up. Upload it again.', 409)
   }
@@ -131,6 +162,7 @@ export async function cleanupMedia(actorId: string, submissionId?: string) {
   // limit. Otherwise 100 old referenced assets can permanently starve later
   // orphaned uploads. The per-asset reference checks below still guard races.
   const referenced = submissionId ? [] : [
+    ...seedImageSources,
     ...await Project.distinct('data.cover.src'),
     ...await Project.distinct('data.slides.src'),
   ].filter((src): src is string => typeof src === 'string')
@@ -139,6 +171,7 @@ export async function cleanupMedia(actorId: string, submissionId?: string) {
     : { protectedUntil: { $lte: new Date() }, src: { $nin: referenced } }).limit(100).lean()
   let deleted = 0, failed = 0
   for (const asset of candidates) {
+    if (seedImageSources.has(asset.src)) continue
     // A provider response may have been lost while its upload continues.
     if ((asset.status === 'uploading' || asset.status === 'deleting') && asset.protectedUntil > new Date()) { failed++; continue }
     if (await Project.exists({ $or: [{ 'data.cover.src': asset.src }, { 'data.slides.src': asset.src }] })) continue

@@ -2,6 +2,8 @@ import assert from 'node:assert/strict'
 import { randomUUID } from 'node:crypto'
 
 export async function testCms(base, db) {
+  assert.ok(['127.0.0.1', 'localhost', '[::1]'].includes(new URL(base).hostname), 'CMS tests require a local test server')
+  assert.equal(db.databaseName, 'vetra_cms_isolated_test', 'CMS tests require the isolated temporary database')
   let checks = 0
   const request = async (path, { cookie, method = 'GET', body, origin = base } = {}) => {
     const response = await fetch(base + path, { method, headers: { ...(cookie ? { cookie } : {}), ...(body ? { 'content-type': 'application/json' } : {}), origin }, body: body ? JSON.stringify(body) : undefined, redirect: 'manual' })
@@ -9,7 +11,7 @@ export async function testCms(base, db) {
     let data; try { data = JSON.parse(text) } catch { data = text }
     return { response, data }
   }
-  const visibleText = html => html.replace(/<!--.*?-->/g, '').replace(/<[^>]*>/g, ' ')
+  const visibleText = html => html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '').replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, '').replace(/<!--[\s\S]*?-->/g, '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()
   const check = (actual, expected, label) => { assert.equal(actual, expected, label); checks++; console.log(`PASS ${label}`) }
   check((await request('/api/admin/projects')).response.status, 401, 'Unauthenticated portfolio access rejected')
   const login = async username => {
@@ -18,6 +20,24 @@ export async function testCms(base, db) {
     return response.headers.get('set-cookie').split(';')[0]
   }
   const dev = await login('testdev'), editor = await login('testeditor'), viewer = await login('testviewer')
+  const emailSignIn = await request('/api/auth/login', { method: 'POST', body: { username: 'dev@example.invalid', password: 'Test-cms-only-2026!' } })
+  check(emailSignIn.response.status, 200, 'Email can be used to sign in')
+  const emailCookie = emailSignIn.response.headers.get('set-cookie').split(';')[0]
+  check((await request('/admin/cms', { cookie: emailCookie })).response.status, 200, 'Session opens protected CMS')
+  check((await request('/api/auth/logout', { cookie: emailCookie, method: 'POST' })).response.status, 200, 'Logout completes')
+  check((await request('/admin/cms', { cookie: emailCookie })).response.status === 200, false, 'Logged-out session cannot reopen CMS')
+  check((await request('/api/auth/login', { method: 'POST', body: { username: 'unknownuser', password: 'Test-cms-only-2026!' } })).response.status, 401, 'Unknown account receives generic rejection')
+  for (let attempt = 0; attempt < 5; attempt++) {
+    check((await request('/api/auth/login', { method: 'POST', body: { username: 'testadmin', password: 'Incorrect-test-password' } })).response.status, 401, `Incorrect password attempt ${attempt + 1} rejected`)
+  }
+  check((await request('/api/auth/login', { method: 'POST', body: { username: 'testadmin', password: 'Test-cms-only-2026!' } })).response.status, 401, 'Correct password is rejected while account is locked')
+  await db.collection('users').updateOne({ username: 'testadmin' }, { $set: { lockUntil: new Date(Date.now() - 1000) } })
+  const unlocked = await request('/api/auth/login', { method: 'POST', body: { username: 'testadmin', password: 'Test-cms-only-2026!' } })
+  check(unlocked.response.status, 200, 'Account can sign in after lock expires')
+  check((await db.collection('users').findOne({ username: 'testadmin' })).loginAttempts, 0, 'Successful sign-in resets failed attempts')
+  const adminCookie = unlocked.response.headers.get('set-cookie').split(';')[0]
+  await db.collection('users').updateOne({ username: 'testadmin' }, { $set: { passwordChangedAt: new Date(Date.now() + 1000) } })
+  check((await request('/admin/cms', { cookie: adminCookie })).response.status === 200, false, 'Changing password invalidates older sessions')
   const list = await request('/api/admin/projects', { cookie: dev })
   check(list.data.projects.length, 37, 'All 37 original projects preserved by initialization')
   check((await request('/api/admin/projects', { cookie: dev })).data.projects.length, 37, 'Initialization is idempotent')
@@ -119,12 +139,46 @@ export async function testCms(base, db) {
   const bulkUsers = Array.from({ length: 205 }, (_, i) => ({ username: `paginationtest${String(i).padStart(3, '0')}`, email: `paginationtest${String(i).padStart(3, '0')}@example.invalid`, passwordHash: 'test-only', role: 'viewer', isActive: true, deletedAt: null, purgeAt: null, createdAt: new Date(), updatedAt: new Date() }))
   const inserted = await db.collection('users').insertMany(bulkUsers)
   const bulkIds = Object.values(inserted.insertedIds)
-  const usersPage5 = await request('/admin/cms/users?page=5', { cookie: dev })
+  const englishCookie = `${dev}; vetra-cms-locale=en`
+  const usersPage5 = await request('/admin/cms/users?page=5', { cookie: englishCookie })
   check(usersPage5.response.status, 200, 'Users list renders beyond 200 accounts')
   check(/Page\s*5\s*of\s*5/.test(visibleText(usersPage5.data)), true, 'Users list paginates 209 active accounts')
-  const searchedUser = await request('/admin/cms/users?q=paginationtest199', { cookie: dev })
+  const searchedUser = await request('/admin/cms/users?q=paginationtest199', { cookie: englishCookie })
   check(searchedUser.data.includes('paginationtest199@example.invalid'), true, 'User search finds an account beyond the first page')
   check(/Page\s*1\s*of\s*1/.test(visibleText(searchedUser.data)), true, 'Search counts only matching accounts')
+
+  // Check the HTML sent to the browser, excluding embedded scripts so the
+  // translation dictionaries themselves cannot make these assertions pass.
+  const localizedRoutes = [
+    { path: '/admin/cms', heading: ['A clear view of your content.', 'ดูแลเว็บไซต์ของคุณได้ในที่เดียว'], title: ['Dashboard', 'ภาพรวม'], label: ['Active portfolio entries', 'ผลงานบนเว็บไซต์'] },
+    { path: '/admin/cms/users?q=paginationtest199&page=1', heading: ['Users', 'ผู้ใช้'], title: ['Users', 'ผู้ใช้'], label: ['Search users', 'ค้นหาผู้ใช้'] },
+    { path: '/admin/cms/projects', heading: ['Projects', 'โปรเจกต์'], title: ['Projects', 'โปรเจกต์'], label: ['Search projects', 'ค้นหาโปรเจกต์'] },
+    { path: '/admin/cms/payments', heading: ['Payment links', 'ลิงก์ชำระเงิน'], title: ['Payment links', 'ลิงก์ชำระเงิน'], label: ['Search payments', 'ค้นหาการชำระเงิน'] },
+  ]
+  for (const locale of ['th', 'en']) {
+    const cookie = locale === 'en' ? englishCookie : dev
+    const index = locale === 'en' ? 0 : 1
+    for (const route of localizedRoutes) {
+      const { response, data: html } = await request(route.path, { cookie })
+      check(response.status, 200, `${locale}: ${route.path} renders without redirecting`)
+      const returnedUrl = new URL(response.url)
+      check(returnedUrl.pathname + returnedUrl.search, route.path, `${locale}: CMS path and query remain intact`)
+      check(new RegExp(`<html\\b[^>]*\\blang="${locale}"`).test(html), true, `${locale}: document language matches the interface`)
+      const headings = [...html.matchAll(/<h1\b[^>]*>([\s\S]*?)<\/h1>/gi)].map(match => visibleText(match[1]))
+      check(headings.includes(route.heading[index]), true, `${locale}: ${route.path} has its translated page heading`)
+      check(visibleText(html).includes(route.label[index]), true, `${locale}: ${route.path} has translated controls`)
+      const title = visibleText(html.match(/<title\b[^>]*>([\s\S]*?)<\/title>/i)?.[1] ?? '')
+      check(title.includes(route.title[index]), true, `${locale}: ${route.path} has translated browser metadata`)
+      if (route.path.includes('users?')) {
+        check(visibleText(html).includes('paginationtest199@example.invalid'), true, `${locale}: user search still returns the requested account`)
+        check(/<input\b[^>]*name="q"[^>]*value="paginationtest199"/.test(html), true, `${locale}: user search input retains its query`)
+      }
+    }
+  }
+  const fallback = await request('/admin/cms/users?q=paginationtest199', { cookie: `${dev}; vetra-cms-locale=invalid` })
+  check(fallback.response.status, 200, 'Invalid language preference does not break a protected page')
+  check(/<html\b[^>]*\blang="th"/.test(fallback.data), true, 'Invalid language preference falls back to Thai')
+  check(visibleText(fallback.data).includes('ค้นหาผู้ใช้'), true, 'Invalid language preference receives Thai controls')
   await db.collection('users').deleteMany({ _id: { $in: bulkIds } })
 
   // Leave the serve-mode UI preview with the original public portfolio and

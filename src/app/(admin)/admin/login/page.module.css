@@ -37,6 +37,8 @@
   margin-bottom: 1rem;
 }
 
+.language { position: relative; z-index: 1; display: flex; justify-content: flex-end; margin-bottom: 0.75rem; }
+
 .brandRow {
   display: flex;
   align-items: center;
@@ -60,8 +62,8 @@
   align-items: center;
   justify-content: center;
   gap: 0.45rem;
-  font-family: "Playfair Display", "Prompt", "Noto Sans Thai", serif;
-  font-size: 1.8rem;
+  font-family: var(--font-display);
+  font-size: var(--font-xl);
   letter-spacing: 0.2rem;  
   font-weight: 900;
 }
@@ -74,7 +76,7 @@
   border: 1px solid rgba(125, 231, 255, 0.25);
   background: rgba(255, 255, 255, 0.06);
   color: rgba(255, 255, 255, 0.8);
-  font-size: 1rem;
+  font-size: var(--font-xs);
   font-family: "noto sans thai", sans-serif;
 }
 
@@ -82,7 +84,7 @@
   text-align: center;
   margin: 0;
   font-weight: 400;
-  font-size: 1.2rem;
+  font-size: var(--font-md);
 }
 
 .sub {
@@ -113,7 +115,7 @@
 
 .labelText {
   color: rgba(255, 255, 255, 0.76);
-  font-size: 0.95rem;
+  font-size: var(--font-xs);
 }
 
 .pwToggle {
@@ -157,7 +159,7 @@
   margin: -0.2rem 0 0;
   color: rgba(255, 120, 150, 0.92);
   font-weight: 800;
-  font-size: 0.95rem;
+  font-size: var(--font-xs);
 }
 
 .btn {
@@ -193,7 +195,7 @@
 .hint {
   margin: 0.1rem 0 0;
   color: rgba(255, 255, 255, 0.68);
-  font-size: 0.92rem;
+  font-size: var(--font-xs);
   line-height: 1.55;
 }
 
@@ -206,7 +208,7 @@
   align-items: center;
   gap: 0.55rem;
   color: rgba(255, 255, 255, 0.62);
-  font-size: 0.9rem;
+  font-size: var(--font-xs);
 }
 
 .footDot {

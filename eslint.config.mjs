@@ -13,6 +13,7 @@ export default defineConfig([
   },
   globalIgnores([
     '.next/**',
+    '.next-cms-test/**',
     'out/**',
     'build/**',
     'next-env.d.ts',

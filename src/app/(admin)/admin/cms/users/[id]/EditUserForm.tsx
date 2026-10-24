@@ -6,6 +6,8 @@ import { usePathname, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { updateUserAction } from './function'
 import styles from './EditUserForm.module.css'
+import { useCmsI18n } from '@/components/cms/CmsLanguageProvider'
+import { userRoleLabel, userValidationMessage } from '../i18n'
 
 import VetraSelect, {
   type SelectOption,
@@ -43,12 +45,7 @@ function validateEditUser(v: { username: string; email: string }): FieldErrors {
 
 type Role = 'dev' | 'admin' | 'editor' | 'viewer'
 
-const ROLE_OPTIONS: SelectOption<Role>[] = [
-  { value: 'dev', label: 'dev' },
-  { value: 'admin', label: 'admin' },
-  { value: 'editor', label: 'editor' },
-  { value: 'viewer', label: 'viewer' },
-]
+const ROLES: Role[] = ['dev', 'admin', 'editor', 'viewer']
 
 type Props = {
   userId: string
@@ -79,6 +76,7 @@ export default function EditUserForm({
   targetRoleNow,
   version,
 }: Props) {
+  const { t } = useCmsI18n()
   const router = useRouter()
   const pathname = usePathname()
 
@@ -116,10 +114,9 @@ export default function EditUserForm({
   const isDevMe = meRole === 'dev'
   const isDevTarget = targetRoleNow === 'dev'
   const lockDevTarget = isDevTarget && !isDevMe
-  const roleOptions =
-    isDevMe || isDevTarget
-      ? ROLE_OPTIONS
-      : ROLE_OPTIONS.filter((option) => option.value !== 'dev')
+  const roleOptions: SelectOption<Role>[] = ROLES
+    .filter((role) => isDevMe || isDevTarget || role !== 'dev')
+    .map((role) => ({ value: role, label: userRoleLabel(role, t) }))
 
   // Self safety: allow username/email, but lock role/status so you can't lock yourself out
   const lockRoleAndStatus = isSelf
@@ -160,11 +157,11 @@ export default function EditUserForm({
       <input type="hidden" name="version" value={version} />
       <div className={styles.grid}>
         <label className={styles.field}>
-          <span className={styles.label}>Username *</span>
+          <span className={styles.label}>{t('Username *', 'ชื่อผู้ใช้ *')}</span>
           <input
             className={styles.input}
             name="username"
-            placeholder="e.g. vetra_admin"
+            placeholder={t('e.g. vetra_admin', 'เช่น vetra_admin')}
             value={values.username}
             autoComplete="username"
             required
@@ -176,21 +173,21 @@ export default function EditUserForm({
           />
           <span className={styles.hint}>
             {lockIdentity
-              ? 'Only a dev can edit a dev user.'
-              : 'Allowed: letters/numbers, underscore, dot. Lowercase preferred.'}
+              ? t('Only a developer can edit a developer account.', 'เฉพาะผู้พัฒนาเท่านั้นที่แก้ไขบัญชีผู้พัฒนาได้')
+              : t('Use English letters, numbers, underscores or dots. Lowercase preferred.', 'ใช้อักษรภาษาอังกฤษ ตัวเลข ขีดล่าง หรือจุด แนะนำให้ใช้ตัวพิมพ์เล็ก')}
           </span>
           {touched.username && errors.username ? (
-            <div className={styles.fieldError}>{errors.username}</div>
+            <div className={styles.fieldError}>{userValidationMessage(errors.username, t)}</div>
           ) : null}
         </label>
 
         <label className={styles.field}>
-          <span className={styles.label}>Email *</span>
+          <span className={styles.label}>{t('Email *', 'อีเมล *')}</span>
           <input
             className={styles.input}
             name="email"
             type="email"
-            placeholder="e.g. admin@yourdomain.com"
+            placeholder={t('e.g. admin@yourdomain.com', 'เช่น admin@yourdomain.com')}
             value={values.email}
             autoComplete="email"
             required
@@ -200,11 +197,11 @@ export default function EditUserForm({
           />
           <span className={styles.hint}>
             {lockIdentity
-              ? 'Only a dev can edit a dev user.'
-              : 'Used for contact and account reference.'}
+              ? t('Only a developer can edit a developer account.', 'เฉพาะผู้พัฒนาเท่านั้นที่แก้ไขบัญชีผู้พัฒนาได้')
+              : t('Used for sign-in, contact and account reference.', 'ใช้เข้าสู่ระบบ ติดต่อ และอ้างอิงบัญชี')}
           </span>
           {touched.email && errors.email ? (
-            <div className={styles.fieldError}>{errors.email}</div>
+            <div className={styles.fieldError}>{userValidationMessage(errors.email, t)}</div>
           ) : null}
         </label>
 
@@ -212,7 +209,7 @@ export default function EditUserForm({
         <div className={styles.field}>
           <VetraSelect<Role>
             name="role"
-            label="Role *"
+            label={t('Role *', 'สิทธิ์ *')}
             value={values.role}
             onChange={(v) => set('role', v)}
             options={roleOptions}
@@ -220,15 +217,15 @@ export default function EditUserForm({
           />
           <span className={styles.hint}>
             {lockDevTarget
-              ? 'Only a dev can change a dev user.'
+              ? t('Only a developer can change a developer account.', 'เฉพาะผู้พัฒนาเท่านั้นที่เปลี่ยนแปลงบัญชีผู้พัฒนาได้')
               : lockRoleAndStatus
-                ? 'You cannot change your own role here.'
-                : 'Only dev/admin can manage users.'}
+                ? t('You cannot change your own role here.', 'คุณไม่สามารถเปลี่ยนสิทธิ์ของตนเองได้')
+                : t('Only developers and admins can manage users.', 'เฉพาะผู้พัฒนาและผู้ดูแลระบบเท่านั้นที่จัดการผู้ใช้ได้')}
           </span>
         </div>
 
         <label className={styles.field}>
-          <span className={styles.label}>Status</span>
+          <span className={styles.label}>{t('Status', 'สถานะ')}</span>
           <div className={styles.switchRow}>
             <input
               className={styles.check}
@@ -242,22 +239,22 @@ export default function EditUserForm({
               <input type="hidden" name="isActive" value={values.isActive ? '1' : '0'} />
             ) : null}
             <span className={styles.switchText}>
-              Active (can login and access CMS)
+              {t('Active (can sign in and access CMS)', 'เปิดใช้งาน (เข้าสู่ระบบ CMS ได้)')}
             </span>
           </div>
           <span className={styles.hint}>
             {lockDevTarget
-              ? 'Only a dev can change a dev user.'
+              ? t('Only a developer can change a developer account.', 'เฉพาะผู้พัฒนาเท่านั้นที่เปลี่ยนแปลงบัญชีผู้พัฒนาได้')
               : lockRoleAndStatus
-                ? 'You cannot disable your own account here.'
-                : 'Disable if you want to revoke access without deleting.'}
+                ? t('You cannot disable your own account here.', 'คุณไม่สามารถปิดใช้งานบัญชีของตนเองได้')
+                : t('Disable to revoke access while keeping the account.', 'ปิดใช้งานเพื่อระงับการเข้าถึงโดยเก็บบัญชีไว้')}
           </span>
         </label>
       </div>
 
       <footer className={styles.actions}>
         <Link className={styles.ghostBtn} href="/admin/cms/users">
-          Cancel
+          {t('Cancel', 'ยกเลิก')}
         </Link>
 
         <button
@@ -273,7 +270,7 @@ export default function EditUserForm({
             }
           }}
         >
-          Save changes
+          {t('Save changes', 'บันทึกการเปลี่ยนแปลง')}
         </button>
       </footer>
     </form>

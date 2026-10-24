@@ -2,6 +2,8 @@
 
 import { useRouter } from 'next/navigation'
 import styles from './page.module.css'
+import { useCmsI18n } from '@/components/cms/CmsLanguageProvider'
+import { userRoleLabel } from './i18n'
 
 type Row = {
   id: string
@@ -15,6 +17,7 @@ type Row = {
 
 export default function UsersTableClient({ rows, emptyMessage }: { rows: Row[]; emptyMessage: string }) {
   const router = useRouter()
+  const { t } = useCmsI18n()
 
   function go(id: string) {
     router.push(`/admin/cms/users/${id}`)
@@ -42,7 +45,7 @@ export default function UsersTableClient({ rows, emptyMessage }: { rows: Row[]; 
                 go(r.id)
               }
             }}
-            aria-label={`Open user ${r.username}`}
+            aria-label={t(`Open user ${r.username}`, `เปิดผู้ใช้ ${r.username}`)}
           >
             <td>
               <div className={styles.userLink}>
@@ -53,7 +56,7 @@ export default function UsersTableClient({ rows, emptyMessage }: { rows: Row[]; 
             <td className={styles.mono}>{r.email}</td>
 
             <td>
-              <span className={styles.rolePill}>{r.role}</span>
+              <span className={styles.rolePill}>{userRoleLabel(r.role, t)}</span>
             </td>
 
             <td>
@@ -62,7 +65,7 @@ export default function UsersTableClient({ rows, emptyMessage }: { rows: Row[]; 
                   r.active ? styles.statusOn : styles.statusOff
                 }`}
               >
-                {r.active ? 'Active' : 'Disabled'}
+                {r.active ? t('Active', 'เปิดใช้งาน') : t('Disabled', 'ปิดใช้งาน')}
               </span>
             </td>
 

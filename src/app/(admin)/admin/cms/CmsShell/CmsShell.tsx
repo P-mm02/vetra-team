@@ -7,6 +7,7 @@ import styles from './CmsShell.module.css'
 import CmsNav from './Nav/CmsNav'
 import CmsTopbar from './Topbar/CmsTopbar'
 import CmsFooter from './Footer/CmsFooter'
+import { useCmsI18n } from '@/components/cms/CmsLanguageProvider'
 
 const focusableSelector = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
 
@@ -14,6 +15,7 @@ export default function CmsShell({ user, children }: {
   user: CurrentUser
   children: React.ReactNode
 }) {
+  const { t } = useCmsI18n()
   const pathname = usePathname()
   const [navOpen, setNavOpen] = useState(false)
   const drawerRef = useRef<HTMLElement>(null)
@@ -95,7 +97,7 @@ export default function CmsShell({ user, children }: {
         className={`${styles.sidebar} ${navOpen ? styles.sidebarOpen : ''}`}
         role="dialog"
         aria-modal={navOpen ? true : undefined}
-        aria-label="Workspace menu"
+        aria-label={t('Workspace menu', 'เมนูจัดการเว็บไซต์')}
         aria-hidden={!navOpen}
       >
         <CmsNav pathname={pathname} role={user.role} onClose={() => setNavOpen(false)} />
@@ -107,7 +109,7 @@ export default function CmsShell({ user, children }: {
         className={`${styles.backdrop} ${navOpen ? styles.backdropShow : ''}`}
         onClick={() => setNavOpen(false)}
         tabIndex={-1}
-        aria-label="Close menu"
+        aria-label={t('Close menu', 'ปิดเมนู')}
         aria-hidden="true"
       />
 
